@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  @page {
+    size: A4;
+  }
+}
+
+#EDITOR ul {
+  @apply list-disc mr-4;
+}
+#EDITOR hr {
+  @apply bg-muted-foreground/90 h-[1px] my-1;
+}
+#EDITOR mark {
+  @apply bg-primary-orange text-primary-orange-foreground;
+}
+#EDITOR table {
+  @apply table-auto w-full mx-auto border p-1 bg-muted;
+}
+#EDITOR tr {
+  @apply border border-foreground h-10;
+}
+#EDITOR th {
+  @apply border border-foreground bg-secondary min-w-5 text-center;
+}
+#EDITOR td {
+  @apply border border-foreground text-center;
+}
+#EDITOR h1 {
+  @apply text-2xl;
+}
+#EDITOR h2 {
+  @apply text-xl;
+}
+#EDITOR h3 {
+  @apply text-lg;
+}
+.ProseMirror:focus-visible {
+  @apply !outline-none border-transparent border-r-primary border-2 pr-2
+}
+
+:root {
+  --background: 190 7% 95%;
+  --foreground: 190 5% 10%;
+  --card: 190 7% 94%;
+  --card-foreground: 190 5% 15%;
+  --popover: 190 7% 95%;
+  --popover-foreground: 190 95% 10%;
+  --primary: 190 98.9% 36.9%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 190 10% 90%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 152 10% 94%;
+  --muted-foreground: 190 5% 40%;
+  --accent: 152 10% 90%;
+  --accent-foreground: 190 5% 15%;
+  --destructive: 0 50% 50%;
+  --destructive-foreground: 190 5% 94%;
+  --border: 190 20% 82%;
+  --input: 190 20% 50%;
+  --ring: 190 98.9% 36.9%;
+  --radius: 0.75rem;
+  /*  */
+  --background-orange: 17 0% 100%;
+  --foreground-orange: 17 0% 10%;
+  --card-orange: 17 0% 100%;
+  --card-orange-foreground: 17 0% 15%;
+  --popover-orange: 17 0% 100%;
+  --popover-orange-foreground: 17 95% 10%;
+  --primary-orange: 17 100% 49.6%;
+  --primary-orange-foreground: 0 0% 100%;
+  --secondary-orange: 17 10% 90%;
+  --secondary-orange-foreground: 0 0% 0%;
+  --muted-orange: -21 10% 95%;
+  --muted-orange-foreground: 17 0% 40%;
+  --accent-orange: -21 10% 90%;
+  --accent-orange-foreground: 17 0% 15%;
+  --destructive-orange: 0 50% 50%;
+  --destructive-orange-foreground: 17 0% 100%;
+  --border-orange: 17 20% 82%;
+  --input-orange: 17 20% 50%;
+  --ring-orange: 17 100% 49.6%;
+  --radius-orange: 0.75rem;
+}
+.dark {
+  --background: 190 10% 10%;
+  --foreground: 190 5% 94%;
+  --card: 190 7% 10%;
+  --card-foreground: 190 5% 94%;
+  --popover: 190 10% 5%;
+  --popover-foreground: 190 5% 94%;
+  --primary: 190 98.9% 36.9%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 190 10% 20%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 152 10% 25%;
+  --muted-foreground: 190 5% 65%;
+  --accent: 152 10% 25%;
+  --accent-foreground: 190 5% 94%;
+  --destructive: 0 50% 50%;
+  --destructive-foreground: 190 5% 94%;
+  --border: 190 20% 50%;
+  --input: 190 20% 50%;
+  --ring: 190 98.9% 36.9%;
+  --radius: 0.75rem;
+  /*  */
+  --background-orange: 17 10% 10%;
+  --foreground-orange: 17 0% 100%;
+  --card-orange: 17 0% 10%;
+  --card-orange-foreground: 17 0% 100%;
+  --popover-orange: 17 10% 5%;
+  --popover-orange-foreground: 17 0% 100%;
+  --primary-orange: 17 100% 49.6%;
+  --primary-orange-foreground: 0 0% 100%;
+  --secondary-orange: 17 10% 20%;
+  --secondary-orange-foreground: 0 0% 100%;
+  --muted-orange: -21 10% 25%;
+  --muted-orange-foreground: 17 0% 65%;
+  --accent-orange: -21 10% 25%;
+  --accent-orange-foreground: 17 0% 95%;
+  --destructive-orange: 0 50% 50%;
+  --destructive-orange-foreground: 17 0% 100%;
+  --border-orange: 17 20% 50%;
+  --input-orange: 17 20% 50%;
+  --ring-orange: 17 100% 49.6%;
+  --radius-orange: 0.75rem;
+}
