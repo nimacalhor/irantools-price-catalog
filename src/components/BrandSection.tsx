@@ -4,10 +4,9 @@ import { SettingCard } from "./SettingCard";
 import IconButton from "@/components/IconButton";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import { Brand, Category } from "@/types/setting.type";
+import { isArrayValid } from "@/utils/array.util";
 
-const brands: Brand[] = [{}, {}, {}, {}];
-
-export function BrandSection() {
+export function BrandSection({ brands }: { brands?: Brand[] }) {
   const [newBrand, setNewBrand] = useState<(Brand | Category)[]>([]);
 
   return (
@@ -17,9 +16,12 @@ export function BrandSection() {
         {newBrand.map((bran, i) => (
           <SettingCard data={bran} key={i}></SettingCard>
         ))}
-        {brands.map((bran, i) => (
-          <SettingCard data={bran} key={i}></SettingCard>
-        ))}
+
+        {isArrayValid(brands) &&
+          brands &&
+          brands.map((bran, i) => (
+            <SettingCard data={bran} key={i}></SettingCard>
+          ))}
       </div>
       <div className="flex justify-center items-center h-32">
         <IconButton

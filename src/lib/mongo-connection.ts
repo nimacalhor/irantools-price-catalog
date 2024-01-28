@@ -4,6 +4,7 @@ let isConnected: boolean = false;
 
 export async function connectToDB() {
   mongoose.set("strictQuery", true);
+  console.log(process.env.DB_CONNECTION_URL)
   if (!process.env.DB_CONNECTION_URL) return console.log("no connection url");
   if (isConnected) return console.log("already connected");
 
