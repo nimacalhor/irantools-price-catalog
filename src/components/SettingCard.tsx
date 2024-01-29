@@ -1,18 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import { Card, CardContent, CardFooter } from "@/ui/card.ui";
 import Image from "next/image";
-import { Button } from "@/ui/button.ui";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFloppyDisk,
-  faImage,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
 import { Input } from "@/ui/input.ui";
 import IconButton from "@/components/IconButton";
-import SettingCardImageDropdown from "./SettingCardImageDropdown";
 import { Brand, Category } from "@/types/setting.type";
+import createBrand from "@/actions/createBrand.action";
+import React, { useState, useTransition } from "react";
+import { Card, CardContent, CardFooter } from "@/ui/card.ui";
+import SettingCardImageDropdown from "./SettingCardImageDropdown";
+import {
+  faImage,
+  faTrash,
+  faFloppyDisk,
+} from "@fortawesome/free-solid-svg-icons";
 
 type SettingCardProps = {
   data: Brand | Category;
@@ -20,26 +19,37 @@ type SettingCardProps = {
 };
 export function SettingCard({ data, cardType = "برند" }: SettingCardProps) {
   const { isNew, title: dataTitle, image: dataImage } = data;
-  const [image, setImage] = useState<string | undefined>(dataImage);
+
+  const defaultImage = dataImage
+    ? process.env.NEXT_PUBLIC_IMAGE_SERVICE_API_URL + `/${dataImage}`
+    : undefined;
+
+  const [[imageSrc, imageFile], setImage] = useState<
+    [string, File | undefined] | [undefined, undefined]
+  >([defaultImage, undefined]);
+
   const [title, setTitle] = useState<string>(dataTitle || "");
+
   const canSave =
-    title && image && (title !== dataTitle || image !== dataImage);
+    title && imageSrc && (title !== dataTitle || imageSrc !== dataImage);
+
+  const [isPending, startTransition] = useTransition();
 
   return (
     <Card className="w-full col-span-1 group/card relative">
       <CardContent className="h-60 pt-3">
         <div className="relative h-[90%] group/image flex justify-center items-center rounded-md ">
-          {image && (
+          {imageSrc && (
             <Image
               priority
               quality={100}
-              src={image}
+              src={imageSrc}
               fill
               className="object-contain rounded-lg"
               alt="jfksdla"
             />
           )}
-          {!image && <SettingCardImageDropdown onDrop={onDropHandler} />}
+          {!imageSrc && <SettingCardImageDropdown onDrop={onDropHandler} />}
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-end gap-3">
@@ -51,7 +61,7 @@ export function SettingCard({ data, cardType = "برند" }: SettingCardProps) {
           onChange={titleChangeHandler}
         />
         <div className="flex gap-2 justify-between items-center flex-wrap">
-          {image && (
+          {imageSrc && (
             <IconButton
               onClick={deleteImageHandler}
               size={"sm"}
@@ -72,7 +82,12 @@ export function SettingCard({ data, cardType = "برند" }: SettingCardProps) {
               حذف {cardType}
             </IconButton>
           )}
-          <IconButton disabled={!canSave} size={"sm"} icon={faFloppyDisk}>
+          <IconButton
+            onClick={saveHandler}
+            disabled={!canSave}
+            size={"sm"}
+            icon={faFloppyDisk}
+          >
             ذخیره
           </IconButton>
         </div>
@@ -80,16 +95,33 @@ export function SettingCard({ data, cardType = "برند" }: SettingCardProps) {
     </Card>
   );
 
-  function onDropHandler(img: string) {
-    setImage(img);
+  function onDropHandler(img: string, file: File | undefined) {
+    setImage([img, file]);
   }
 
   function deleteImageHandler() {
-    setImage(undefined);
+    setImage([undefined, undefined]);
   }
 
   function titleChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;
     setTitle(value);
+  }
+
+  function saveHandler() {
+    const { _id } = data;
+    const formData = new FormData();
+    const fileExtension = imageFile?.name.split(".").pop();
+    imageFile && formData.append("image", imageFile);
+    formData.append("title", title);
+    formData.append("imageName", title + "_image." + fileExtension);
+    debugger;
+
+    if (!_id) {
+      startTransition(async () => {
+        const { ok, message } = await createBrand(formData);
+
+      });
+    }
   }
 }

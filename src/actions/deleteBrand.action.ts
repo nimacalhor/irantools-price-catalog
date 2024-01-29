@@ -1,4 +1,4 @@
-"use action"
+"use server"
 
 import { connectToDB } from "@/lib/mongo-connection";
 import Brand from "@/model/brand.model";
