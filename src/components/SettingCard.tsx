@@ -11,14 +11,27 @@ import {
   faImage,
   faTrash,
   faFloppyDisk,
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
+import { useToast } from "@/hooks/useToast.hook";
+import Spinner from "./Spinner";
+import updateBrand from "@/actions/updateBrand.acion";
+import deleteBrand from "@/actions/deleteBrand.action";
+
+let isDeleting: boolean = false;
 
 type SettingCardProps = {
   data: Brand | Category;
   cardType?: "برند" | "دسته بندی";
+  onSave?: () => void;
 };
-export function SettingCard({ data, cardType = "برند" }: SettingCardProps) {
-  const { isNew, title: dataTitle, image: dataImage } = data;
+export function SettingCard({
+  data,
+  cardType = "برند",
+  onSave,
+}: SettingCardProps) {
+  const { isNew, title: dataTitle, image: dataImage, _id } = data;
+  const isFromDB = !!_id;
 
   const defaultImage = dataImage
     ? process.env.NEXT_PUBLIC_IMAGE_SERVICE_API_URL + `/${dataImage}`
@@ -30,10 +43,13 @@ export function SettingCard({ data, cardType = "برند" }: SettingCardProps) {
 
   const [title, setTitle] = useState<string>(dataTitle || "");
 
-  const canSave =
-    title && imageSrc && (title !== dataTitle || imageSrc !== dataImage);
-
   const [isPending, startTransition] = useTransition();
+  const { toast } = useToast();
+  const canSave =
+    title &&
+    imageSrc &&
+    !isPending &&
+    (title !== dataTitle || imageSrc !== defaultImage);
 
   return (
     <Card className="w-full col-span-1 group/card relative">
@@ -75,20 +91,24 @@ export function SettingCard({ data, cardType = "برند" }: SettingCardProps) {
           {!isNew && (
             <IconButton
               size={"sm"}
-              variant={"secondary"}
-              className="bg-destructive/10 hover:bg-destructive/20"
               icon={faTrash}
+              variant={"secondary"}
+              isLoading={isPending}
+              onClick={deleteHandler}
+              className="bg-destructive/10 hover:bg-destructive/20"
             >
-              حذف {cardType}
+              حذف {isFromDB && cardType}
             </IconButton>
           )}
           <IconButton
-            onClick={saveHandler}
-            disabled={!canSave}
             size={"sm"}
-            icon={faFloppyDisk}
+            disabled={!canSave}
+            icon={!isFromDB ? faFloppyDisk : faPen}
+            onClick={saveHandler}
+            isLoading={isPending}
           >
-            ذخیره
+            {!isFromDB && <span>ذخیره</span>}
+            {isFromDB && <span>ویرایش</span>}
           </IconButton>
         </div>
       </CardFooter>
@@ -108,20 +128,72 @@ export function SettingCard({ data, cardType = "برند" }: SettingCardProps) {
     setTitle(value);
   }
 
-  function saveHandler() {
-    const { _id } = data;
-    const formData = new FormData();
-    const fileExtension = imageFile?.name.split(".").pop();
-    imageFile && formData.append("image", imageFile);
-    formData.append("title", title);
-    formData.append("imageName", title + "_image." + fileExtension);
-    debugger;
+  function deleteHandler() {
+    if (!_id || !dataImage)
+      return toast({
+        title: `این ${cardType} هنوز ذخیره نشده است`,
+        variant: "destructive",
+      });
+    isDeleting = true;
+    const imageName = dataImage;
+    const id = _id;
+    startTransition(async () => {
+      const { ok, message } = await deleteBrand(id, imageName);
+      if (!ok) {
+        toast({
+          title: `${cardType} با موفقیت حذف نشد ❌`,
+          variant: "destructive",
+          description: message,
+        });
+      } else
+        toast({
+          title: `${cardType} با موفقیت حذف شد ✅`,
+        });
+    });
+  }
 
-    if (!_id) {
+  function saveHandler() {
+    if (isDeleting) return;
+    const formData = new FormData();
+    formData.append("title", title);
+
+    const isNewImage = !!imageFile;
+    if (isNewImage) {
+      const fileExtension = imageFile.name.split(".").pop();
+      formData.append("imageName", title + "_image." + fileExtension);
+      formData.append("image", imageFile);
+      if (data.image) formData.append("oldImage", data.image);
+    }
+
+    if (!isFromDB) {
       startTransition(async () => {
         const { ok, message } = await createBrand(formData);
-
+        if (ok) {
+          toast({
+            title: `${cardType} با موفقیت ذخیره شد ✅`,
+          });
+          onSave?.call(null);
+        } else {
+          toast({
+            title: `${cardType} با موفقیت ذخیره نشد ❌`,
+            description: message,
+          });
+        }
       });
-    }
+    } else
+      startTransition(async () => {
+        const { ok, message } = await updateBrand(_id, formData);
+        if (ok) {
+          toast({
+            title: `${cardType} با موفقیت ویرایش شد ✅`,
+          });
+          onSave?.call(null);
+        } else {
+          toast({
+            title: `${cardType} با موفقیت ویرایش نشد ❌`,
+            description: message,
+          });
+        }
+      });
   }
 }

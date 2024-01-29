@@ -20,8 +20,10 @@ export async function saveImage(formData: FormData) {
 
 export async function deleteImage(imageName: string) {
   try {
-    await customAxios.delete("/" + imageName);
-    return { ok: true };
+    const { data } = await customAxios.delete("/" + imageName);
+    if (data.ok) return { ok: true };
+
+    return { ok: false };
   } catch (error) {
     console.log(error);
     return { ok: false };

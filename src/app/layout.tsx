@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import GlobalProviders from "@/providers/global.provider";
 import Header from "@/components/Header";
+import { Toaster } from "@/ui/toaster.ui";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <GlobalProviders>
           <Header />
           <main className="md:max-w-[90vw] mx-auto p-3 xl:p-0">{children}</main>
+          <Toaster />
         </GlobalProviders>
       </body>
     </html>

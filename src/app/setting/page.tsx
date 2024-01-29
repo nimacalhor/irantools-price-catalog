@@ -10,6 +10,7 @@ type pageProps = {};
 
 async function page({}: pageProps) {
   const { brands, ok, message } = await getBrandList();
+  console.log(brands);
   if (!ok) throw new Error(message || "");
   return (
     <>

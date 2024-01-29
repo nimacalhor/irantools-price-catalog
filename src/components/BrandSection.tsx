@@ -4,7 +4,7 @@ import { SettingCard } from "./SettingCard";
 import IconButton from "@/components/IconButton";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import { Brand, Category } from "@/types/setting.type";
-import { isArrayValid } from "@/utils/array.util";
+import { isArrayValid, removeLastItem } from "@/utils/array.util";
 
 export function BrandSection({ brands }: { brands?: Brand[] }) {
   const [newBrand, setNewBrand] = useState<(Brand | Category)[]>([]);
@@ -14,7 +14,11 @@ export function BrandSection({ brands }: { brands?: Brand[] }) {
       <h2 className="text-2xl">برند ها</h2>
       <div className="grid sm:grid-cols-3 mt-5 gap-5">
         {newBrand.map((bran, i) => (
-          <SettingCard data={bran} key={i}></SettingCard>
+          <SettingCard
+            onSave={deleteBrandHandler}
+            data={bran}
+            key={i}
+          ></SettingCard>
         ))}
 
         {isArrayValid(brands) &&
@@ -39,5 +43,10 @@ export function BrandSection({ brands }: { brands?: Brand[] }) {
   function addBrandHandler() {
     const emptyBrand: Brand | Category = { isNew: true, title: "" };
     setNewBrand((prevBrands) => [...prevBrands, emptyBrand]);
+  }
+
+  function deleteBrandHandler() {
+    const newNewBrands = removeLastItem(newBrand);
+    setNewBrand(newNewBrands);
   }
 }
