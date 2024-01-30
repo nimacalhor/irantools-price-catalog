@@ -129,6 +129,7 @@ export function SettingCard({
   }
 
   function deleteHandler() {
+    debugger;
     if (!_id || !dataImage)
       return toast({
         title: `این ${cardType} هنوز ذخیره نشده است`,
@@ -137,6 +138,7 @@ export function SettingCard({
     isDeleting = true;
     const imageName = dataImage;
     const id = _id;
+    debugger;
     startTransition(async () => {
       const { ok, message } = await deleteBrand(id, imageName);
       if (!ok) {
