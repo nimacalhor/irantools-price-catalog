@@ -53,26 +53,31 @@ const ToolSchema = new Schema<Tool>({
 
 const ToolDetailZodSchema = z.object({
   weight: z.string().optional(),
-  amountInSet: z.number().int().optional(),
-  amountInBulk: z.number().int().optional(),
+  amountInSet: z
+    .string()
+    .regex(/[0-9]+/)
+    .optional(),
+  amountInBulk: z
+    .string()
+    .regex(/[0-9]+/)
+    .optional(),
   length: z.string().optional(),
   material: z.string().optional(),
 });
 
 const toolZodSchema = z.object({
   name: z.string({ required_error: TITLE_REQUIRED_MSG_ZOD }),
-  code: z.string({ required_error: TITLE_REQUIRED_MSG_ZOD }),
+  code: z.string({ required_error: CODE_REQUIRED_MSG }),
   price: z
     .string()
     .refine((value) => /^[0-9]+$/.test(value), {
       message: NUMERIC_FORMAT_MSG_ZOD,
     })
     .optional(),
-  brand: z.string({ required_error: TITLE_REQUIRED_MSG_ZOD }), // Assuming you use MongoDB ObjectId as a string
-  category: z.string({ required_error: TITLE_REQUIRED_MSG_ZOD }), // Assuming you use MongoDB ObjectId as a string
+  brand: z.string({ required_error: BRAND_REQUIRED_MSG }), // Assuming you use MongoDB ObjectId as a string
+  category: z.string({ required_error: CATEGORY_REQUIRED_MSG }), // Assuming you use MongoDB ObjectId as a string
   detail: ToolDetailZodSchema,
-  description: z.string({ required_error: TITLE_REQUIRED_MSG_ZOD }),
-  
+  description: z.string({ required_error: DESCRIPTION_REQUIRED_MSG }),
 });
 
 export { toolZodSchema };

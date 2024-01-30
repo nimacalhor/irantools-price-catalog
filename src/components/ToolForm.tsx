@@ -13,6 +13,8 @@ import { MainInfo } from "./MainInfo";
 import { OptionalInfo } from "./OptionalInfo";
 import { ComponentProps, useState } from "react";
 import { Brand, Category } from "@/types/setting.type";
+import { CreateToolStore, actions } from "@/store/createTool.store";
+import { useDispatch } from "react-redux";
 
 export type FormType = UseFormReturn<
   {
@@ -22,8 +24,8 @@ export type FormType = UseFormReturn<
     category: string;
     detail: {
       weight?: string | undefined;
-      amountInSet?: number | undefined;
-      amountInBulk?: number | undefined;
+      amountInSet?: string | undefined;
+      amountInBulk?: string | undefined;
       length?: string | undefined;
       material?: string | undefined;
     };
@@ -48,6 +50,8 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
     mode: "onSubmit",
   });
 
+  const dispatch = useDispatch();
+
   return (
     <>
       <section className={cn("", className)}>
@@ -69,7 +73,13 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
             <Separator className="mt-10" />
             <OptionalInfo form={form} />
             <div className="flex justify-end gap-2">
-              <IconButton variant={"secondary"} icon={faEye} size={"lg"}>
+              <IconButton
+                size={"lg"}
+                icon={faEye}
+                type="button"
+                variant={"secondary"}
+                onClick={previewClickHandler}
+              >
                 اعمال تغییرات
               </IconButton>
               <IconButton icon={faFloppyDisk} size={"lg"} type="submit">
@@ -96,6 +106,25 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+  }
+
+  function previewClickHandler() {
+    const { name, brand, category, code, description, detail, price } =
+      form.getValues();
+      
+    const toolState: CreateToolStore["tool"] = {
+      name,
+      code,
+      brand,
+      price,
+      detail,
+      category,
+      description,
+      available: !!price,
+      image: image || undefined,
+    };
+
+    dispatch(actions.setTool(toolState));
   }
 }
 

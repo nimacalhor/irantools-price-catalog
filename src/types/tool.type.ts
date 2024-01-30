@@ -14,8 +14,8 @@ export type Tool = {
 
 export type ToolDetail = {
   weight?: string;
-  amountInSet?: number;
-  amountInBulk?: number;
+  amountInSet?: string;
+  amountInBulk?: string;
   length?: string;
   material?: string;
 };

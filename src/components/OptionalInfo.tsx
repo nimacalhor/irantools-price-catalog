@@ -48,7 +48,7 @@ export function OptionalInfo({ form }: { form: FormType; }) {
             <FormItem>
               <FormLabel className="text-lg font-normal">جنس</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"جنس محصول"} {...field} />
+                <Input type="text" placeholder={"جنس محصول"} {...field} />
               </FormControl>
               <FormDescription>جنس سازنده محصول</FormDescription>
               <FormMessage />

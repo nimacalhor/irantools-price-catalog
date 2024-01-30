@@ -5,17 +5,28 @@ import IconButton from "@/components/IconButton";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import type { Category, Brand } from "@/types/setting.type";
 import { isArrayValid, removeLastItem } from "@/utils/array.util";
-
+import { cn } from "@/utils/chadcn.util";
 
 type CategoriesSectionProps = { categories?: Category[] };
 
 export function CategorySection({ categories }: CategoriesSectionProps) {
   const [newCategories, setNewCategories] = useState<(Category | Brand)[]>([]);
-
+  const noCategory =
+    !isArrayValid(newCategories, true) && !isArrayValid(categories, true);
   return (
     <div>
       <h2 className="text-2xl">دسته بندی ها</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-5 gap-5">
+      <div
+        className={cn(
+          "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-5 gap-5",
+          noCategory ? "" : "grid"
+        )}
+      >
+        {noCategory && (
+          <div className="bg-secondary rounded-md text-xl h-52 flex justify-center items-center ">
+            <p>هنوز هیچ دسته بندی ای ثبت نشده است 😟</p>
+          </div>
+        )}
         {newCategories.map((ctg, i) => (
           <SettingCard
             onSave={deleteBrandHandler}

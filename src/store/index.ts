@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import printReducer from "./print.store";
+import createToolReducer from "./createTool.store";
 
 export const store = configureStore({
   reducer: {
     print: printReducer,
+    createTool: createToolReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
