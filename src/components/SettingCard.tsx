@@ -17,6 +17,10 @@ import { useToast } from "@/hooks/useToast.hook";
 import Spinner from "./Spinner";
 import updateBrand from "@/actions/updateBrand.acion";
 import deleteBrand from "@/actions/deleteBrand.action";
+import { whitespaceTo_ } from "@/utils/string.util";
+import deleteCategory from "@/actions/deleteCategory.action";
+import createCategory from "@/actions/createCategory.action";
+import updateCategory from "@/actions/updateCategory.acion";
 
 let isDeleting: boolean = false;
 
@@ -129,18 +133,21 @@ export function SettingCard({
   }
 
   function deleteHandler() {
-    debugger;
+     
     if (!_id || !dataImage)
       return toast({
         title: `این ${cardType} هنوز ذخیره نشده است`,
         variant: "destructive",
       });
     isDeleting = true;
+     
     const imageName = dataImage;
     const id = _id;
-    debugger;
+
     startTransition(async () => {
-      const { ok, message } = await deleteBrand(id, imageName);
+      const { ok, message } = await (cardType === "برند"
+        ? deleteBrand(id, imageName)
+        : deleteCategory(id, imageName));
       if (!ok) {
         toast({
           title: `${cardType} با موفقیت حذف نشد ❌`,
@@ -151,25 +158,39 @@ export function SettingCard({
         toast({
           title: `${cardType} با موفقیت حذف شد ✅`,
         });
+      isDeleting = false;
+       
+      return;
     });
   }
 
   function saveHandler() {
+     
     if (isDeleting) return;
+     
     const formData = new FormData();
     formData.append("title", title);
 
     const isNewImage = !!imageFile;
     if (isNewImage) {
       const fileExtension = imageFile.name.split(".").pop();
-      formData.append("imageName", title + "_image." + fileExtension);
+      formData.append(
+        "imageName",
+        whitespaceTo_(title) +
+          `_${cardType === "برند" ? "brand" : "category"}_image.` +
+          fileExtension
+      );
       formData.append("image", imageFile);
       if (data.image) formData.append("oldImage", data.image);
+       
     }
-
+     
     if (!isFromDB) {
       startTransition(async () => {
-        const { ok, message } = await createBrand(formData);
+        const { ok, message } = await (cardType === "برند"
+          ? createBrand(formData)
+          : createCategory(formData));
+         
         if (ok) {
           toast({
             title: `${cardType} با موفقیت ذخیره شد ✅`,
@@ -184,7 +205,9 @@ export function SettingCard({
       });
     } else
       startTransition(async () => {
-        const { ok, message } = await updateBrand(_id, formData);
+        const { ok, message } = await (cardType === "برند"
+          ? updateBrand(_id, formData)
+          : updateCategory(_id, formData));
         if (ok) {
           toast({
             title: `${cardType} با موفقیت ویرایش شد ✅`,

@@ -10,7 +10,7 @@ export async function getBrandList() {
     }));
     return { ok: true, brands, message: null };
   } catch (error) {
-    console.log({ error });
+    console.log("error in getBrandList", { error });
     return { ok: false, message: "مشکلی در ارتباز با سرور اتفاق افتاد" };
   }
 }

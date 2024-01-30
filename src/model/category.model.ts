@@ -1,13 +1,13 @@
-import { Schema, model } from "mongoose";
+import type { Category as CategoryType } from "@/types/setting.type";
+import { Model, Schema, model, models } from "mongoose";
 
-type Category = {
-  name: string;
-};
-
-const categorySchema = new Schema<Category>({
-  name: { type: String, required: true, unique: true },
+const categorySchema = new Schema<CategoryType>({
+  title: { type: String, required: true, unique: true },
+  image: { type: String, required: true },
 });
 
-const Category = model<Category>("Categories", categorySchema);
+const Category =
+  (models?.Categories as Model<CategoryType>) ||
+  model<CategoryType>("Categories", categorySchema);
 
 export default Category;

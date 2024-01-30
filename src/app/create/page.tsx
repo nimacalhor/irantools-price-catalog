@@ -1,14 +1,38 @@
 import A4 from "@/components/A4";
 import ToolForm from "@/components/ToolForm";
+import { getBrandList } from "@/fetchers/brand.fetcher";
+import { getCategoryList } from "@/fetchers/category.fetcher";
 import { ScrollArea } from "@/ui/scroll-area.ui";
 
 type pageProps = {};
 
-function page({}: pageProps) {
+async function page({}: pageProps) {
+  const [brandListResult, categoryListResult] = await Promise.all([
+    getBrandList(),
+    getCategoryList(),
+  ]);
+
+  const { brands, ok: brandOk, message: brandMessage } = brandListResult;
+  const {
+    categories,
+    ok: categoryOk,
+    message: categoryMessage,
+  } = categoryListResult;
+
+  const ok = brandOk && categoryOk;
+  const message = (brandMessage || "") + "  " + (categoryMessage || "");
+  console.log({ brands, ok, message, categories });
+
+  if (!ok) throw new Error(message);
+
   return (
     <>
       <section className="xl:grid grid-cols-12 gap-5 relative">
-        <ToolForm className="xl:col-span-7 pt-10" />
+        <ToolForm
+          brands={brands}
+          categories={categories}
+          className="xl:col-span-7 pt-10"
+        />
         <section className="xl:col-span-5 h-screen xl:sticky top-0 bottom-0 right-0 left-0 relative flex justify-center items-center">
           <div className="p-4 absolute top-8 bottom-8 right-0 left-0 bg-gradient-to-bl rounded-sm border border-border">
             <ScrollArea className="h-full">

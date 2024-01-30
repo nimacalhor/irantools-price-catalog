@@ -15,10 +15,13 @@ import { SelectiveInfo } from "./SelectiveInfo";
 
 export function MainInfo({
   form,
+  brands,
+  categories,
   ...imageDropZoneProps
 }: {
   form: FormType;
-} & ComponentProps<typeof ImageDropZone>) {
+} & ComponentProps<typeof ImageDropZone> &
+  ComponentProps<typeof SelectiveInfo>) {
   return (
     <div>
       <h2 className="text-2xl mb-5">اطلاعات اصلی</h2>
@@ -76,7 +79,11 @@ export function MainInfo({
         </div>
         <ImageDropZone {...imageDropZoneProps} />
       </div>
-      <SelectiveInfo form={form}></SelectiveInfo>
+      <SelectiveInfo
+        brands={brands}
+        categories={categories}
+        form={form}
+      ></SelectiveInfo>
     </div>
   );
 }

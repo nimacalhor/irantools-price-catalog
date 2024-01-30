@@ -31,7 +31,7 @@ export function ImageDropZone({
     multiple: false,
     accept: {
       "image/png": [".png"],
-      "image/jpeg": [".jpg", "jpeg"],
+      "image/jpeg": [".jpg"],
       "image/webp": [".webp"],
     },
   });

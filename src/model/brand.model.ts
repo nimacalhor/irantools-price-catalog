@@ -7,6 +7,6 @@ const brandSchema = new Schema<Brand>({
 });
 
 const Brand =
-  (models.Brands as Model<Brand>) || model<Brand>("Brands", brandSchema);
+  (models?.Brands as Model<Brand>) || model<Brand>("Brands", brandSchema);
 
 export default Brand;

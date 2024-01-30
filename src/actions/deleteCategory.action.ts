@@ -2,14 +2,14 @@
 
 import { deleteImage } from "@/api/image.api";
 import { connectToDB } from "@/lib/mongo-connection";
-import Brand from "@/model/brand.model";
+import Category from "@/model/category.model";
 import { revalidatePath } from "next/cache";
 
-async function deleteBrand(id: string, imageName: string) {
+async function deleteCategory(id: string, imageName: string) {
   try {
      
     await connectToDB();
-    await Brand.findByIdAndDelete(id);
+    await Category.findByIdAndDelete(id);
     revalidatePath("/setting");
     deleteImage(imageName);
     return { ok: true };
@@ -18,4 +18,4 @@ async function deleteBrand(id: string, imageName: string) {
   }
 }
 
-export default deleteBrand;
+export default deleteCategory;

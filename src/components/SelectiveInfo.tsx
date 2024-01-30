@@ -1,4 +1,4 @@
-"use client";
+import { Brand, Category } from "@/types/setting.type";
 import {
   FormControl,
   FormField,
@@ -6,7 +6,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/ui/form.ui";
-import { FormType } from "./ToolForm";
 import {
   Select,
   SelectContent,
@@ -14,10 +13,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/select.ui";
+import { isArrayValid } from "@/utils/array.util";
+import { faAdd, faGear } from "@fortawesome/free-solid-svg-icons";
 import IconButton from "./IconButton";
-import { faAdd } from "@fortawesome/free-solid-svg-icons";
+import { FormType } from "./ToolForm";
+import Link from "next/link";
 
-export function SelectiveInfo({ form }: { form: FormType }) {
+export function SelectiveInfo({
+  form,
+  brands,
+  categories,
+}: {
+  form: FormType;
+  brands?: Brand[];
+  categories?: Category[];
+}) {
   return (
     <div className="grid grid-cols-3 gap-5 mt-5">
       <div>
@@ -27,26 +37,31 @@ export function SelectiveInfo({ form }: { form: FormType }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="font-normal text-lg">برند</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="انتخاب برند محصول" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
+              {isArrayValid(brands) && (
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="انتخاب برند محصول" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {brands?.map(({ title, _id }, i) => (
+                      <SelectItem key={i} value={_id || ""}>
+                        {title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
               <FormMessage />
             </FormItem>
           )}
         />
-        <IconButton  type="button"className="mt-1" variant={"ghost"} size={"sm"} icon={faAdd}>
-          افزودن برند
-        </IconButton>
       </div>
+
       <div>
         <FormField
           control={form.control}
@@ -54,25 +69,35 @@ export function SelectiveInfo({ form }: { form: FormType }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="font-normal text-lg">دسته بندی</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="انتخاب دسته بندی محصول" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
+              {isArrayValid(categories) && categories && (
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="انتخاب دسته بندی محصول" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categories.map(({ _id, title }, i) => (
+                      <SelectItem key={i} value={_id || ""}>
+                        {title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
               <FormMessage />
             </FormItem>
           )}
         />
-        <IconButton type="button" className="mt-1" variant={"ghost"} size={"sm"} icon={faAdd}>
-          افزودن دسته بندی
-        </IconButton>
+      </div>
+
+      <div className="h-full flex justify-start items-end">
+        <Link href={"/setting"} passHref>
+          <IconButton variant={"secondary"} icon={faGear}>افزودن برند یا دسته بندی</IconButton>
+        </Link>
       </div>
     </div>
   );

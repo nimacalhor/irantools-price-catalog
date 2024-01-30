@@ -11,8 +11,8 @@ import IconButton from "./IconButton";
 import TextEditor from "./TextEditor";
 import { MainInfo } from "./MainInfo";
 import { OptionalInfo } from "./OptionalInfo";
-import { useState } from "react";
-
+import { ComponentProps, useState } from "react";
+import { Brand, Category } from "@/types/setting.type";
 
 export type FormType = UseFormReturn<
   {
@@ -33,15 +33,21 @@ export type FormType = UseFormReturn<
   any,
   undefined
 >;
-type ToolFormProps = { className?: string };
+type ToolFormProps = {
+  className?: string;
+  brands?: Brand[];
+  categories?: Category[];
+};
 
-function ToolForm({ className }: ToolFormProps) {
+function ToolForm({ className, brands, categories }: ToolFormProps) {
   const [image, setImage] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof toolZodSchema>>({
     resolver: zodResolver(toolZodSchema),
     defaultValues: {},
     mode: "onSubmit",
   });
+
   return (
     <>
       <section className={cn("", className)}>
@@ -55,6 +61,8 @@ function ToolForm({ className }: ToolFormProps) {
               image={image}
               onImageAdd={imageAddHandler}
               form={form}
+              brands={brands}
+              categories={categories}
             />
             <Separator />
             <TextEditor />

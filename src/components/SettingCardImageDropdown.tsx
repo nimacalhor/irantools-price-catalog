@@ -8,10 +8,13 @@ type SettingCardImageDropdownProps = {
   onDrop: (imageSrc: string, imageFile: File | undefined) => void;
 };
 
-function SettingCardImageDropdown({onDrop:onDropProp}: SettingCardImageDropdownProps) {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(acceptedFiles[0]);
+function SettingCardImageDropdown({
+  onDrop: onDropProp,
+}: SettingCardImageDropdownProps) {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(acceptedFiles[0]);
       reader.onloadend = () =>
         onDropProp(reader.result as string, acceptedFiles[0]);
     },
@@ -24,7 +27,7 @@ function SettingCardImageDropdown({onDrop:onDropProp}: SettingCardImageDropdownP
     multiple: false,
     accept: {
       "image/png": [".png"],
-      "image/jpeg": [".jpg", "jpeg"],
+      "image/jpeg": [".jpg"],
       "image/webp": [".webp"],
     },
   });
