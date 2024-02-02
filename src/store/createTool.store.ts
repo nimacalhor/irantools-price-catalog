@@ -1,5 +1,6 @@
 import { Tool } from "@/types/tool.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { JSONContent } from "@tiptap/react";
 
 export type CreateToolStore = {
   tool: {
@@ -9,9 +10,9 @@ export type CreateToolStore = {
     brand?: string;
     category?: string;
     image?: string;
-    description?: string;
+    description?: any;
     available?: boolean;
-    detail: {
+    detail?: {
       weight?: string;
       amountInSet?: string;
       amountInBulk?: string;

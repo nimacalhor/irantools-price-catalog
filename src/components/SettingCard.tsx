@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/useToast.hook";
 import Spinner from "./Spinner";
 import updateBrand from "@/actions/updateBrand.acion";
 import deleteBrand from "@/actions/deleteBrand.action";
-import { whitespaceTo_ } from "@/utils/string.util";
+import { uniqueDateStr, whitespaceTo_ } from "@/utils/string.util";
 import deleteCategory from "@/actions/deleteCategory.action";
 import createCategory from "@/actions/createCategory.action";
 import updateCategory from "@/actions/updateCategory.acion";
@@ -133,14 +133,13 @@ export function SettingCard({
   }
 
   function deleteHandler() {
-     
     if (!_id || !dataImage)
       return toast({
         title: `این ${cardType} هنوز ذخیره نشده است`,
         variant: "destructive",
       });
     isDeleting = true;
-     
+
     const imageName = dataImage;
     const id = _id;
 
@@ -159,15 +158,14 @@ export function SettingCard({
           title: `${cardType} با موفقیت حذف شد ✅`,
         });
       isDeleting = false;
-       
+
       return;
     });
   }
 
   function saveHandler() {
-     
     if (isDeleting) return;
-     
+
     const formData = new FormData();
     formData.append("title", title);
 
@@ -177,20 +175,21 @@ export function SettingCard({
       formData.append(
         "imageName",
         whitespaceTo_(title) +
-          `_${cardType === "برند" ? "brand" : "category"}_image.` +
+          `_${
+            cardType === "برند" ? "brand" : "category"
+          }_image_${uniqueDateStr()}.` +
           fileExtension
       );
       formData.append("image", imageFile);
       if (data.image) formData.append("oldImage", data.image);
-       
     }
-     
+
     if (!isFromDB) {
       startTransition(async () => {
         const { ok, message } = await (cardType === "برند"
           ? createBrand(formData)
           : createCategory(formData));
-         
+
         if (ok) {
           toast({
             title: `${cardType} با موفقیت ذخیره شد ✅`,

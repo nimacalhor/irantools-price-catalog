@@ -11,15 +11,15 @@ import IconButton from "./IconButton";
 import TextEditor from "./TextEditor";
 import { MainInfo } from "./MainInfo";
 import { OptionalInfo } from "./OptionalInfo";
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import { Brand, Category } from "@/types/setting.type";
 import { CreateToolStore, actions } from "@/store/createTool.store";
 import { useDispatch } from "react-redux";
 
 export type FormType = UseFormReturn<
   {
-    code: string;
     name: string;
+    code: string;
     brand: string;
     category: string;
     detail: {
@@ -29,7 +29,6 @@ export type FormType = UseFormReturn<
       length?: string | undefined;
       material?: string | undefined;
     };
-    description: string;
     price?: string | undefined;
   },
   any,
@@ -49,6 +48,10 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
     defaultValues: {},
     mode: "onSubmit",
   });
+
+  useEffect(() => {
+    console.log(form.formState);
+  }, [form.formState]);
 
   const dispatch = useDispatch();
 
@@ -103,15 +106,16 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
   }
 
   function onSubmit(values: z.infer<typeof toolZodSchema>) {
+    
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
   function previewClickHandler() {
-    const { name, brand, category, code, description, detail, price } =
+    const { name, brand, category, code, detail, price } =
       form.getValues();
-      
+
     const toolState: CreateToolStore["tool"] = {
       name,
       code,
@@ -119,7 +123,6 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
       price,
       detail,
       category,
-      description,
       available: !!price,
       image: image || undefined,
     };

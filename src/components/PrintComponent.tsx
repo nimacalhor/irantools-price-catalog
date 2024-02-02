@@ -25,7 +25,7 @@ function PrintComponent(_: PrintComponentProps) {
     <>
       <main
         ref={mainRef}
-        className={cn("mx-auto group max-w-screen-xl md:grid md:grid-cols-2 md:gap-5 print:block",)}
+        className={cn("mx-auto group max-w-screen-xl xl:grid xl:grid-cols-2 xl:gap-5 print:block",)}
       >
         <A4></A4>
       </main>

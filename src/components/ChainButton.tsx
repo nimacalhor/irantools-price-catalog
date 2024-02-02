@@ -23,6 +23,7 @@ function ChainButton({
   return (
     <>
       <Button
+        type="button"
         size={"icon"}
         variant={isDelete ? "destructive" : "secondary"}
         onClick={onClick}

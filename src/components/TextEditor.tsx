@@ -11,11 +11,14 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import EditorButtons from "./EditorButtons";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { actions } from "@/store/createTool.store";
 
 type TextEditorProps = {};
 
 function TextEditor({}: TextEditorProps) {
   const [value, setValue] = useState("");
+  const dispatch = useDispatch();
 
   const editor = useEditor({
     extensions: [
@@ -31,6 +34,11 @@ function TextEditor({}: TextEditorProps) {
       }),
     ],
     content: "<p>Hello World! 🌎️</p>",
+    onBlur({ editor }) {
+      const result = editor.getJSON()
+      dispatch(actions.setTool({ description: result }));
+      console.log({ result });
+    },
   });
 
   if (!editor) return null;
@@ -50,6 +58,10 @@ function TextEditor({}: TextEditorProps) {
       </section>
     </section>
   );
+
+  function sfkdl() {
+    editor?.getJSON();
+  }
 }
 
 export default TextEditor;

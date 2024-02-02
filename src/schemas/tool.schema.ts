@@ -77,7 +77,6 @@ const toolZodSchema = z.object({
   brand: z.string({ required_error: BRAND_REQUIRED_MSG }), // Assuming you use MongoDB ObjectId as a string
   category: z.string({ required_error: CATEGORY_REQUIRED_MSG }), // Assuming you use MongoDB ObjectId as a string
   detail: ToolDetailZodSchema,
-  description: z.string({ required_error: DESCRIPTION_REQUIRED_MSG }),
 });
 
 export { toolZodSchema };

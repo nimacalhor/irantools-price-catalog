@@ -19,9 +19,11 @@ export default function RootLayout({
     <html lang="fa" dir="rtl">
       <body className={iransans.className + ` bg-background text-right`}>
         <GlobalProviders>
-          <Header />
-          <main className="md:max-w-[90vw] mx-auto p-3 xl:p-0">{children}</main>
-          <Toaster />
+            <Header />
+            <main className="md:max-w-[90vw] mx-auto p-3 xl:p-0">
+              {children}
+            </main>
+            <Toaster />
         </GlobalProviders>
       </body>
     </html>
