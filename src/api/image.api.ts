@@ -3,13 +3,12 @@ import customAxios from "@/lib/axios";
 
 export async function saveImage(formData: FormData) {
   try {
-     
     const { data } = await customAxios.post("/", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-     
+    debugger;
     if (data.ok) return { ok: true, imagePath: data.image };
     return { ok: false };
   } catch (error) {
@@ -21,7 +20,7 @@ export async function saveImage(formData: FormData) {
 export async function deleteImage(imageName: string) {
   try {
     const { data } = await customAxios.put("/", { imageName });
-     
+
     if (data.ok) return { ok: true };
 
     return { ok: false };

@@ -29,7 +29,7 @@ export function SelectiveInfo({
   categories?: Category[];
 }) {
   return (
-    <div className="grid grid-cols-3 gap-5 mt-5">
+    <div className="grid md:grid-cols-3 gap-5 mt-5">
       <div>
         <FormField
           control={form.control}
@@ -98,6 +98,9 @@ export function SelectiveInfo({
         <Link href={"/setting"} passHref>
           <IconButton variant={"secondary"} icon={faGear}>افزودن برند یا دسته بندی</IconButton>
         </Link>
+        <div>
+
+        </div>
       </div>
     </div>
   );

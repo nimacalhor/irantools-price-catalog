@@ -84,7 +84,7 @@ export function ToolCardDescription({
 
       case "bulletList":
         return (
-          <div className="pr-6">
+          <div key={index} className="pr-6">
             <ul className="list-disc gap-0 flex flex-col h-min" key={index}>
               {node.content.map(function (listItem, listItemIndex) {
                 return (
@@ -104,7 +104,7 @@ export function ToolCardDescription({
 
       case "table":
         return (
-          <Table className="table-auto mt-1 rounded-md overflow-hidden " key={index}>
+          <Table key={index} className="table-auto mt-1 rounded-md overflow-hidden">
             <TableBody className="border border-border">
               {node.content.map(function (row, rowIndex) {
                 return (

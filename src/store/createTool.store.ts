@@ -4,6 +4,7 @@ import { JSONContent } from "@tiptap/react";
 
 export type CreateToolStore = {
   tool: {
+    size?: number;
     name?: string;
     code?: string;
     price?: string;
@@ -20,10 +21,13 @@ export type CreateToolStore = {
       material?: string;
     };
   };
+  imageFile: File | null;
+  pending: boolean;
 };
 
 const initialState: CreateToolStore = {
   tool: {
+    size: 1,
     name: undefined,
     code: undefined,
     price: undefined,
@@ -40,6 +44,8 @@ const initialState: CreateToolStore = {
       material: undefined,
     },
   },
+  imageFile: null,
+  pending: false,
 };
 
 const createToolSlice = createSlice({
@@ -50,10 +56,21 @@ const createToolSlice = createSlice({
       store: CreateToolStore,
       action: PayloadAction<CreateToolStore["tool"]>
     ) {
-      store.tool = action.payload;
+      store.tool = { ...store.tool, ...action.payload };
     },
     removeTool(store: CreateToolStore) {
       store.tool = initialState.tool;
+    },
+    setSize(store: CreateToolStore, action: PayloadAction<number>) {
+      if ([1, 2, 3, 4, 5].some((a) => a === action.payload)) {
+        store.tool.size = action.payload;
+      }
+    },
+    setImageFile(store: CreateToolStore, action: PayloadAction<File | null>) {
+      store.imageFile = action.payload;
+    },
+    setPending(store: CreateToolStore, action: PayloadAction<boolean>) {
+      store.pending = action.payload;
     },
   },
 });

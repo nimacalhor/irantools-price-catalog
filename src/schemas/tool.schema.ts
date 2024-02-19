@@ -23,6 +23,7 @@ const ToolDetailSchema = new Schema<ToolDetail>({
 });
 
 const ToolSchema = new Schema<Tool>({
+  size: { type: Number, default: 1, min: 1, max: 5 },
   name: { type: String, required: [true, TITLE_REQUIRED_MSG] },
   code: { type: String, required: [true, CODE_REQUIRED_MSG] },
   price: {
@@ -51,19 +52,21 @@ const ToolSchema = new Schema<Tool>({
   available: { type: Boolean, required: [true, AVAILABLE_REQUIRED_MSG] },
 });
 
-const ToolDetailZodSchema = z.object({
-  weight: z.string().optional(),
-  amountInSet: z
-    .string()
-    .regex(/[0-9]+/)
-    .optional(),
-  amountInBulk: z
-    .string()
-    .regex(/[0-9]+/)
-    .optional(),
-  length: z.string().optional(),
-  material: z.string().optional(),
-});
+const ToolDetailZodSchema = z
+  .object({
+    weight: z.string().optional(),
+    amountInSet: z
+      .string()
+      .regex(/[0-9]+/)
+      .optional(),
+    amountInBulk: z
+      .string()
+      .regex(/[0-9]+/)
+      .optional(),
+    length: z.string().optional(),
+    material: z.string().optional(),
+  })
+  .optional();
 
 const toolZodSchema = z.object({
   name: z.string({ required_error: TITLE_REQUIRED_MSG_ZOD }),

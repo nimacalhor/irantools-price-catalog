@@ -1,20 +1,23 @@
 "use client";
-import { toolZodSchema } from "@/schemas/tool.schema";
-import { Form } from "@/ui/form.ui";
-import { Separator } from "@/ui/separator.ui";
-import { cn } from "@/utils/chadcn.util";
-import { faEye, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UseFormReturn, useForm } from "react-hook-form";
 import * as z from "zod";
-import IconButton from "./IconButton";
-import TextEditor from "./TextEditor";
+import { useEffect } from "react";
+import { RootState } from "@/store";
+import { Form } from "@/ui/form.ui";
 import { MainInfo } from "./MainInfo";
+import TextEditor from "./TextEditor";
+import { cn } from "@/utils/chadcn.util";
+import { FormButtons } from "./FormButtons";
+import { Separator } from "@/ui/separator.ui";
 import { OptionalInfo } from "./OptionalInfo";
-import { ComponentProps, useEffect, useState } from "react";
+import { useToast } from "@/hooks/useToast.hook";
+import { actions } from "@/store/createTool.store";
+import { uniqueDateStr, whitespaceTo_ } from "@/utils/string.util";
+import createTool from "@/actions/createTool.action";
+import { toolZodSchema } from "@/schemas/tool.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Brand, Category } from "@/types/setting.type";
-import { CreateToolStore, actions } from "@/store/createTool.store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { UseFormReturn, useForm } from "react-hook-form";
 
 export type FormType = UseFormReturn<
   {
@@ -22,14 +25,16 @@ export type FormType = UseFormReturn<
     code: string;
     brand: string;
     category: string;
-    detail: {
-      weight?: string | undefined;
-      amountInSet?: string | undefined;
-      amountInBulk?: string | undefined;
-      length?: string | undefined;
-      material?: string | undefined;
-    };
     price?: string | undefined;
+    detail?:
+      | {
+          weight?: string | undefined;
+          amountInSet?: string | undefined;
+          amountInBulk?: string | undefined;
+          length?: string | undefined;
+          material?: string | undefined;
+        }
+      | undefined;
   },
   any,
   undefined
@@ -41,19 +46,36 @@ type ToolFormProps = {
 };
 
 function ToolForm({ className, brands, categories }: ToolFormProps) {
-  const [image, setImage] = useState<string | null>(null);
-
   const form = useForm<z.infer<typeof toolZodSchema>>({
     resolver: zodResolver(toolZodSchema),
-    defaultValues: {},
+    defaultValues: {
+      name: "",
+      brand: "",
+      category: "",
+      code: "",
+      price: "",
+      detail: {
+        amountInBulk: "",
+        amountInSet: "",
+        length: "",
+        material: "",
+        weight: "",
+      },
+    },
     mode: "onSubmit",
   });
+
+  const { toast } = useToast();
+
+  const { tool, imageFile } = useSelector(
+    (state: RootState) => state.createTool
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(form.formState);
   }, [form.formState]);
-
-  const dispatch = useDispatch();
 
   return (
     <>
@@ -63,71 +85,57 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 mb-10"
           >
-            <MainInfo
-              onImageDelete={imageDeleteHandler}
-              image={image}
-              onImageAdd={imageAddHandler}
-              form={form}
-              brands={brands}
-              categories={categories}
-            />
+            <MainInfo form={form} brands={brands} categories={categories} />
             <Separator />
             <TextEditor />
             <Separator className="mt-10" />
             <OptionalInfo form={form} />
-            <div className="flex justify-end gap-2">
-              <IconButton
-                size={"lg"}
-                icon={faEye}
-                type="button"
-                variant={"secondary"}
-                onClick={previewClickHandler}
-              >
-                اعمال تغییرات
-              </IconButton>
-              <IconButton icon={faFloppyDisk} size={"lg"} type="submit">
-                ذخیره
-              </IconButton>
-            </div>
+            <FormButtons form={form}></FormButtons>
           </form>
         </Form>
       </section>
     </>
   );
+  async function onSubmit(values: z.infer<typeof toolZodSchema>) {
+    if (!imageFile) return;
+    const brandName = brands?.find((brn) => brn._id === values.brand);
+    const categoryName = categories?.find((ctg) => ctg._id === values.category);
+    const fileExtension = imageFile.name.split(".").pop();
 
-  function imageAddHandler(result: string | null) {
-    console.log({ result });
-    setImage(result);
-  }
+    const imageName = `${whitespaceTo_(brandName?.title || "")}_${whitespaceTo_(
+      categoryName?.title || ""
+    )}_${whitespaceTo_(values.name)}_${uniqueDateStr()}.${fileExtension}`;
 
-  function imageDeleteHandler(e: any) {
-    e.preventDefault();
-    setImage(null);
-  }
+    debugger;
+    const formData = new FormData();
+    formData.set(
+      "toolData",
+      JSON.stringify({
+        ...values,
+        description: JSON.stringify(tool.description),
+        
+      })
+    );
+    formData.set("image", imageFile);
+    formData.set("imageName", imageName);
+    debugger;
+    dispatch(actions.setPending(true));
+    const { ok, message } = await createTool(formData);
+    if (!ok) {
+      toast({
+        title: `محصول با موفقیت افزوده نشد ❌`,
+        variant: "destructive",
+        description: message,
+      });
+    } else {
+      toast({
+        title: `محصول با موفقیت افزوده شد ✅`,
+      });
+      form.reset();
+    }
+    dispatch(actions.setPending(false));
 
-  function onSubmit(values: z.infer<typeof toolZodSchema>) {
-    
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
-  }
-
-  function previewClickHandler() {
-    const { name, brand, category, code, detail, price } =
-      form.getValues();
-
-    const toolState: CreateToolStore["tool"] = {
-      name,
-      code,
-      brand,
-      price,
-      detail,
-      category,
-      available: !!price,
-      image: image || undefined,
-    };
-
-    dispatch(actions.setTool(toolState));
   }
 }
 

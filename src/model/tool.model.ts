@@ -1,5 +1,5 @@
 import { Tool as ToolType, ToolDetail } from "@/types/tool.type";
-import { Schema, model } from "mongoose";
+import { Model, Schema, model, models } from "mongoose";
 
 const toolDetailSchema = new Schema<ToolDetail>({
   weight: { type: String },
@@ -21,6 +21,7 @@ const toolSchema = new Schema<ToolType>({
   available: { type: Boolean, default: true },
 });
 
-const Tool = model<ToolType>("Tool", toolSchema);
+const Tool =
+  (models.Tool as Model<ToolType>) || model<ToolType>("Tool", toolSchema);
 
-export default Tool
+export default Tool;

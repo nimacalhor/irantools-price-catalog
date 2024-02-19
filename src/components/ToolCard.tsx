@@ -7,6 +7,7 @@ import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { RefObject, useEffect, useMemo, useState } from "react";
 import { useEditor } from "@tiptap/react";
+import { Tool } from "@/types/tool.type";
 
 const toolDescription = JSON.parse(`
 {
@@ -613,24 +614,44 @@ const toolDescription = JSON.parse(`
 }
 `);
 
-export function ToolCard() {
-  const isOrange: boolean = false;
+export function ToolCard({ tool }: { tool: Tool }) {
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
   const width = (a4Ref as RefObject<HTMLDivElement>)?.current?.clientWidth;
   const a4w = useMemo(() => {
     return width;
   }, [width]);
 
-  const isSpan2 = toolDescription.content.length>5
-
+  const {
+    name,
+    price,
+    code,
+    image,
+    brand,
+    category,
+    description,
+    detail,
+    available,
+    size,
+  } = tool;
 
   return (
     <div className="border border-border grid grid-cols-12 w-full h-full rounded-md overflow-hidden row-span-2 text-foreground">
       <div className="col-span-9 flex flex-col justify-start gap-2">
-        <ToolCardHeader parentW={a4w}></ToolCardHeader>
+        <ToolCardHeader
+          name={name}
+          code={code}
+          price={price + ""}
+          parentW={a4w}
+        ></ToolCardHeader>
         <div className="row-span-3 gap-2 grid grid-cols-12">
-          <ToolCardDescription parentW={a4w} description={toolDescription}></ToolCardDescription>
-          <ToolCardOptionalInfo parentW={a4w}></ToolCardOptionalInfo>
+          <ToolCardDescription
+            parentW={a4w}
+            description={JSON.parse(description)}
+          ></ToolCardDescription>
+          <ToolCardOptionalInfo
+            detail={detail}
+            parentW={a4w}
+          ></ToolCardOptionalInfo>
         </div>
       </div>
       <ToolCardImage></ToolCardImage>

@@ -6,23 +6,25 @@ import { MouseEventHandler, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { Button } from "@/ui/button.ui";
+import { RootState } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
+import { actions } from "@/store/createTool.store";
 
-type ImageDropZoneProps = {
-  onImageAdd: (result: string | null) => void;
-  image?: string | null;
-  onImageDelete?: MouseEventHandler<HTMLButtonElement>;
-};
+type ImageDropZoneProps = {};
 
-export function ImageDropZone({
-  onImageAdd, image, onImageDelete,
-}: ImageDropZoneProps) {
+export function ImageDropZone({}: ImageDropZoneProps) {
+  const { image } = useSelector((state: RootState) => state.createTool.tool);
+  const dispatch = useDispatch();
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
+      dispatch(actions.setImageFile(acceptedFiles[0]));
       const reader = new FileReader();
       reader.readAsDataURL(acceptedFiles[0]);
-      reader.onloadend = () => onImageAdd(reader.result as string);
+      reader.onloadend = () =>
+        dispatch(actions.setTool({ image: reader.result as string }));
     },
-    [onImageAdd]
+    [dispatch]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -36,32 +38,32 @@ export function ImageDropZone({
     },
   });
 
-    if (image)
-      return (
-        <div className="border-border border rounded-md relative overflow-hidden hover:cursor-pointer group">
-          <Image
-            src={image}
-            fill
-            alt="tool creating image"
-            objectFit="cover"
-            className="" />
-          <div className="absolute top-0 right-0 bottom-0 left-0 bg-background/60 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <Button
-              onClick={onImageDelete}
-              className="rounded-full h-20 w-20"
-              variant={"destructive"}
-              size={"icon"}
-              type="submit"
-            >
-              <FontAwesomeIcon className="h-6 w-6" icon={faTrash} />
-            </Button>
-          </div>
+  if (image)
+    return (
+      <div className="border-border border rounded-md relative overflow-hidden hover:cursor-pointer group h-60">
+        <Image
+          src={image}
+          fill
+          alt="tool creating image"
+          className="object-contain"
+        />
+        <div className="absolute top-0 right-0 bottom-0 left-0 bg-background/60 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <Button
+            onClick={onImageDelete}
+            className="rounded-full h-20 w-20"
+            variant={"destructive"}
+            size={"icon"}
+            type="submit"
+          >
+            <FontAwesomeIcon className="h-6 w-6" icon={faTrash} />
+          </Button>
         </div>
-      );
+      </div>
+    );
 
   return (
     <div
-      className="border-border border rounded-md hover:cursor-pointer transition-all hover:border-primary hover:shadow-sm group"
+      className="border-border border rounded-md h-60 hover:cursor-pointer transition-all hover:border-primary hover:shadow-sm group"
       {...getRootProps()}
     >
       <input {...getInputProps()} />
@@ -75,7 +77,8 @@ export function ImageDropZone({
         <div className="p-4 flex justify-center items-center flex-col h-full gap-3">
           <FontAwesomeIcon
             className="h-20 w-20 text-foreground/30 transition-colors group-hover:text-primary/40"
-            icon={faImage} />
+            icon={faImage}
+          />
           <p className="text-sm text-foreground font-light">
             {"تصویر را اینجا بکشید و رها کنید یا برای انتخاب تصویر کلیک کنید."}
           </p>
@@ -83,4 +86,8 @@ export function ImageDropZone({
       )}
     </div>
   );
+
+  function onImageDelete() {
+    dispatch(actions.setTool({ image: undefined }));
+  }
 }

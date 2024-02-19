@@ -11,15 +11,17 @@ async function createTool(formData: FormData) {
     const toolData = JSON.parse(
       (formData.get("toolData") as string | null) || "{}"
     );
+    debugger;
     const duplicateTool = await Tool.findOne({ name: toolData.name });
     if (duplicateTool)
       return { ok: false, message: "قبلا محصولی با این عنوان ثبت شده" };
-
+    debugger;
     const { ok, imagePath } = await saveImage(formData);
+    debugger;
     if (!ok) return { ok: false };
 
     const newTool = new Tool({ ...toolData, image: imagePath });
-
+    debugger;
     await newTool.save();
 
     revalidatePath("/");

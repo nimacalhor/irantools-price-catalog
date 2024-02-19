@@ -3,23 +3,26 @@ import { RootState } from "@/store";
 import { ToolCard } from "./ToolCard";
 import { cn } from "@/utils/chadcn.util";
 import { useEffect, useRef } from "react";
-import { createArray } from "@/utils/array.util";
+import { createArray, isArrayValid } from "@/utils/array.util";
 import { actions } from "@/store/toolList.store";
 import { AspectRatio } from "@/ui/aspect-ratio.ui";
 import { useDispatch, useSelector } from "react-redux";
 import useWindowSize from "@/hooks/useWindowSize.hook";
+import { Tool } from "@/types/tool.type";
 
-function A4({ className }: { className?: string }) {
+function A4({ className, tools }: { className?: string; tools?: Tool[] }) {
   const mainRef = useRef<HTMLDivElement | null>(null);
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
   const dispatch = useDispatch();
   const { width } = useWindowSize();
 
   useEffect(() => {
-    if (a4Ref?.current) return; 
+    if (a4Ref?.current) return;
     if (!mainRef.current) return;
     dispatch(actions.setRef({ ...mainRef }));
   }, [a4Ref, dispatch, width]);
+
+  if (!tools || !isArrayValid(tools, true)) return null;
 
   return (
     <AspectRatio
@@ -33,8 +36,8 @@ function A4({ className }: { className?: string }) {
     >
       <div className="row-span-1"></div>
       <div className="row-span-11 grid gap-2 grid-rows-5">
-        {createArray(1).map((_, i) => (
-          <ToolCard key={i}></ToolCard>
+        {tools.map((_, i) => (
+          <ToolCard tool={tool} key={i}></ToolCard>
         ))}
       </div>
     </AspectRatio>
