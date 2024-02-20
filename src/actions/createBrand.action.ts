@@ -1,5 +1,5 @@
 "use server";
-import { saveImage } from "@/api/image.api";
+import { uploadImage } from "@/api/image.api";
 import { connectToDB } from "@/lib/mongo-connection";
 import Brand from "@/model/brand.model";
 import { revalidatePath } from "next/cache";
@@ -12,7 +12,7 @@ async function createBrand(formData: FormData) {
     if (duplicateBrand)
       return { ok: false, message: "قبلا برندی با این عنوان ثبت شده" };
 
-    const { ok, imagePath } = await saveImage(formData);
+    const { ok, imagePath } = await uploadImage(formData);
     console.log(ok);
     if (!ok) return { ok: false };
 

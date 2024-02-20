@@ -1,31 +1,56 @@
-"use server";
 import customAxios from "@/lib/axios";
+import {
+  FileRequiredErrorResponse,
+  DetailErrorResponse,
+} from "@/types/api-error.type";
+import { ApiReturnType } from "@/types/common.type";
+import {
+  UploadImageRequestBody,
+  UploadImageResponse,
+} from "@/types/image.type";
+import { getErrorMessage } from "@/utils/error.util";
+import { AxiosResponse } from "axios";
 
-export async function saveImage(formData: FormData) {
+export async function uploadImage(
+  formData: FormData
+): Promise<ApiReturnType<UploadImageResponse["data"]>> {
+  //
   try {
-    const { data } = await customAxios.post("/", formData, {
+    const { data } = await customAxios.post<
+      UploadImageRequestBody,
+      AxiosResponse<UploadImageResponse | FileRequiredErrorResponse>
+    >("/images", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    debugger;
-    if (data.ok) return { ok: true, imagePath: data.image };
-    return { ok: false };
+
+    if (data.ok) {
+      const { data: imageData } = data;
+      return { ok: true, data: imageData };
+    }
+    //
+    else return { ok: false, message: getErrorMessage(data) };
+    //
   } catch (error) {
-    console.log(error);
-    return { ok: false };
+    console.error({ error });
+    return { ok: false, message: getErrorMessage() };
   }
 }
 
-export async function deleteImage(imageName: string) {
+export async function deleteImage(imageId: string): Promise<ApiReturnType<{}>> {
   try {
-    const { data } = await customAxios.put("/", { imageName });
+    const { data } = await customAxios.delete<
+      any,
+      AxiosResponse<undefined | DetailErrorResponse>
+    >(`/images/${imageId}`);
 
-    if (data.ok) return { ok: true };
+    if (data) return { ok: false, message: getErrorMessage(data) };
 
-    return { ok: false };
+    return { ok: true, data: {} };
+    //
   } catch (error) {
-    console.log(error);
-    return { ok: false };
+    console.error({ error });
+    return { ok: false, message: getErrorMessage() };
   }
 }

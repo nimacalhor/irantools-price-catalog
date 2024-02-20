@@ -1,14 +1,26 @@
+
 export type CreateBrandResponse = {
-  ok: boolean;
+  ok: true;
   data: {
     title: string;
-    image: string;
+    image: {
+      _id: string;
+      path: string;
+      __v: number;
+    };
     _id: string;
     __v: number;
   };
   statusCode: number;
   message: string;
 };
+
+export type CreateBrandRequestBody = {
+  title: string;
+  image: string;
+};
+
+export type UpdateBrandRequestBody = Partial<CreateBrandRequestBody>;
 
 export type BrandListResponse = {
   data: Array<{
@@ -21,7 +33,7 @@ export type BrandListResponse = {
     };
     __v: number;
   }>;
-  ok: boolean;
+  ok: true;
   statusCode: number;
   pagination: {
     totalDocs: number;
@@ -37,11 +49,15 @@ export type BrandListResponse = {
 };
 
 export type UpdateBrandResponse = {
-  ok: boolean;
+  ok: true;
   data: {
     _id: string;
     title: string;
-    image: string;
+    image: {
+      _id: string;
+      path: string;
+      __v: number;
+    };
     __v: number;
   };
   statusCode: number;

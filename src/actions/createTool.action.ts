@@ -1,5 +1,5 @@
 "use server";
-import { saveImage } from "@/api/image.api";
+import { uploadImage } from "@/api/image.api";
 import { connectToDB } from "@/lib/mongo-connection";
 import Tool from "@/model/tool.model";
 import { Tool as ToolType } from "@/types/tool.type";
@@ -16,7 +16,7 @@ async function createTool(formData: FormData) {
     if (duplicateTool)
       return { ok: false, message: "قبلا محصولی با این عنوان ثبت شده" };
     debugger;
-    const { ok, imagePath } = await saveImage(formData);
+    const { ok, imagePath } = await uploadImage(formData);
     debugger;
     if (!ok) return { ok: false };
 

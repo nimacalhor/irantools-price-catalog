@@ -1,6 +1,6 @@
 "use server";
 
-import { deleteImage, saveImage } from "@/api/image.api";
+import { deleteImage, uploadImage } from "@/api/image.api";
 import { connectToDB } from "@/lib/mongo-connection";
 import Brand from "@/model/brand.model";
 import { Brand as BrandType } from "@/types/setting.type";
@@ -20,9 +20,9 @@ async function updateBrand(id: string, formData: FormData) {
 
     let newImagePath: string | undefined;
 
-    // If a new image is provided, save it using the saveImage function
+    // If a new image is provided, save it using the uploadImage function
     if (image) {
-      const { ok, imagePath } = await saveImage(formData);
+      const { ok, imagePath } = await uploadImage(formData);
       if (!ok) return { ok: false };
       newImagePath = imagePath as string;
     }

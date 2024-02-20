@@ -1,5 +1,5 @@
 "use server";
-import { saveImage } from "@/api/image.api";
+import { uploadImage } from "@/api/image.api";
 import { connectToDB } from "@/lib/mongo-connection";
 import Category from "@/model/category.model";
 import { revalidatePath } from "next/cache";
@@ -13,7 +13,7 @@ async function createCategory(formData: FormData) {
     if (duplicateCategory)
       return { ok: false, message: "قبلا برندی با این عنوان ثبت شده" };
 
-    const { ok, imagePath } = await saveImage(formData);
+    const { ok, imagePath } = await uploadImage(formData);
     if (!ok) return { ok: false };
 
     const newCategory = new Category({
