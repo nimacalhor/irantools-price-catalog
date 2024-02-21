@@ -12,7 +12,7 @@ import { OptionalInfo } from "./OptionalInfo";
 import { useToast } from "@/hooks/useToast.hook";
 import { actions } from "@/store/createTool.store";
 import { uniqueDateStr, whitespaceTo_ } from "@/utils/string.util";
-import createTool from "@/actions/createTool.action";
+import { createToolAction } from "@/actions/tools.action";
 import { toolZodSchema } from "@/schemas/tool.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Brand, Category } from "@/types/setting.type";
@@ -113,14 +113,13 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
       JSON.stringify({
         ...values,
         description: JSON.stringify(tool.description),
-        
       })
     );
     formData.set("image", imageFile);
     formData.set("imageName", imageName);
     debugger;
     dispatch(actions.setPending(true));
-    const { ok, message } = await createTool(formData);
+    const { ok, message } = await createToolAction(formData);
     if (!ok) {
       toast({
         title: `محصول با موفقیت افزوده نشد ❌`,

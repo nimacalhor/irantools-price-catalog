@@ -1,4 +1,4 @@
-import { Tool as ToolType, ToolDetail } from "@/types/tool.type";
+import { Tool as ToolType, ToolDetail } from "@/types/tools.type";
 import { Model, Schema, model, models } from "mongoose";
 
 const toolDetailSchema = new Schema<ToolDetail>({

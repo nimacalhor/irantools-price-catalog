@@ -1,7 +1,7 @@
 import A4 from "@/components/A4";
 import ToolForm from "@/components/ToolForm";
-import { getBrandList } from "@/fetchers/brand.fetcher";
-import { getCategoryList } from "@/fetchers/category.fetcher";
+import { getBrandList } from "@/api/brand.api";
+import { getCategoryList } from "@/api/category.api";
 import { ScrollArea } from "@/ui/scroll-area.ui";
 
 type pageProps = {};
@@ -12,18 +12,18 @@ async function page({}: pageProps) {
     getCategoryList(),
   ]);
 
-  const { brands, ok: brandOk, message: brandMessage } = brandListResult;
-  const {
-    categories,
-    ok: categoryOk,
-    message: categoryMessage,
-  } = categoryListResult;
+  const { ok: brandOk } = brandListResult;
+  const { ok: categoryOk } = categoryListResult;
 
-  const ok = brandOk && categoryOk;
-  const message = (brandMessage || "") + "  " + (categoryMessage || "");
-  console.log({ brands, ok, message, categories });
+  if (!brandOk || !categoryOk)
+    throw new Error(
+      `${(brandListResult as any).message || ""} , ${
+        (categoryListResult as any).message || ""
+      }`
+    );
 
-  if (!ok) throw new Error(message);
+  const brands = brandListResult.data;
+  const categories = categoryListResult.data;
 
   return (
     <>

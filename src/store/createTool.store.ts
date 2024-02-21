@@ -1,4 +1,4 @@
-import { Tool } from "@/types/tool.type";
+import { Tool } from "@/types/tools.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JSONContent } from "@tiptap/react";
 

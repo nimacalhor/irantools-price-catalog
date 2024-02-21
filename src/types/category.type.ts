@@ -50,7 +50,7 @@ export type CategoryListResponse =
     }
    ;
 
-export type CategoryUpdateResponse =
+export type UpdateCategoryResponse =
   | {
       ok: true;
       data: {

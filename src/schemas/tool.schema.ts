@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Schema, Types } from "mongoose";
-import type { Tool, ToolDetail } from "@/types/tool.type";
+import type { Tool, ToolDetail } from "@/types/tools.type";
 
 const TITLE_REQUIRED_MSG_ZOD = 'وارد کردن "عنوان" الزامی است.';
 const NUMERIC_FORMAT_MSG_ZOD = '"{#label}" باید فقط شامل ارقام باشد.';

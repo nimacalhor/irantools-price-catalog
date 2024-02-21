@@ -4,26 +4,26 @@ import {
   ListErrorResponse,
 } from "@/types/api-error.type";
 import {
-  BrandListResponse,
-  CreateBrandRequestBody,
-  CreateBrandResponse,
-  UpdateBrandRequestBody,
-  UpdateBrandResponse,
-} from "@/types/brands.type";
+  CategoryListResponse,
+  CreateCategoryRequestBody,
+  CreateCategoryResponse,
+  UpdateCategoryRequestBody,
+  UpdateCategoryResponse,
+} from "@/types/category.type";
 import { ApiReturnType, ListCriteria } from "@/types/common.type";
 import { getErrorMessage } from "@/utils/error.util";
 import { AxiosResponse } from "axios";
 import customAxios from "@/lib/axios";
 import { cache } from "react";
 
-export async function createBrand(
-  brandData: CreateBrandRequestBody
-): Promise<ApiReturnType<CreateBrandResponse["data"]>> {
+export async function createCategory(
+  categoryData: CreateCategoryRequestBody
+): Promise<ApiReturnType<CreateCategoryResponse["data"]>> {
   try {
     const { data } = await customAxios.post<
-      CreateBrandRequestBody,
-      AxiosResponse<CreateBrandResponse | CUErrorResponse>
-    >(`/brands`, brandData);
+      CreateCategoryRequestBody,
+      AxiosResponse<CreateCategoryResponse | CUErrorResponse>
+    >(`/categories`, categoryData);
 
     if (data.ok) return { ok: true, data: data.data };
     else return { ok: false, message: getErrorMessage(data) };
@@ -34,14 +34,14 @@ export async function createBrand(
   }
 }
 
-export const getBrandList = cache(async function (
+export const getCategoryList = cache(async function (
   criteria?: ListCriteria
-): Promise<ApiReturnType<BrandListResponse["data"]>> {
+): Promise<ApiReturnType<CategoryListResponse["data"]>> {
   try {
     const { data } = await customAxios.get<
       any,
-      AxiosResponse<BrandListResponse | ListErrorResponse>
-    >(`/brands?`);
+      AxiosResponse<CategoryListResponse | ListErrorResponse>
+    >(`/categories?`);
 
     if (data.ok)
       return {
@@ -60,16 +60,16 @@ export const getBrandList = cache(async function (
   }
 });
 
-export async function updateBrand(
-  brandId: string,
-  updateBrandData: UpdateBrandRequestBody
-): Promise<ApiReturnType<UpdateBrandResponse["data"]>> {
+export async function updateCategory(
+  categoryId: string,
+  updateCategoryData: UpdateCategoryRequestBody
+): Promise<ApiReturnType<UpdateCategoryResponse["data"]>> {
   try {
     //
     const { data } = await customAxios.put<
-      UpdateBrandRequestBody,
-      AxiosResponse<UpdateBrandResponse | CUErrorResponse>
-    >(`/brands/${brandId}`, updateBrandData);
+      UpdateCategoryRequestBody,
+      AxiosResponse<UpdateCategoryResponse | CUErrorResponse>
+    >(`/categories/${categoryId}`, updateCategoryData);
 
     if (data.ok) return { ok: true, data: data.data };
     //
@@ -81,14 +81,14 @@ export async function updateBrand(
   }
 }
 
-export async function deleteBrand(
-  brandId: string
+export async function deleteCategory(
+  categoryId: string
 ): Promise<ApiReturnType<null>> {
   try {
     const { data } = await customAxios.delete<
       any,
       AxiosResponse<undefined | DetailErrorResponse>
-    >(`/brands/${brandId}`);
+    >(`/categories/${categoryId}`);
 
     if (!data) return { ok: true, data: null };
     else return { ok: false, message: getErrorMessage(data) };

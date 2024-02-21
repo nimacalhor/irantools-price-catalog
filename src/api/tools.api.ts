@@ -4,26 +4,27 @@ import {
   ListErrorResponse,
 } from "@/types/api-error.type";
 import {
-  BrandListResponse,
-  CreateBrandRequestBody,
-  CreateBrandResponse,
-  UpdateBrandRequestBody,
-  UpdateBrandResponse,
-} from "@/types/brands.type";
+  ToolListResponse,
+  CreateToolRequestBody,
+  CreateToolResponse,
+  UpdateToolRequestBody,
+  UpdateToolResponse,
+  ToolDetailResponse,
+} from "@/types/tools.type";
 import { ApiReturnType, ListCriteria } from "@/types/common.type";
 import { getErrorMessage } from "@/utils/error.util";
-import { AxiosResponse } from "axios";
+import { Axios, AxiosResponse } from "axios";
 import customAxios from "@/lib/axios";
 import { cache } from "react";
 
-export async function createBrand(
-  brandData: CreateBrandRequestBody
-): Promise<ApiReturnType<CreateBrandResponse["data"]>> {
+export async function createTool(
+  toolData: CreateToolRequestBody
+): Promise<ApiReturnType<CreateToolResponse["data"]>> {
   try {
     const { data } = await customAxios.post<
-      CreateBrandRequestBody,
-      AxiosResponse<CreateBrandResponse | CUErrorResponse>
-    >(`/brands`, brandData);
+      CreateToolRequestBody,
+      AxiosResponse<CreateToolResponse | CUErrorResponse>
+    >(`/tools`, toolData);
 
     if (data.ok) return { ok: true, data: data.data };
     else return { ok: false, message: getErrorMessage(data) };
@@ -34,14 +35,14 @@ export async function createBrand(
   }
 }
 
-export const getBrandList = cache(async function (
+export const getToolList = cache(async function (
   criteria?: ListCriteria
-): Promise<ApiReturnType<BrandListResponse["data"]>> {
+): Promise<ApiReturnType<ToolListResponse["data"]>> {
   try {
     const { data } = await customAxios.get<
       any,
-      AxiosResponse<BrandListResponse | ListErrorResponse>
-    >(`/brands?`);
+      AxiosResponse<ToolListResponse | ListErrorResponse>
+    >(`/tools?`);
 
     if (data.ok)
       return {
@@ -60,16 +61,16 @@ export const getBrandList = cache(async function (
   }
 });
 
-export async function updateBrand(
-  brandId: string,
-  updateBrandData: UpdateBrandRequestBody
-): Promise<ApiReturnType<UpdateBrandResponse["data"]>> {
+export async function updateTool(
+  toolId: string,
+  updateToolData: UpdateToolRequestBody
+): Promise<ApiReturnType<UpdateToolResponse["data"]>> {
   try {
     //
     const { data } = await customAxios.put<
-      UpdateBrandRequestBody,
-      AxiosResponse<UpdateBrandResponse | CUErrorResponse>
-    >(`/brands/${brandId}`, updateBrandData);
+      UpdateToolRequestBody,
+      AxiosResponse<UpdateToolResponse | CUErrorResponse>
+    >(`/tools/${toolId}`, updateToolData);
 
     if (data.ok) return { ok: true, data: data.data };
     //
@@ -81,14 +82,12 @@ export async function updateBrand(
   }
 }
 
-export async function deleteBrand(
-  brandId: string
-): Promise<ApiReturnType<null>> {
+export async function deleteTool(toolId: string): Promise<ApiReturnType<null>> {
   try {
     const { data } = await customAxios.delete<
       any,
       AxiosResponse<undefined | DetailErrorResponse>
-    >(`/brands/${brandId}`);
+    >(`/tools/${toolId}`);
 
     if (!data) return { ok: true, data: null };
     else return { ok: false, message: getErrorMessage(data) };
@@ -98,3 +97,22 @@ export async function deleteBrand(
     return { ok: false, message: getErrorMessage() };
   }
 }
+
+export const getToolDetail = cache(async function (
+  toolId: string
+): Promise<ApiReturnType<ToolDetailResponse["data"]>> {
+  try {
+    //
+    const { data } = await customAxios.get<
+      any,
+      AxiosResponse<ToolDetailResponse | DetailErrorResponse>
+    >(`/tools/${toolId}`);
+
+    if (data.ok) return { ok: true, data: data.data };
+    else return { ok: false, message: getErrorMessage(data) };
+    //
+  } catch (error) {
+    console.error({ error });
+    return { ok: false, message: getErrorMessage() };
+  }
+});

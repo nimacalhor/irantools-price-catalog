@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTools } from "@fortawesome/free-solid-svg-icons";
 import { getFSStyle } from "@/utils/style.util";
-import { Tool } from "@/types/tool.type";
+import { Tool } from "@/types/tools.type";
 
 export function ToolCardOptionalInfo({
   parentW,

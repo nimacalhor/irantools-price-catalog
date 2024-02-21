@@ -8,7 +8,7 @@ import { actions } from "@/store/toolList.store";
 import { AspectRatio } from "@/ui/aspect-ratio.ui";
 import { useDispatch, useSelector } from "react-redux";
 import useWindowSize from "@/hooks/useWindowSize.hook";
-import { Tool } from "@/types/tool.type";
+import { Tool } from "@/types/tools.type";
 
 function A4({ className, tools }: { className?: string; tools?: Tool[] }) {
   const mainRef = useRef<HTMLDivElement | null>(null);

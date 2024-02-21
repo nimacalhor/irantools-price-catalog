@@ -7,7 +7,7 @@ import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { RefObject, useEffect, useMemo, useState } from "react";
 import { useEditor } from "@tiptap/react";
-import { Tool } from "@/types/tool.type";
+import { Tool } from "@/types/tools.type";
 
 const toolDescription = JSON.parse(`
 {
