@@ -18,7 +18,7 @@ export type CreateCategoryResponse =
     }
    ;
 
-export type CreateCategoryRequestBody = { title: string; image: string };
+export type CreateCategoryRequestBody = { title: string; image?: string };
 
 export type UpdateCategoryRequestBody = Partial<CreateCategoryRequestBody>;
 

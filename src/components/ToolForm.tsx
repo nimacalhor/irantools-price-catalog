@@ -1,23 +1,24 @@
 "use client";
-import * as z from "zod";
-import { useEffect } from "react";
-import { RootState } from "@/store";
-import { Form } from "@/ui/form.ui";
-import { MainInfo } from "./MainInfo";
-import TextEditor from "./TextEditor";
-import { cn } from "@/utils/chadcn.util";
-import { FormButtons } from "./FormButtons";
-import { Separator } from "@/ui/separator.ui";
-import { OptionalInfo } from "./OptionalInfo";
-import { useToast } from "@/hooks/useToast.hook";
-import { actions } from "@/store/createTool.store";
-import { uniqueDateStr, whitespaceTo_ } from "@/utils/string.util";
 import { createToolAction } from "@/actions/tools.action";
+import { useToast } from "@/hooks/useToast.hook";
 import { toolZodSchema } from "@/schemas/tool.schema";
+import { RootState } from "@/store";
+import { actions } from "@/store/createTool.store";
+import { Form } from "@/ui/form.ui";
+import { Separator } from "@/ui/separator.ui";
+import { cn } from "@/utils/chadcn.util";
+import { uniqueDateStr, whitespaceTo_ } from "@/utils/string.util";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Brand, Category } from "@/types/setting.type";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import * as z from "zod";
+import { FormButtons } from "./FormButtons";
+import { MainInfo } from "./MainInfo";
+import { OptionalInfo } from "./OptionalInfo";
+import TextEditor from "./TextEditor";
+import { CreateToolRequestBody } from "@/types/tools.type";
+import { OmitFields } from "@/types/common.type";
 
 export type FormType = UseFormReturn<
   {
@@ -41,8 +42,8 @@ export type FormType = UseFormReturn<
 >;
 type ToolFormProps = {
   className?: string;
-  brands?: Brand[];
-  categories?: Category[];
+  brands?: { title: string; _id: string }[];
+  categories?: { title: string; _id: string }[];
 };
 
 function ToolForm({ className, brands, categories }: ToolFormProps) {
@@ -73,10 +74,6 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(form.formState);
-  }, [form.formState]);
-
   return (
     <>
       <section className={cn("", className)}>
@@ -98,33 +95,31 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
   );
   async function onSubmit(values: z.infer<typeof toolZodSchema>) {
     if (!imageFile) return;
-    const brandName = brands?.find((brn) => brn._id === values.brand);
-    const categoryName = categories?.find((ctg) => ctg._id === values.category);
-    const fileExtension = imageFile.name.split(".").pop();
 
-    const imageName = `${whitespaceTo_(brandName?.title || "")}_${whitespaceTo_(
-      categoryName?.title || ""
-    )}_${whitespaceTo_(values.name)}_${uniqueDateStr()}.${fileExtension}`;
-
-    debugger;
     const formData = new FormData();
-    formData.set(
-      "toolData",
-      JSON.stringify({
-        ...values,
-        description: JSON.stringify(tool.description),
-      })
-    );
+
     formData.set("image", imageFile);
-    formData.set("imageName", imageName);
-    debugger;
     dispatch(actions.setPending(true));
-    const { ok, message } = await createToolAction(formData);
-    if (!ok) {
+
+    const createToolData: CreateToolRequestBody = {
+      available: !values.price,
+      brand: values.brand,
+      category: values.category,
+      detail: values.detail,
+      price: values.price,
+      code: values.code,
+      name: values.name,
+
+      description: "",
+      size: 1,
+    };
+
+    const createToolResponse = await createToolAction(createToolData, formData);
+    if (!createToolResponse.ok) {
       toast({
         title: `محصول با موفقیت افزوده نشد ❌`,
         variant: "destructive",
-        description: message,
+        description: createToolResponse.message,
       });
     } else {
       toast({
@@ -133,8 +128,6 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
       form.reset();
     }
     dispatch(actions.setPending(false));
-
-    console.log(values);
   }
 }
 

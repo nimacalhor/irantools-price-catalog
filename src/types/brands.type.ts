@@ -17,7 +17,7 @@ export type CreateBrandResponse = {
 
 export type CreateBrandRequestBody = {
   title: string;
-  image: string;
+  image?: string;
 };
 
 export type UpdateBrandRequestBody = Partial<CreateBrandRequestBody>;

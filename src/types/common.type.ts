@@ -23,3 +23,5 @@ export type ApiReturnType<D> =
       };
     }
   | { ok: false; message: string };
+
+export type OmitFields<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

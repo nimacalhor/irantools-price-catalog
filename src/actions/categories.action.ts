@@ -40,12 +40,23 @@ export async function deleteCategoryAction(categoryId: string) {
 
 export async function updateCategoryAction(
   categoryId: string,
-  updateCategoryData: UpdateCategoryRequestBody
+  updateCategoryData: UpdateCategoryRequestBody,
+  formData?: FormData
 ) {
-  const updateCategoryResponse = await updateCategory(
-    categoryId,
-    updateCategoryData
-  );
+  let image: string | undefined = undefined;
+  // save new image
+  if (formData) {
+    const uploadImageResponse = await uploadImage(formData);
+    if (!uploadImageResponse.ok)
+      return { ok: false, message: uploadImageResponse.message };
+
+    image = uploadImageResponse.data._id;
+  }
+
+  const updateCategoryResponse = await updateCategory(categoryId, {
+    title: updateCategoryData.title,
+    image,
+  });
   revalidatePath("/setting");
   revalidatePath("/create");
   return updateCategoryResponse;

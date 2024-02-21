@@ -12,7 +12,7 @@ export type Tool = {
   price?: string;
   brand: ObjectId;
   category: ObjectId;
-  detail: ToolDetail;
+  detail?: ToolDetail;
   image: string;
   description: string;
   available: boolean;
@@ -33,8 +33,8 @@ export type CreateToolRequestBody = {
   price?: string;
   brand: string;
   category: string;
-  detail: ToolDetail;
-  image: string;
+  detail?: ToolDetail;
+  image?: string;
   description: string;
   available: boolean;
 };

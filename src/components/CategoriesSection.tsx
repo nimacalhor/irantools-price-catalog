@@ -7,12 +7,15 @@ import type { Category, Brand } from "@/types/setting.type";
 import { isArrayValid, removeLastItem } from "@/utils/array.util";
 import { cn } from "@/utils/chadcn.util";
 
-type CategoriesSectionProps = { categories?: Category[] };
+type CategoriesSectionProps = {
+  categories?: { title: string; image: string; id: string }[];
+};
 
 export function CategorySection({ categories }: CategoriesSectionProps) {
   const [newCategories, setNewCategories] = useState<(Category | Brand)[]>([]);
   const noCategory =
     !isArrayValid(newCategories, true) && !isArrayValid(categories, true);
+
   return (
     <div>
       <h2 className="text-2xl">دسته بندی ها</h2>
@@ -30,15 +33,23 @@ export function CategorySection({ categories }: CategoriesSectionProps) {
         {newCategories.map((ctg, i) => (
           <SettingCard
             onSave={deleteBrandHandler}
+            dataImage={ctg.image}
+            dataTitle={ctg.title}
+            isNew
             cardType="دسته بندی"
-            data={ctg}
             key={i}
           ></SettingCard>
         ))}
         {isArrayValid(categories) &&
           categories &&
           categories.map((ctg, i) => (
-            <SettingCard cardType="دسته بندی" data={ctg} key={i}></SettingCard>
+            <SettingCard
+              dataImage={ctg.image}
+              dataTitle={ctg.title}
+              id={ctg.id}
+              cardType="دسته بندی"
+              key={i}
+            ></SettingCard>
           ))}
       </div>
       <div className="flex justify-center items-center h-32">

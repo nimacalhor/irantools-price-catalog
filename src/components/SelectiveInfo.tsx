@@ -25,8 +25,8 @@ export function SelectiveInfo({
   categories,
 }: {
   form: FormType;
-  brands?: Brand[];
-  categories?: Category[];
+  brands?: { title: string; _id: string }[];
+  categories?: { title: string; _id: string }[];
 }) {
   return (
     <div className="grid md:grid-cols-3 gap-5 mt-5">
@@ -96,11 +96,11 @@ export function SelectiveInfo({
 
       <div className="h-full flex justify-start items-end">
         <Link href={"/setting"} passHref>
-          <IconButton variant={"secondary"} icon={faGear}>افزودن برند یا دسته بندی</IconButton>
+          <IconButton variant={"secondary"} icon={faGear}>
+            افزودن برند یا دسته بندی
+          </IconButton>
         </Link>
-        <div>
-
-        </div>
+        <div></div>
       </div>
     </div>
   );

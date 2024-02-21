@@ -7,10 +7,20 @@ import { Brand, Category } from "@/types/setting.type";
 import { isArrayValid, removeLastItem } from "@/utils/array.util";
 import { cn } from "@/utils/chadcn.util";
 
-export function BrandSection({ brands }: { brands?: Brand[] }) {
+export function BrandSection({
+  brands,
+}: {
+  brands?: { title: string; image: string; id: string }[];
+}) {
+  // INFO : check Component props
+  debugger;
+  //
   const [newBrand, setNewBrand] = useState<(Brand | Category)[]>([]);
   const noBrand = !isArrayValid(newBrand, true) && !isArrayValid(brands, true);
 
+  // INFO : check states
+  debugger;
+  //
   return (
     <div>
       <h2 className="text-2xl">برند ها</h2>
@@ -23,7 +33,10 @@ export function BrandSection({ brands }: { brands?: Brand[] }) {
         {newBrand.map((bran, i) => (
           <SettingCard
             onSave={deleteBrandHandler}
-            data={bran}
+            dataImage={bran.image}
+            dataTitle={bran.title}
+            isNew
+            cardType="برند"
             key={i}
           ></SettingCard>
         ))}
@@ -31,7 +44,13 @@ export function BrandSection({ brands }: { brands?: Brand[] }) {
         {isArrayValid(brands) &&
           brands &&
           brands.map((bran, i) => (
-            <SettingCard data={bran} key={i}></SettingCard>
+            <SettingCard
+              dataImage={bran.image}
+              dataTitle={bran.title}
+              id={bran.id}
+              cardType="برند"
+              key={i}
+            ></SettingCard>
           ))}
       </div>
       <div className="flex justify-center items-center h-32">
