@@ -3,23 +3,23 @@ import ToolForm from "@/components/ToolForm";
 import { getBrandList } from "@/api/brand.api";
 import { getCategoryList } from "@/api/category.api";
 import { ScrollArea } from "@/ui/scroll-area.ui";
+import { getToolList } from "@/api/tools.api";
 
 type pageProps = {};
 
 async function page({}: pageProps) {
-  const [brandListResult, categoryListResult] = await Promise.all([
-    getBrandList(),
-    getCategoryList(),
-  ]);
+  const [brandListResult, categoryListResult, toolListResult] =
+    await Promise.all([getBrandList(), getCategoryList(), getToolList()]);
 
   const { ok: brandOk } = brandListResult;
   const { ok: categoryOk } = categoryListResult;
+  const { ok: toolOk } = toolListResult;
 
-  if (!brandOk || !categoryOk)
+  if (!brandOk || !categoryOk || !toolOk)
     throw new Error(
       `${(brandListResult as any).message || ""} , ${
         (categoryListResult as any).message || ""
-      }`
+      }, ${(toolListResult as any).message || ""}`
     );
 
   const brands = brandListResult.data;
@@ -36,7 +36,14 @@ async function page({}: pageProps) {
         <section className="xl:col-span-5 h-screen xl:sticky top-0 bottom-0 right-0 left-0 relative flex justify-center items-center">
           <div className="p-4 absolute top-8 bottom-8 right-0 left-0 bg-gradient-to-bl rounded-sm border border-border">
             <ScrollArea className="h-full">
-              <A4 className="w-full mx-auto" />
+              <A4
+                readFromState
+                tools={toolListResult.data.map((tool) => ({
+                  ...tool,
+                  image: tool.image.path,
+                }))}
+                className="w-full mx-auto"
+              />
             </ScrollArea>
           </div>
         </section>

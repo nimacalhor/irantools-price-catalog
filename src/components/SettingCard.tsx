@@ -45,9 +45,7 @@ export function SettingCard({
   dataTitle,
   isNew = false,
 }: SettingCardProps) {
-  // INFO : check props
-  debugger;
-  //
+   
   const isFromDB = !!id;
 
   const defaultImage = dataImage
@@ -90,9 +88,7 @@ export function SettingCard({
     // 
   }, [dataTitle, title]);
 
-  // INFO : check states
-  debugger;
-  //
+   
 
   return (
     <Card className="w-full col-span-1 group/card relative">

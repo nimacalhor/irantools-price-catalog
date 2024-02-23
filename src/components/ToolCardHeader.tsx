@@ -9,9 +9,9 @@ export function ToolCardHeader({
   price,
 }: {
   parentW?: number;
-  name: string;
-  code: string;
-  price: string;
+  name?: string;
+  code?: string;
+  price?: string;
 }) {
   if (!parentW) return null;
   const h3FS = parentW / 35 + "px";
@@ -30,14 +30,16 @@ export function ToolCardHeader({
         >
           {code}
         </span>
-        <span
-          style={getFSStyle(priceFS)}
-          className={cn(
-            "lg:text-base xl:text-lg print:text-xl tracking-tighter font-bold text-primary"
-          )}
-        >
-          {price} ت
-        </span>
+        {price && (
+          <span
+            style={getFSStyle(priceFS)}
+            className={cn(
+              "lg:text-base xl:text-lg print:text-xl tracking-tighter font-bold text-primary"
+            )}
+          >
+            {price} ت
+          </span>
+        )}
       </div>
     </div>
   );

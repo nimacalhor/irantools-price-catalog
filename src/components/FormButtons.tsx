@@ -80,6 +80,7 @@ export function FormButtons({ form }: { form: FormType }) {
       category,
       available: !!price,
       image: image || undefined,
+      size,
     };
 
     dispatch(actions.setTool(toolState));

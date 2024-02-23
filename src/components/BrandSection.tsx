@@ -12,15 +12,11 @@ export function BrandSection({
 }: {
   brands?: { title: string; image: string; id: string }[];
 }) {
-  // INFO : check Component props
-  debugger;
-  //
+   
   const [newBrand, setNewBrand] = useState<(Brand | Category)[]>([]);
   const noBrand = !isArrayValid(newBrand, true) && !isArrayValid(brands, true);
 
-  // INFO : check states
-  debugger;
-  //
+   
   return (
     <div>
       <h2 className="text-2xl">برند ها</h2>

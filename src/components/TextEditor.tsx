@@ -58,10 +58,6 @@ function TextEditor({}: TextEditorProps) {
       </section>
     </section>
   );
-
-  function sfkdl() {
-    editor?.getJSON();
-  }
 }
 
 export default TextEditor;

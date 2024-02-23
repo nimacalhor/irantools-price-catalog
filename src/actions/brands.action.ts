@@ -29,14 +29,10 @@ export async function createBrandAction(
 export async function deleteBrandAction(brandId: string) {
   const deleteBrandResponse = await deleteBrand(brandId);
   if (!deleteBrandResponse.ok) return deleteBrandResponse;
-  // INFO : deleteBrandAction
-  debugger;
-  //
+   
   revalidatePath("/setting", "page");
   revalidatePath("/create", "page");
-  // INFO : after revalidating
-  debugger;
-  //
+   
   return deleteBrandResponse;
 }
 

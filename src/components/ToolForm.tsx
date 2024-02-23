@@ -101,6 +101,8 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
     formData.set("image", imageFile);
     dispatch(actions.setPending(true));
 
+    // const size =
+
     const createToolData: CreateToolRequestBody = {
       available: !values.price,
       brand: values.brand,
@@ -110,8 +112,8 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
       code: values.code,
       name: values.name,
 
-      description: "",
-      size: 1,
+      description: JSON.stringify(tool.description) || "",
+      size: tool.size || 1,
     };
 
     const createToolResponse = await createToolAction(createToolData, formData);
@@ -128,6 +130,7 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
       form.reset();
     }
     dispatch(actions.setPending(false));
+
   }
 }
 

@@ -1,18 +1,28 @@
 "use client";
+import useWindowSize from "@/hooks/useWindowSize.hook";
 import { RootState } from "@/store";
-import { ToolCard } from "./ToolCard";
-import { cn } from "@/utils/chadcn.util";
-import { useEffect, useRef } from "react";
-import { createArray, isArrayValid } from "@/utils/array.util";
 import { actions } from "@/store/toolList.store";
 import { AspectRatio } from "@/ui/aspect-ratio.ui";
+import { isArrayValid } from "@/utils/array.util";
+import { cn } from "@/utils/chadcn.util";
+import { ComponentProps, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useWindowSize from "@/hooks/useWindowSize.hook";
-import { Tool } from "@/types/tools.type";
+import { ToolCard } from "./ToolCard";
 
-function A4({ className, tools }: { className?: string; tools?: Tool[] }) {
+function A4({
+  className,
+  tools,
+  readFromState = false,
+}: {
+  className?: string;
+  tools?: ComponentProps<typeof ToolCard>["tool"][];
+  readFromState?: boolean;
+}) {
   const mainRef = useRef<HTMLDivElement | null>(null);
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
+  const { tool: toolFromState } = useSelector(
+    (state: RootState) => state.createTool
+  );
   const dispatch = useDispatch();
   const { width } = useWindowSize();
 
@@ -36,7 +46,10 @@ function A4({ className, tools }: { className?: string; tools?: Tool[] }) {
     >
       <div className="row-span-1"></div>
       <div className="row-span-11 grid gap-2 grid-rows-5">
-        {tools.map((_, i) => (
+        {readFromState && toolFromState && (
+          <ToolCard isLocal tool={toolFromState as any} />
+        )}
+        {tools.map((tool, i) => (
           <ToolCard tool={tool} key={i}></ToolCard>
         ))}
       </div>

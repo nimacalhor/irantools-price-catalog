@@ -1,3 +1,4 @@
+"use client"
 import { ToolDescription } from "@/types/toolDescription.type";
 import {
   Table,
@@ -15,10 +16,12 @@ export function ToolCardDescription({
   description,
   parentW,
 }: {
-  description: ToolDescription;
+  description?: ToolDescription;
   parentW?: number;
 }) {
+  console.log({description})
   if (!parentW) return null;
+  if (!description) return null;
 
   const headingStyles: { [key: string]: CSSProperties } = {
     h1: { fontSize: parentW / 45 + "px" },

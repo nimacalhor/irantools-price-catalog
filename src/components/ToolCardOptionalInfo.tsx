@@ -1,6 +1,13 @@
 "use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTools } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCube,
+  faCubes,
+  faPuzzlePiece,
+  faRulerHorizontal,
+  faTools,
+  faWeightScale,
+} from "@fortawesome/free-solid-svg-icons";
 import { getFSStyle } from "@/utils/style.util";
 import { Tool } from "@/types/tools.type";
 
@@ -9,9 +16,16 @@ export function ToolCardOptionalInfo({
   detail,
 }: {
   parentW?: number | null;
-  detail: Tool["detail"];
+  detail?: {
+    amountInBulk?: string | number;
+    amountInSet?: string | number;
+    length?: string;
+    material?: string;
+    weight?: string;
+  };
 }) {
   if (!parentW) return null;
+  if (!detail) return null;
 
   const fontW = parentW / 30 + "px";
   const fontH = parentW / 30 + "px";
@@ -21,57 +35,67 @@ export function ToolCardOptionalInfo({
 
   return (
     <div className="col-span-3">
-      <div className="row-span-8 flex justify-end items-start flex-wrap gap-2 pt-2 px-2">
-        <span className="flex-col gap-1 overflow-hidden w-1/4 flex justify-between items-center">
-          <FontAwesomeIcon
-            icon={faTools}
-            style={{ width: fontW, height: fontH }}
-            className="text-foreground/70"
-          />
-          <span style={getFSStyle(amountFS)} className="">
-            1231241
+      <div className="row-span-8 flex justify-end items-start flex-wrap gap-2 pt-2 px-2 pl-3">
+        {length && (
+          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+            <FontAwesomeIcon
+              icon={faRulerHorizontal}
+              style={{ width: fontW, height: fontH }}
+              className="text-foreground/70"
+            />
+            <span style={getFSStyle(amountFS)} className="">
+              {length}
+            </span>
           </span>
-        </span>
-        <span className="flex-col gap-1 overflow-hidden w-1/4 flex justify-between items-center">
-          <FontAwesomeIcon
-            icon={faTools}
-            style={{ width: fontW, height: fontH }}
-            className="text-foreground/70"
-          />
-          <span style={getFSStyle(amountFS)} className="">
-            1231241
+        )}
+        {material && (
+          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+            <FontAwesomeIcon
+              icon={faPuzzlePiece}
+              style={{ width: fontW, height: fontH }}
+              className="text-foreground/70"
+            />
+            <span style={getFSStyle(amountFS)} className="">
+              {material}
+            </span>
           </span>
-        </span>
-        <span className="flex-col gap-1 overflow-hidden w-1/4 flex justify-between items-center">
-          <FontAwesomeIcon
-            icon={faTools}
-            style={{ width: fontW, height: fontH }}
-            className="text-foreground/70"
-          />
-          <span style={getFSStyle(amountFS)} className="">
-            1231241
+        )}
+        {weight && (
+          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+            <FontAwesomeIcon
+              icon={faWeightScale}
+              style={{ width: fontW, height: fontH }}
+              className="text-foreground/70"
+            />
+            <span style={getFSStyle(amountFS)} className="">
+              {weight}
+            </span>
           </span>
-        </span>
-        <span className="flex-col gap-1 overflow-hidden w-1/4 flex justify-between items-center">
-          <FontAwesomeIcon
-            icon={faTools}
-            style={{ width: fontW, height: fontH }}
-            className="text-foreground/70"
-          />
-          <span style={getFSStyle(amountFS)} className="">
-            1231241
+        )}
+        {amountInBulk && (
+          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+            <FontAwesomeIcon
+              icon={faCubes}
+              style={{ width: fontW, height: fontH }}
+              className="text-foreground/70"
+            />
+            <span style={getFSStyle(amountFS)} className="">
+              {amountInBulk}
+            </span>
           </span>
-        </span>
-        <span className="flex-col gap-1 overflow-hidden w-1/4 flex justify-between items-center">
-          <FontAwesomeIcon
-            icon={faTools}
-            style={{ width: fontW, height: fontH }}
-            className="text-foreground/70"
-          />
-          <span style={getFSStyle(amountFS)} className="">
-            1231241
+        )}
+        {amountInSet && (
+          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+            <FontAwesomeIcon
+              icon={faCube}
+              style={{ width: fontW, height: fontH }}
+              className="text-foreground/70"
+            />
+            <span style={getFSStyle(amountFS)} className="">
+              {amountInSet}
+            </span>
           </span>
-        </span>
+        )}
       </div>
     </div>
   );

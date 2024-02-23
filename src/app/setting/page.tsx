@@ -15,9 +15,7 @@ async function page({}: pageProps) {
     getCategoryList(),
   ]);
 
-  // INFO : after fetching
-  debugger;
-  //
+   
 
   const { ok: brandOk } = brandListResult;
   const { ok: categoryOk } = categoryListResult;
@@ -32,9 +30,7 @@ async function page({}: pageProps) {
   const brands = brandListResult.data;
   const categories = categoryListResult.data;
 
-  // INFO : after fetch validation
-  debugger;
-  //
+   
 
   return (
     <>

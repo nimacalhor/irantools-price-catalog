@@ -57,11 +57,11 @@ const ToolDetailZodSchema = z
     weight: z.string().optional(),
     amountInSet: z
       .string()
-      .regex(/[0-9]+/)
+      .regex(/^$|^[0-9]+$/)
       .optional(),
     amountInBulk: z
       .string()
-      .regex(/[0-9]+/)
+      .regex(/^$|^[0-9]+$/)
       .optional(),
     length: z.string().optional(),
     material: z.string().optional(),

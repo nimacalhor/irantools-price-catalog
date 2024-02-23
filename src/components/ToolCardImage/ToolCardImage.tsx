@@ -7,7 +7,13 @@ import { AspectRatio } from "@/ui/aspect-ratio.ui";
 import moduleStyles from "./ToolCardImage.module.css";
 import useTheme from "@/hooks/useTheme.hook";
 
-function ToolCardImage(props: {}) {
+function ToolCardImage({
+  image,
+  isLocal,
+}: {
+  image?: string;
+  isLocal?: boolean;
+}) {
   const [theme] = useTheme();
   const [isBlue, isDBlue, isOrange, isDOrange] = [
     theme === "",
@@ -15,6 +21,11 @@ function ToolCardImage(props: {}) {
     theme === "orange",
     theme === "orange-dark",
   ];
+
+  const imagePath = isLocal
+    ? image
+    : process.env.NEXT_PUBLIC_API_URL + `/${image}`;
+
   return (
     <div className="col-span-3 relative ">
       <div
@@ -27,13 +38,15 @@ function ToolCardImage(props: {}) {
         )}
       >
         <AspectRatio className="w-full">
-          <Image
-            src={getRandomImage() || ""}
-            alt="tool"
-            fill
-            className="object-contain z-20"
-            quality={100}
-          />
+          {image && imagePath && (
+            <Image
+              src={imagePath || ""}
+              alt="tool"
+              fill
+              className="object-contain z-20"
+              quality={100}
+            />
+          )}
         </AspectRatio>
       </div>
       <div
