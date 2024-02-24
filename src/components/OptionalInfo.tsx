@@ -5,12 +5,12 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/ui/form.ui";
 import { Input } from "@/ui/input.ui";
 import { FormType } from "./ToolForm";
 
-export function OptionalInfo({ form }: { form: FormType; }) {
+export function OptionalInfo({ form }: { form: FormType }) {
   return (
     <div>
       <h2 className="text-2xl mb-5">اطلاعات اختیاری</h2>
@@ -22,12 +22,18 @@ export function OptionalInfo({ form }: { form: FormType; }) {
             <FormItem>
               <FormLabel className="text-lg font-normal">وزن</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"وزن محصول"} {...field} />
+                <Input
+                  type="number"
+                  placeholder={"وزن محصول"}
+                  {...field}
+                  readOnly={false}
+                />
               </FormControl>
               <FormDescription>وزن محصول به گرم.</FormDescription>
               <FormMessage />
             </FormItem>
-          )} />
+          )}
+        />
         <FormField
           control={form.control}
           name="detail.length"
@@ -35,12 +41,18 @@ export function OptionalInfo({ form }: { form: FormType; }) {
             <FormItem>
               <FormLabel className="text-lg font-normal">طول</FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"طول محصول"} {...field} />
+                <Input
+                  type="number"
+                  placeholder={"طول محصول"}
+                  {...field}
+                  readOnly={false}
+                />
               </FormControl>
               <FormDescription>طول محصول به میلی متر.</FormDescription>
               <FormMessage />
             </FormItem>
-          )} />
+          )}
+        />
         <FormField
           control={form.control}
           name="detail.material"
@@ -48,41 +60,60 @@ export function OptionalInfo({ form }: { form: FormType; }) {
             <FormItem>
               <FormLabel className="text-lg font-normal">جنس</FormLabel>
               <FormControl>
-                <Input type="text" placeholder={"جنس محصول"} {...field} />
+                <Input
+                  type="text"
+                  placeholder={"جنس محصول"}
+                  {...field}
+                  readOnly={false}
+                />
               </FormControl>
               <FormDescription>جنس سازنده محصول</FormDescription>
               <FormMessage />
             </FormItem>
-          )} />
+          )}
+        />
         <FormField
           control={form.control}
           name="detail.amountInSet"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-lg font-normal">تعداد در جعبه</FormLabel>
+              <FormLabel className="text-lg font-normal">
+                تعداد در جعبه
+              </FormLabel>
               <FormControl>
-                <Input type="number" placeholder={"تعداد در جعبه"} {...field} />
+                <Input
+                  type="number"
+                  placeholder={"تعداد در جعبه"}
+                  {...field}
+                  readOnly={false}
+                />
               </FormControl>
               <FormDescription>تعداد ابزار در جعبه های فروشی</FormDescription>
               <FormMessage />
             </FormItem>
-          )} />
+          )}
+        />
         <FormField
           control={form.control}
           name="detail.amountInBulk"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-lg font-normal">تعداد در کارتن</FormLabel>
+              <FormLabel className="text-lg font-normal">
+                تعداد در کارتن
+              </FormLabel>
               <FormControl>
                 <Input
                   type="number"
                   placeholder={"تعداد در کارتن"}
-                  {...field} />
+                  {...field}
+                  readOnly={false}
+                />
               </FormControl>
               <FormDescription>تعداد جعبه در کارتن های ارسالی.</FormDescription>
               <FormMessage />
             </FormItem>
-          )} />
+          )}
+        />
       </div>
     </div>
   );

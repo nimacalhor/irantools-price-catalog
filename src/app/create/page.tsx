@@ -37,7 +37,7 @@ async function page({}: pageProps) {
           <div className="p-4 absolute top-8 bottom-8 right-0 left-0 bg-gradient-to-bl rounded-sm border border-border">
             <ScrollArea className="h-full">
               <A4
-                readFromState
+                readFromState={true}
                 tools={toolListResult.data.map((tool) => ({
                   ...tool,
                   image: tool.image.path,

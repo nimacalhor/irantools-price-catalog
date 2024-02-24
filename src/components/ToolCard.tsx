@@ -31,6 +31,7 @@ export function ToolCard({
   };
   isLocal?: ComponentProps<typeof ToolCardImage>["isLocal"];
 }) {
+   
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
   const width = (a4Ref as RefObject<HTMLDivElement>)?.current?.clientWidth;
   const a4w = useMemo(() => {
@@ -51,12 +52,17 @@ export function ToolCard({
 
   if (_description) {
     console.log({ _description });
-    try {
-      const parsedDescription = JSON.parse(_description);
-      description = parsedDescription;
-      console.log({ parsedDescription });
-    } catch (error) {}
+     
+    if (typeof _description === "string") {
+      try {
+        const parsedDescription = JSON.parse(_description);
+        description = parsedDescription;
+        console.log({ parsedDescription });
+      } catch (error) {}
+    } else description = _description;
   }
+
+   
 
   return (
     <div

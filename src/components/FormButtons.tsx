@@ -1,18 +1,18 @@
 "use client";
+import { RootState } from "@/store";
+import { CreateToolStore, actions } from "@/store/createTool.store";
+import { Button } from "@/ui/button.ui";
 import {
   faAdd,
   faEye,
   faFloppyDisk,
   faMinus,
 } from "@fortawesome/free-solid-svg-icons";
-import IconButton from "./IconButton";
-import { Button } from "@/ui/button.ui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FormType } from "./ToolForm";
-import { CreateToolStore, actions } from "@/store/createTool.store";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { Console } from "console";
+import IconButton from "./IconButton";
+import { FormType } from "./ToolForm";
+import { deepCopy } from "@/utils/object.util";
 
 export function FormButtons({ form }: { form: FormType }) {
   const dispatch = useDispatch();
@@ -69,8 +69,8 @@ export function FormButtons({ form }: { form: FormType }) {
   );
 
   function previewClickHandler() {
-    const { name, brand, category, code, detail, price } = form.getValues();
-
+    // form.trigger();
+    const { name, brand, category, code, detail, price } = { ...form.watch() };
     const toolState: CreateToolStore["tool"] = {
       name,
       code,
@@ -82,8 +82,10 @@ export function FormButtons({ form }: { form: FormType }) {
       image: image || undefined,
       size,
     };
+    console.log({ detail });
 
     dispatch(actions.setTool(toolState));
+
   }
 
   function addHandler() {

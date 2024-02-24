@@ -36,6 +36,7 @@ function TextEditor({}: TextEditorProps) {
     content: "<p>Hello World! 🌎️</p>",
     onBlur({ editor }) {
       const result = editor.getJSON()
+       
       dispatch(actions.setTool({ description: result }));
       console.log({ result });
     },

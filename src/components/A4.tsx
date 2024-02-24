@@ -18,21 +18,20 @@ function A4({
   tools?: ComponentProps<typeof ToolCard>["tool"][];
   readFromState?: boolean;
 }) {
+   
   const mainRef = useRef<HTMLDivElement | null>(null);
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
-  const { tool: toolFromState } = useSelector(
-    (state: RootState) => state.createTool
-  );
+  const createToolState = useSelector((state: RootState) => state.createTool);
   const dispatch = useDispatch();
   const { width } = useWindowSize();
+
+   
 
   useEffect(() => {
     if (a4Ref?.current) return;
     if (!mainRef.current) return;
     dispatch(actions.setRef({ ...mainRef }));
   }, [a4Ref, dispatch, width]);
-
-  if (!tools || !isArrayValid(tools, true)) return null;
 
   return (
     <AspectRatio
@@ -46,12 +45,11 @@ function A4({
     >
       <div className="row-span-1"></div>
       <div className="row-span-11 grid gap-2 grid-rows-5">
-        {readFromState && toolFromState && (
-          <ToolCard isLocal tool={toolFromState as any} />
+        {readFromState && createToolState.tool && (
+          <ToolCard isLocal tool={createToolState.tool as any} />
         )}
-        {tools.map((tool, i) => (
-          <ToolCard tool={tool} key={i}></ToolCard>
-        ))}
+        {tools &&
+          tools.map((tool, i) => <ToolCard tool={tool} key={i}></ToolCard>)}
       </div>
     </AspectRatio>
   );
@@ -82,3 +80,11 @@ export function getRandomImage() {
 
  font-size: 1.5rem/* 24px */
 //  line-height: 2rem/* 32px */;
+/*
+"INFO : some string"
+"INFO : some other string"
+"INFO : some other string with any kind of character ?+=-099823402371024fdn pioj"
+"INFO : some string with numbers 023904283095803"
+"INFO : some string that can have any kind of info ;sd;d;dsf;dsfdf;d"
+"INFO : some simple string"
+*/

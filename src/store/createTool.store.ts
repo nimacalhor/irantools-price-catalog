@@ -54,9 +54,14 @@ const createToolSlice = createSlice({
   reducers: {
     setTool(
       store: CreateToolStore,
-      action: PayloadAction<CreateToolStore["tool"]>
+      action: PayloadAction<CreateToolStore["tool"] | undefined>
     ) {
-      store.tool = { ...store.tool, ...action.payload };
+      if (!action.payload) store.tool = initialState.tool;
+      else
+        store.tool = {
+          ...{ ...store.tool, detail: { ...store.tool.detail } },
+          ...{ ...action.payload, detail: { ...action.payload.detail } },
+        };
     },
     removeTool(store: CreateToolStore) {
       store.tool = initialState.tool;

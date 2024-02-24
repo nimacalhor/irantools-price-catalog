@@ -128,9 +128,9 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
         title: `محصول با موفقیت افزوده شد ✅`,
       });
       form.reset();
+      dispatch(actions.setTool())
     }
     dispatch(actions.setPending(false));
-
   }
 }
 
