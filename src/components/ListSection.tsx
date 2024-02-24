@@ -1,20 +1,19 @@
 "use client";
 import PrintComponent from "@/components/PrintComponent";
-import { useRef, useState } from "react";
+import { ComponentProps, useRef, useState } from "react";
 import MainButtons from "../components/MainButtons";
 
-type ListSectionProps = {};
+type ListSectionProps = {
+  tools?: ComponentProps<typeof PrintComponent>["tools"];
+};
 
-function ListSection({}: ListSectionProps) {
-
+function ListSection({ tools }: ListSectionProps) {
   return (
     <>
       <MainButtons></MainButtons>
-      <PrintComponent />
+      <PrintComponent tools={tools} />
     </>
   );
-
-
 }
 
 export default ListSection;
