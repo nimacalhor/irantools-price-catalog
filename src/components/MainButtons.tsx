@@ -5,6 +5,7 @@ import { faFilter, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import ReactToPrint from "react-to-print";
 import FilterDialog from "./FilterDialog";
+import Pagination from "./Pagination";
 
 type MainButtonsProps = {};
 
@@ -37,6 +38,7 @@ function MainButtons({}: MainButtonsProps) {
           )}
           content={() => printComponentRef?.current}
         />
+        <Pagination pages={12}/>
       </section>
     </>
   );

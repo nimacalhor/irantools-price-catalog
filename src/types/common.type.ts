@@ -1,6 +1,6 @@
 export type ListCriteria = {
-  limit?: string;
-  page?: string;
+  limit?: number;
+  page?: number;
   select?: string;
   sort?: string;
   populate?: string;
