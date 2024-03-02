@@ -1,6 +1,7 @@
+import { getBrandList } from "@/api/brand.api";
+import { getCategoryList } from "@/api/category.api";
 import { getToolList } from "@/api/tools.api";
 import ListSection from "@/components/ListSection";
-import { DEFAULT_PAGE } from "@/constants/criteria.constants";
 import { validateCriteria } from "@/utils/criteria.util";
 import { getZodPersianErrorMessage } from "@/utils/error.util";
 
@@ -9,24 +10,54 @@ export default async function Home({
 }: {
   searchParams: { [key: string]: string };
 }) {
-  console.log({ searchParams });
-  const { page } = searchParams;
-  const validateCriteriaResult = validateCriteria({ page });
+  // pagination
+  const { page, title, category, brand, code } = searchParams;
+  const validateCriteriaResult = validateCriteria({
+    page,
+    title,
+    category,
+    brand,
+    code,
+  });
+  console.log({ validateCriteriaResult });
 
   if (!validateCriteriaResult.success)
     throw new Error(getZodPersianErrorMessage(validateCriteriaResult.error));
 
-  const toolListResponse = await getToolList(validateCriteriaResult.data);
+  // entity fetching
+  const [brandListResult, categoryListResult, toolListResult] =
+    await Promise.all([getBrandList(), getCategoryList(), getToolList()]);
 
-  if (!toolListResponse.ok) throw new Error(toolListResponse.message);
+  // entity validation
+  const { ok: brandOk } = brandListResult;
+  const { ok: categoryOk } = categoryListResult;
+  const { ok: toolOk } = toolListResult;
 
-  const { data: toolList, pagination } = toolListResponse;
+  if (!brandOk || !categoryOk || !toolOk)
+    throw new Error(
+      `${(brandListResult as any).message || ""} , ${
+        (categoryListResult as any).message || ""
+      }, ${(toolListResult as any).message || ""}`
+    );
+
+  // transforming entities
+  const brands = brandListResult.data.map((brand) => ({
+    _id: brand._id,
+    value: brand.title,
+  }));
+  const categories = categoryListResult.data.map((ctg) => ({
+    _id: ctg._id,
+    value: ctg.title,
+  }));
+
+  const { data: toolList, pagination } = toolListResult;
 
   return (
     <>
       <section className="">
         <ListSection
-          pagination={{ ...pagination }}
+          filterProps={{ brands, categories }}
+          pagination={{ ...pagination, baseHref: "" }}
           tools={toolList.map((tool) => ({ ...tool, image: tool.image.path }))}
         />
       </section>

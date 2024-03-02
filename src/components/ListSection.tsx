@@ -6,12 +6,16 @@ import MainButtons from "../components/MainButtons";
 type ListSectionProps = {
   tools?: ComponentProps<typeof PrintComponent>["tools"];
   pagination?: ComponentProps<typeof MainButtons>["pagination"];
+  filterProps?: ComponentProps<typeof MainButtons>["dialogFormProps"];
 };
 
-function ListSection({ tools, pagination }: ListSectionProps) {
+function ListSection({ tools, pagination, filterProps }: ListSectionProps) {
   return (
     <>
-      <MainButtons pagination={pagination}></MainButtons>
+      <MainButtons
+        dialogFormProps={filterProps}
+        pagination={pagination}
+      ></MainButtons>
       <PrintComponent tools={tools} />
     </>
   );

@@ -18,6 +18,7 @@ type PaginationProps = {
   hasNextPage?: boolean;
   prevPage?: any;
   nextPage?: number;
+  baseHref: string;
 };
 
 function Pagination({
@@ -28,6 +29,7 @@ function Pagination({
   page,
   prevPage,
   totalPages,
+  baseHref,
 }: PaginationProps) {
   if (!page || !totalPages) return null;
 
@@ -44,20 +46,13 @@ function Pagination({
   return (
     <>
       <_Pagination>
-
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="#" />
+        </PaginationItem>
         <PaginationContent>
-          {hasPrevPage && (
-            <PaginationPrevious onClick={handlePageClick(prevPage)} />
-          )}
+          {hasPrevPage && <PaginationPrevious href={getHref(prevPage)} />}
           {group1.map((n, i) => (
-            <PaginationLink
-              onClick={handlePageClick(n)}
-              key={i}
-              isActive={n === page}
-            >
+            <PaginationLink href={getHref(n)} key={i} isActive={n === page}>
               {n}
             </PaginationLink>
           ))}
@@ -67,11 +62,7 @@ function Pagination({
                 <PaginationEllipsis />
               </PaginationItem>
               {group2.map((n, i) => (
-                <PaginationLink
-                  onClick={handlePageClick(n)}
-                  key={i}
-                  isActive={n === page}
-                >
+                <PaginationLink href={getHref(n)} key={i} isActive={n === page}>
                   {n}
                 </PaginationLink>
               ))}
@@ -83,26 +74,22 @@ function Pagination({
                 <PaginationEllipsis />
               </PaginationItem>
               {group3.map((n, i) => (
-                <PaginationLink
-                  onClick={handlePageClick(n)}
-                  key={i}
-                  isActive={n === page}
-                >
+                <PaginationLink href={getHref(n)} key={i} isActive={n === page}>
                   {n}
                 </PaginationLink>
               ))}
             </>
           )}
           {hasNextPage && nextPage && (
-            <PaginationNext onClick={handlePageClick(nextPage)} />
+            <PaginationNext href={getHref(nextPage)} />
           )}
         </PaginationContent>
       </_Pagination>
     </>
   );
 
-  function handlePageClick(pageNumber: number) {
-    return () => (onPageChange ? onPageChange(pageNumber) : null);
+  function getHref(pageNumber: number) {
+    return `${baseHref}?page=${pageNumber}`;
   }
 }
 

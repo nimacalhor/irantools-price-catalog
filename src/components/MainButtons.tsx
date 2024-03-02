@@ -8,9 +8,12 @@ import FilterDialog from "./FilterDialog";
 import Pagination from "./Pagination";
 import { ComponentProps } from "react";
 
-type MainButtonsProps = { pagination?: ComponentProps<typeof Pagination> };
+type MainButtonsProps = {
+  pagination?: ComponentProps<typeof Pagination>;
+  dialogFormProps?: ComponentProps<typeof FilterDialog>["formProps"];
+};
 
-function MainButtons({ pagination }: MainButtonsProps) {
+function MainButtons({ pagination, dialogFormProps }: MainButtonsProps) {
   const { printComponentRef } = useSelector((state: RootState) => state.print);
   const shouldRenderPagination =
     pagination && pagination.page && pagination.page > 1;
@@ -18,7 +21,7 @@ function MainButtons({ pagination }: MainButtonsProps) {
   return (
     <>
       <section className="flex justify-center items-center gap-3 mt-7 mb-10 flex-wrap">
-        <FilterDialog>
+        <FilterDialog formProps={dialogFormProps}>
           <IconButton
             icon={faFilter}
             size={"lg"}
