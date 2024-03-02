@@ -12,6 +12,7 @@ export default async function Home() {
     <>
       <section className="">
         <ListSection
+          pagination={{ ...pagination }}
           tools={toolList.map((tool) => ({ ...tool, image: tool.image.path }))}
         />
       </section>

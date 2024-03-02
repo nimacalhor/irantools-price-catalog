@@ -31,3 +31,11 @@ export function removeLastItem(arr: any[]): any[] {
     return [];
   }
 }
+
+export function fillToNumber(from: number, to: number): number[] {
+  if (from > to) {
+    throw new Error("ورودی نامعتبر: 'from' باید کمتر یا مساوی 'to' باشد.");
+  }
+
+  return Array.from({ length: to - from + 3 }, (_, index) => from + index - 2);
+}

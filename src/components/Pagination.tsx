@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Pagination as _Pagination,
   PaginationContent,
@@ -7,36 +8,124 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/ui/pagination.ui";
+import { fillToNumber } from "@/utils/array.util";
 
-import React from "react";
+type PaginationProps = {
+  onPageChange?: (newPage: number) => void;
+  totalPages?: number;
+  page?: number;
+  hasPrevPage?: boolean;
+  hasNextPage?: boolean;
+  prevPage?: any;
+  nextPage?: number;
+};
 
-type PaginationProps = {};
+function Pagination({
+  onPageChange,
+  hasNextPage,
+  hasPrevPage,
+  nextPage,
+  page,
+  prevPage,
+  totalPages,
+}: PaginationProps) {
+  if (!page || !totalPages) return null;
 
-function Pagination({}: PaginationProps) {
+  let group1: number[] = [],
+    group2: number[] = [],
+    group3: number[] = [];
+
+  try {
+    [group1, group2, group3] = getPaginateGroups(page, totalPages);
+  } catch (error) {
+    return null;
+  }
+
   return (
     <>
       <_Pagination>
         <PaginationContent>
-
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
+          {hasPrevPage && (
+            <PaginationPrevious onClick={handlePageClick(prevPage)} />
+          )}
+          {group1.map((n, i) => (
+            <PaginationLink
+              onClick={handlePageClick(n)}
+              key={i}
+              isActive={n === page}
+            >
+              {n}
+            </PaginationLink>
+          ))}
+          {group2 && (
+            <>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              {group2.map((n, i) => (
+                <PaginationLink
+                  onClick={handlePageClick(n)}
+                  key={i}
+                  isActive={n === page}
+                >
+                  {n}
+                </PaginationLink>
+              ))}
+            </>
+          )}
+          {group3 && (
+            <>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              {group3.map((n, i) => (
+                <PaginationLink
+                  onClick={handlePageClick(n)}
+                  key={i}
+                  isActive={n === page}
+                >
+                  {n}
+                </PaginationLink>
+              ))}
+            </>
+          )}
+          {hasNextPage && nextPage && (
+            <PaginationNext onClick={handlePageClick(nextPage)} />
+          )}
         </PaginationContent>
       </_Pagination>
     </>
   );
+
+  function handlePageClick(pageNumber: number) {
+    return () => (onPageChange ? onPageChange(pageNumber) : null);
+  }
 }
 
 export default Pagination;
+
+export function getPaginateGroups(
+  currentPage: number,
+  totalPages: number
+): number[][] {
+  const [x, y] = [currentPage, totalPages];
+
+  if (x <= 0 || y <= 0 || y < x) {
+    throw new Error("current page should be less than total pages");
+  }
+
+  if (x <= 5) {
+    if (y <= 5) return [Array.from({ length: totalPages }, (_, i) => i + 1)];
+    return [Array.from({ length: 6 }, (_, i) => i + 1), [y - 2, y - 1, y]];
+  }
+
+  if (y - 5 > x && x > 5) {
+    return [
+      [1, 2, 3],
+      Array.from({ length: 5 }, (_, i) => x - 2 + i),
+      [y - 2, y - 1, y],
+    ];
+  }
+
+  return [[1, 2, 3], fillToNumber(x, y)];
+}

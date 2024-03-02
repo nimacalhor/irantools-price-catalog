@@ -5,12 +5,13 @@ import MainButtons from "../components/MainButtons";
 
 type ListSectionProps = {
   tools?: ComponentProps<typeof PrintComponent>["tools"];
+  pagination?: ComponentProps<typeof MainButtons>["pagination"];
 };
 
-function ListSection({ tools }: ListSectionProps) {
+function ListSection({ tools, pagination }: ListSectionProps) {
   return (
     <>
-      <MainButtons></MainButtons>
+      <MainButtons pagination={pagination}></MainButtons>
       <PrintComponent tools={tools} />
     </>
   );

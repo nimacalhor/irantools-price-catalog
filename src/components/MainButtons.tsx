@@ -5,11 +5,15 @@ import { faFilter, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import ReactToPrint from "react-to-print";
 import FilterDialog from "./FilterDialog";
+import Pagination from "./Pagination";
+import { ComponentProps } from "react";
 
-type MainButtonsProps = {};
+type MainButtonsProps = { pagination?: ComponentProps<typeof Pagination> };
 
-function MainButtons({}: MainButtonsProps) {
+function MainButtons({ pagination }: MainButtonsProps) {
   const { printComponentRef } = useSelector((state: RootState) => state.print);
+  const shouldRenderPagination =
+    pagination && pagination.page && pagination.page > 1;
 
   return (
     <>
@@ -37,6 +41,7 @@ function MainButtons({}: MainButtonsProps) {
           )}
           content={() => printComponentRef?.current}
         />
+        {pagination && shouldRenderPagination && <Pagination {...pagination} />}
       </section>
     </>
   );
