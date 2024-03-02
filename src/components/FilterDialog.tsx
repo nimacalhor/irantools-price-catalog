@@ -18,16 +18,16 @@ function FilterDialog({ children }: FilterDialogProps) {
     <>
       <Dialog>
         <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="sm:max-w-screen-lg">
+        <DialogContent className="">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>اعمال فیلتر جستجو</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when {"you'"}re
-              done.
+              نمایش لیست محصولات نسبت به فیلتر های اعمال شده
             </DialogDescription>
           </DialogHeader>
+          <div></div>
           <DialogFooter>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit">ثبت</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

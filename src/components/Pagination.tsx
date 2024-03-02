@@ -44,6 +44,10 @@ function Pagination({
   return (
     <>
       <_Pagination>
+
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
         <PaginationContent>
           {hasPrevPage && (
             <PaginationPrevious onClick={handlePageClick(prevPage)} />

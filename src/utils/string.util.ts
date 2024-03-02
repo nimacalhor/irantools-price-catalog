@@ -18,3 +18,15 @@ export function uniqueDateStr(): string {
 
   return `${dateString}${result}`;
 }
+
+export function objectToParams(params: Record<string, any>): string {
+  const searchParams = new URLSearchParams();
+
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      searchParams.append(key, params[key].toString());
+    }
+  }
+
+  return searchParams.toString();
+}
