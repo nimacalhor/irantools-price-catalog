@@ -16,6 +16,7 @@ import { getErrorMessage } from "@/utils/error.util";
 import { Axios, AxiosResponse } from "axios";
 import customAxios from "@/lib/axios";
 import { cache } from "react";
+import { objectToParams } from "@/utils/string.util";
 
 export async function createTool(
   toolData: CreateToolRequestBody
@@ -39,10 +40,12 @@ export const getToolList = cache(async function (
   criteria?: ListCriteria
 ): Promise<ApiReturnType<ToolListResponse["data"]>> {
   try {
+    const searchParams = criteria ? objectToParams(criteria) : "";
+    console.log({ searchParams });
     const { data } = await customAxios.get<
       any,
       AxiosResponse<ToolListResponse | ListErrorResponse>
-    >(`/tools?`);
+    >(`/tools?${searchParams}`);
 
     if (data.ok)
       return {

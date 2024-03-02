@@ -39,3 +39,12 @@ export function fillToNumber(from: number, to: number): number[] {
 
   return Array.from({ length: to - from + 3 }, (_, index) => from + index - 2);
 }
+
+export function pickFirstPresent<T>(arr: T[]): T | undefined {
+  for (const value of arr) {
+    if (value !== null && value !== undefined) {
+      return value;
+    }
+  }
+  return undefined;
+}

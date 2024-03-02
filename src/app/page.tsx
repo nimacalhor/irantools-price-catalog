@@ -2,6 +2,7 @@ import { getBrandList } from "@/api/brand.api";
 import { getCategoryList } from "@/api/category.api";
 import { getToolList } from "@/api/tools.api";
 import ListSection from "@/components/ListSection";
+import { pickFirstPresent } from "@/utils/array.util";
 import { validateCriteria } from "@/utils/criteria.util";
 import { getZodPersianErrorMessage } from "@/utils/error.util";
 
@@ -19,14 +20,17 @@ export default async function Home({
     brand,
     code,
   });
-  console.log({ validateCriteriaResult });
 
   if (!validateCriteriaResult.success)
     throw new Error(getZodPersianErrorMessage(validateCriteriaResult.error));
 
   // entity fetching
   const [brandListResult, categoryListResult, toolListResult] =
-    await Promise.all([getBrandList(), getCategoryList(), getToolList()]);
+    await Promise.all([
+      getBrandList(),
+      getCategoryList(),
+      getToolList(validateCriteriaResult.data),
+    ]);
 
   // entity validation
   const { ok: brandOk } = brandListResult;
@@ -35,9 +39,11 @@ export default async function Home({
 
   if (!brandOk || !categoryOk || !toolOk)
     throw new Error(
-      `${(brandListResult as any).message || ""} , ${
-        (categoryListResult as any).message || ""
-      }, ${(toolListResult as any).message || ""}`
+      pickFirstPresent<string>([
+        (brandListResult as any).message,
+        (categoryListResult as any).message,
+        (toolListResult as any).message,
+      ])
     );
 
   // transforming entities

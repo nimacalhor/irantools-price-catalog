@@ -4,7 +4,7 @@ export type ListCriteria = {
   select?: string;
   sort?: string;
   populate?: string;
-};
+} & Record<string, any>;
 
 export type ApiReturnType<D> =
   | {
