@@ -5,6 +5,7 @@ import ListSection from "@/components/ListSection";
 import { pickFirstPresent } from "@/utils/array.util";
 import { validateCriteria } from "@/utils/criteria.util";
 import { getZodPersianErrorMessage } from "@/utils/error.util";
+import { filterEmptyValues } from "@/utils/object.util";
 
 export default async function Home({
   searchParams,
@@ -12,14 +13,16 @@ export default async function Home({
   searchParams: { [key: string]: string };
 }) {
   // pagination
-  const { page, title, category, brand, code } = searchParams;
-  const validateCriteriaResult = validateCriteria({
-    page,
-    title,
-    category,
-    brand,
-    code,
-  });
+  const { page, name, category, brand, code } = searchParams;
+  const validateCriteriaResult = validateCriteria(
+    filterEmptyValues({
+      page,
+      name,
+      category,
+      brand,
+      code,
+    })
+  );
 
   if (!validateCriteriaResult.success)
     throw new Error(getZodPersianErrorMessage(validateCriteriaResult.error));
@@ -31,6 +34,7 @@ export default async function Home({
       getCategoryList(),
       getToolList(validateCriteriaResult.data),
     ]);
+     
 
   // entity validation
   const { ok: brandOk } = brandListResult;

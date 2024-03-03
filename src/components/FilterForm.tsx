@@ -42,7 +42,7 @@ function FilterForm({
       brand: "",
       category: "",
       code: "",
-      title: "",
+      name: "",
     },
   });
   const router = useRouter();
@@ -54,7 +54,7 @@ function FilterForm({
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
-              name="title"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>نام محصول</FormLabel>

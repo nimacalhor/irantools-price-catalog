@@ -41,7 +41,9 @@ export const getToolList = cache(async function (
 ): Promise<ApiReturnType<ToolListResponse["data"]>> {
   try {
     const searchParams = criteria ? objectToParams(criteria) : "";
-    console.log({ searchParams });
+    const url = `/tools?${searchParams}`;
+    console.log({ searchParams, url });
+
     const { data } = await customAxios.get<
       any,
       AxiosResponse<ToolListResponse | ListErrorResponse>

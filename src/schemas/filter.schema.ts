@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const filterSchema = z.object({
-  title: z
-    .string({ invalid_type_error: `title باید مقداری متنی باشد` })
+  name: z
+    .string({ invalid_type_error: `name باید مقداری متنی باشد` })
     .optional(),
   code: z
     .string({ invalid_type_error: `code باید مقداری متنی باشد` })

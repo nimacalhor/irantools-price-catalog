@@ -29,9 +29,9 @@ export const listCriteriaSchema = z.object({
     .string({ invalid_type_error: `مقدار "category" باید متن باشد` })
     .min(1, { message: `مقدار "category" باید حداقل 1 کاراکتر داشته باشد` })
     .optional(),
-  title: z
-    .string({ invalid_type_error: `مقدار "title" باید متن باشد` })
-    .min(1, { message: `مقدار "title" باید حداقل 1 کاراکتر داشته باشد` })
+  name: z
+    .string({ invalid_type_error: `مقدار "name" باید متن باشد` })
+    .min(1, { message: `مقدار "name" باید حداقل 1 کاراکتر داشته باشد` })
     .optional(),
   code: z
     .string({ invalid_type_error: `مقدار "code" باید متن باشد` })
