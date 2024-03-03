@@ -88,10 +88,11 @@ export function ToolCardDescription({
       case "bulletList":
         return (
           <div key={index} className="pr-6">
-            <ul className="list-disc gap-0 flex flex-col h-min" key={index}>
+            <ul className="list-none gap-0 flex flex-col h-min" key={index}>
               {node.content.map(function (listItem, listItemIndex) {
                 return (
-                  <li className="p-0 h-min m-0" key={listItemIndex}>
+                  <li className="p-0 h-min m-0 translate-x-3 relative" key={listItemIndex}>
+                    <span className="absolute top-1 -right-3">-</span>
                     {listItem.content?.map(function (
                       contentNode,
                       contentIndex

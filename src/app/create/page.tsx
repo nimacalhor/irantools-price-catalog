@@ -8,18 +8,19 @@ import { getToolList } from "@/api/tools.api";
 type pageProps = {};
 
 async function page({}: pageProps) {
-  const [brandListResult, categoryListResult, toolListResult] =
-    await Promise.all([getBrandList(), getCategoryList(), getToolList()]);
+  const [brandListResult, categoryListResult] = await Promise.all([
+    getBrandList(),
+    getCategoryList(),
+  ]);
 
   const { ok: brandOk } = brandListResult;
   const { ok: categoryOk } = categoryListResult;
-  const { ok: toolOk } = toolListResult;
 
-  if (!brandOk || !categoryOk || !toolOk)
+  if (!brandOk || !categoryOk)
     throw new Error(
       `${(brandListResult as any).message || ""} , ${
         (categoryListResult as any).message || ""
-      }, ${(toolListResult as any).message || ""}`
+      }`
     );
 
   const brands = brandListResult.data;
@@ -36,14 +37,7 @@ async function page({}: pageProps) {
         <section className="xl:col-span-5 h-screen xl:sticky top-0 bottom-0 right-0 left-0 relative flex justify-center items-center">
           <div className="p-4 absolute top-8 bottom-8 right-0 left-0 bg-gradient-to-bl rounded-sm border border-border">
             <ScrollArea className="h-full">
-              <A4
-                readFromState={true}
-                tools={toolListResult.data.map((tool) => ({
-                  ...tool,
-                  image: tool.image.path,
-                }))}
-                className="w-full mx-auto"
-              />
+              <A4 readFromState={true} className="w-full mx-auto" />
             </ScrollArea>
           </div>
         </section>

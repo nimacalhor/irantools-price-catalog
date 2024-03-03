@@ -100,7 +100,7 @@ export function SettingCard({
               quality={100}
               src={imageSrc}
               fill
-              className="object-contain rounded-lg"
+              className="object-contain rounded-lg mix-blend-multiply"
               alt="jfksdla"
             />
           )}
@@ -109,7 +109,7 @@ export function SettingCard({
       </CardContent>
       <CardFooter className="flex flex-col items-end gap-3">
         <Input
-          className="text-2xl py-5 border-0 shadow-none"
+          className="text-xl py-5 border-0 shadow-none"
           placeholder={`نام ${cardType}`}
           type="text"
           value={title}

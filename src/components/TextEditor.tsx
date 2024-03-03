@@ -14,10 +14,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { actions } from "@/store/createTool.store";
 
+const defaultContent = ``;
+
 type TextEditorProps = {};
 
 function TextEditor({}: TextEditorProps) {
-  const [value, setValue] = useState("");
   const dispatch = useDispatch();
 
   const editor = useEditor({
@@ -33,10 +34,10 @@ function TextEditor({}: TextEditorProps) {
         levels: [1, 2, 3],
       }),
     ],
-    content: "<p>Hello World! 🌎️</p>",
+    content: defaultContent,
     onBlur({ editor }) {
-      const result = editor.getJSON()
-       
+      const result = editor.getJSON();
+
       dispatch(actions.setTool({ description: result }));
       console.log({ result });
     },
