@@ -4,19 +4,19 @@ import { ComponentProps, useRef, useState } from "react";
 import MainButtons from "../components/MainButtons";
 
 type ListSectionProps = {
-  tools?: ComponentProps<typeof PrintComponent>["tools"];
+  groupedTools?: ComponentProps<typeof PrintComponent>["groupedTools"];
   pagination?: ComponentProps<typeof MainButtons>["pagination"];
   filterProps?: ComponentProps<typeof MainButtons>["dialogFormProps"];
 };
 
-function ListSection({ tools, pagination, filterProps }: ListSectionProps) {
+function ListSection({ groupedTools, pagination, filterProps }: ListSectionProps) {
   return (
     <>
       <MainButtons
         dialogFormProps={filterProps}
         pagination={pagination}
       ></MainButtons>
-      <PrintComponent tools={tools} />
+      <PrintComponent groupedTools={groupedTools} />
     </>
   );
 }

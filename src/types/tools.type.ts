@@ -177,8 +177,8 @@ export type ToolDetailResponse = {
     };
     detail: {
       weight: string;
-      amountInSet: number;
-      amountInBulk: number;
+      amountInSet: string;
+      amountInBulk: string;
       length: string;
       material: string;
       _id: string;

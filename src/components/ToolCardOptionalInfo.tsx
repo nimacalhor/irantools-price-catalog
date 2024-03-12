@@ -1,15 +1,13 @@
 "use client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getFSStyle } from "@/utils/style.util";
 import {
   faCube,
   faCubes,
   faPuzzlePiece,
   faRulerHorizontal,
-  faTools,
-  faWeightScale,
+  faWeightScale
 } from "@fortawesome/free-solid-svg-icons";
-import { getFSStyle } from "@/utils/style.util";
-import { Tool } from "@/types/tools.type";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export function ToolCardOptionalInfo({
   parentW,
@@ -17,8 +15,8 @@ export function ToolCardOptionalInfo({
 }: {
   parentW?: number | null;
   detail?: {
-    amountInBulk?: string | number;
-    amountInSet?: string | number;
+    amountInBulk?: string;
+    amountInSet?: string;
     length?: string;
     material?: string;
     weight?: string;

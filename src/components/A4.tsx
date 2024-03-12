@@ -1,37 +1,62 @@
 "use client";
 import useWindowSize from "@/hooks/useWindowSize.hook";
 import { RootState } from "@/store";
-import { actions } from "@/store/toolList.store";
+import { actions as toolListActions } from "@/store/toolList.store";
+import { actions as createToolActions } from "@/store/createTool.store";
 import { AspectRatio } from "@/ui/aspect-ratio.ui";
 import { isArrayValid } from "@/utils/array.util";
 import { cn } from "@/utils/chadcn.util";
 import { ComponentProps, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToolCard } from "./ToolCard";
+import { areAllValuesNullish } from "@/utils/object.util";
 
 function A4({
   className,
   tools,
   readFromState = false,
+  toolDetail,
 }: {
   className?: string;
   tools?: ComponentProps<typeof ToolCard>["tool"][];
   readFromState?: boolean;
+  toolDetail?: ComponentProps<typeof ToolCard>["tool"];
 }) {
-   
   const mainRef = useRef<HTMLDivElement | null>(null);
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
   const createToolState = useSelector((state: RootState) => state.createTool);
   const dispatch = useDispatch();
   const { width } = useWindowSize();
 
-   
-
   useEffect(() => {
     if (a4Ref?.current) return;
     if (!mainRef.current) return;
-    dispatch(actions.setRef({ ...mainRef }));
+    dispatch(toolListActions.setRef({ ...mainRef }));
   }, [a4Ref, dispatch, width]);
+
+  (() => {
+    // INFO : check if code reaches here
+    debugger;
+    //
+    if (!readFromState) return;
+    // INFO : check condition
+    debugger;
+    //
+    if (!toolDetail) return;
+    // INFO : check condition
+    debugger;
+    //
+    const { size, detail, ...firstLvlData } = createToolState.tool;
+    if (!areAllValuesNullish(firstLvlData) || !areAllValuesNullish(detail))
+      return;
+    // INFO : check condition
+    debugger;
+    //
+    // INFO : check toolDetail
+    debugger;
+    //
+    dispatch(createToolActions.setTool(toolDetail));
+  })();
 
   return (
     <AspectRatio
@@ -76,15 +101,3 @@ export function getRandomImage() {
   ];
   return getRandomItem<string>(imageArr);
 }
-/*
-
- font-size: 1.5rem/* 24px */
-//  line-height: 2rem/* 32px */;
-/*
-"INFO : some string"
-"INFO : some other string"
-"INFO : some other string with any kind of character ?+=-099823402371024fdn pioj"
-"INFO : some string with numbers 023904283095803"
-"INFO : some string that can have any kind of info ;sd;d;dsf;dsfdf;d"
-"INFO : some simple string"
-*/

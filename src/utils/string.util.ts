@@ -35,3 +35,7 @@ export function objectToParams(params: Record<string, any>): string {
    
   return searchParams.toString();
 }
+
+export function addSubStrToStart(substring: string, stringValue: string): string {
+  return stringValue.startsWith(substring) ? stringValue : substring + stringValue;
+}

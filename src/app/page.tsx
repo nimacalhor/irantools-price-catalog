@@ -6,6 +6,7 @@ import { pickFirstPresent } from "@/utils/array.util";
 import { validateCriteria } from "@/utils/criteria.util";
 import { getZodPersianErrorMessage } from "@/utils/error.util";
 import { filterEmptyValues } from "@/utils/object.util";
+import { groupItemsBySize } from "@/utils/tool.util";
 
 export default async function Home({
   searchParams,
@@ -34,7 +35,6 @@ export default async function Home({
       getCategoryList(),
       getToolList(validateCriteriaResult.data),
     ]);
-     
 
   // entity validation
   const { ok: brandOk } = brandListResult;
@@ -61,6 +61,8 @@ export default async function Home({
   }));
 
   const { data: toolList, pagination } = toolListResult;
+  const toolListWithImage = toolList.map((tool) => ({ ...tool, image: tool.image.path, id: tool._id }))
+  const groupedTools = groupItemsBySize(toolListWithImage);
 
   return (
     <>
@@ -68,7 +70,7 @@ export default async function Home({
         <ListSection
           filterProps={{ brands, categories }}
           pagination={{ ...pagination, baseHref: "" }}
-          tools={toolList.map((tool) => ({ ...tool, image: tool.image.path }))}
+          groupedTools={groupedTools}
         />
       </section>
     </>

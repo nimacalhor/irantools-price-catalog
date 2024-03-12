@@ -6,6 +6,7 @@ import { memo } from "react";
 import { AspectRatio } from "@/ui/aspect-ratio.ui";
 import moduleStyles from "./ToolCardImage.module.css";
 import useTheme from "@/hooks/useTheme.hook";
+import { addSubStrToStart } from "@/utils/string.util";
 
 function ToolCardImage({
   image,
@@ -22,9 +23,20 @@ function ToolCardImage({
     theme === "orange-dark",
   ];
 
-  const imagePath = isLocal
-    ? image
-    : process.env.NEXT_PUBLIC_API_URL + `/${image}`;
+  // INFO : check image
+  debugger;
+  //
+
+  if (!image) return null;
+
+  const imagePath = addSubStrToStart(
+    process.env.NEXT_PUBLIC_API_URL + "/",
+    image
+  );
+
+  // INFO : check imagePath
+  debugger;
+  //
 
   return (
     <div className="col-span-3 relative ">

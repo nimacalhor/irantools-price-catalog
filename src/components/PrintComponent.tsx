@@ -8,10 +8,10 @@ import { actions } from "@/store/print.store";
 import { isArrayValid } from "@/utils/array.util";
 
 type PrintComponentProps = {
-  tools?: ComponentProps<typeof A4>["tools"];
+  groupedTools?: ComponentProps<typeof A4>["tools"][];
 };
 
-function PrintComponent({ tools }: PrintComponentProps) {
+function PrintComponent({ groupedTools }: PrintComponentProps) {
   const { printComponentRef } = useSelector((state: RootState) => state.print);
   const dispatch = useDispatch();
   const mainRef = useRef<HTMLElement>(null);
@@ -22,7 +22,7 @@ function PrintComponent({ tools }: PrintComponentProps) {
     dispatch(actions.setRef({ ...mainRef }));
   }, [printComponentRef, dispatch]);
 
-  if (!tools || !isArrayValid(tools, true))
+  if (!groupedTools || !isArrayValid(groupedTools, true))
     return (
       <div className="mx-auto max-w-screen-xl flex justify-center items-center h-[60vh]">
         <h2 className="text-3xl">هیچ ابزاری یافت نشد 😟</h2>
@@ -37,7 +37,9 @@ function PrintComponent({ tools }: PrintComponentProps) {
           "mx-auto group max-w-screen-xl xl:grid xl:grid-cols-2 xl:gap-5 print:block"
         )}
       >
-        <A4 tools={tools}></A4>
+        {groupedTools.map((tools, i) => (
+          <A4 key={i} tools={tools}></A4>
+        ))}
       </main>
     </>
   );
