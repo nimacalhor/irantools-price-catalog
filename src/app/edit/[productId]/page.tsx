@@ -35,10 +35,10 @@ async function page({ params }: pageProps) {
   const toolDetail = {
     ...toolDetailResult.data,
     image: toolDetailResult.data.image.path,
+    id: toolDetailResult.data._id,
   };
-  // INFO : check toolDetail
-  debugger;
-  //
+
+  const { brand, category, __v, _id, image, ...formDefaultValues } = toolDetail;
 
   return (
     <section className="xl:grid grid-cols-12 gap-5 relative">
@@ -46,6 +46,12 @@ async function page({ params }: pageProps) {
         brands={brands}
         categories={categories}
         className="xl:col-span-7 pt-10"
+        isEdit={true}
+        values={{
+          ...formDefaultValues,
+          brand: brand?._id || "",
+          category: category?._id || "",
+        }}
       />
       <section className="xl:col-span-5 h-screen xl:sticky top-0 bottom-0 right-0 left-0 relative flex justify-center items-center">
         <div className="p-4 absolute top-8 bottom-8 right-0 left-0 bg-gradient-to-bl rounded-sm border border-border">

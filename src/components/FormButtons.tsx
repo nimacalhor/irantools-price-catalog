@@ -7,26 +7,66 @@ import {
   faEye,
   faFloppyDisk,
   faMinus,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import IconButton from "./IconButton";
 import { FormType } from "./ToolForm";
-import { deepCopy } from "@/utils/object.util";
+import USureDialog from "@/components/USureDialog";
+import { useTransition } from "react";
+import Spinner from "./Spinner";
+import { deleteToolAction } from "@/actions/tools.action";
+import { useToast } from "@/hooks/useToast.hook";
+import { useRouter } from "next/navigation";
 
-export function FormButtons({ form }: { form: FormType }) {
+export function FormButtons({
+  form,
+  isEdit = false,
+}: {
+  form: FormType;
+  isEdit?: boolean;
+}) {
   const dispatch = useDispatch();
-  const { size, image } = useSelector(
+  const { size, image, id } = useSelector(
     (state: RootState) => state.createTool.tool
   );
+
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
 
   const addButtonDisable = size === 5;
   const minusButtonDisable = size === 1;
 
   const isValid = form.formState.isValid && !form.formState.isValidating;
+  //  temp log
+  console.log("__________ isValid, formState in FormButtons", {
+    isValid,
+    formState: form.formState,
+    formValues: form.getValues(),
+  });
 
   return (
     <div className="flex flex-col md:flex-row gap-4 justify-end md:gap-2">
+      {isEdit && (
+        <USureDialog
+          onYes={deleteHandler}
+          text={"آیا از حذف محصول مطمین هستید ؟"}
+        >
+          <IconButton
+            size={"lg"}
+            variant={"destructive"}
+            type="button"
+            icon={faTrash}
+            isLoading={isPending}
+            className="justify-self-start"
+          >
+            <span>حذف محصول</span>
+          </IconButton>
+        </USureDialog>
+      )}
       <IconButton
         size={"lg"}
         icon={faEye}
@@ -85,7 +125,6 @@ export function FormButtons({ form }: { form: FormType }) {
     console.log({ detail });
 
     dispatch(actions.setTool(toolState));
-
   }
 
   function addHandler() {
@@ -94,5 +133,28 @@ export function FormButtons({ form }: { form: FormType }) {
 
   function minusHandler() {
     dispatch(actions.setSize((size || 2) - 1));
+  }
+
+  function deleteHandler() {
+    if (!id)
+      return toast({
+        title: `حذف محصول با موفقیت انجام نشد !`,
+        variant: "destructive",
+      });
+    startTransition(async () => {
+      const deleteResponse = await deleteToolAction(id);
+      if (deleteResponse.ok) {
+        toast({
+          title: `محصول با موفقیت حذف شد`,
+        });
+        router.replace("/");
+      } else {
+        toast({
+          title: `ابزار با موفقیت حذف نشد`,
+          description: deleteResponse.message,
+          variant: "destructive",
+        });
+      }
+    });
   }
 }

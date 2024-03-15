@@ -1,4 +1,5 @@
 "use client";
+import { actions } from "@/store/createTool.store";
 import { Separator } from "@/ui/separator.ui";
 import BulletList from "@tiptap/extension-bullet-list";
 import Heading from "@tiptap/extension-heading";
@@ -7,41 +8,81 @@ import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { useDispatch, useSelector } from "react-redux";
 import EditorButtons from "./EditorButtons";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { actions } from "@/store/createTool.store";
+import { RootState } from "@/store";
+import { useEffect, useState } from "react";
 
 const defaultContent = ``;
 
 type TextEditorProps = {};
 
 function TextEditor({}: TextEditorProps) {
+  const { description } = useSelector(
+    (state: RootState) => state.createTool.tool
+  );
   const dispatch = useDispatch();
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      BulletList,
-      Highlight,
-      Table,
-      TableCell,
-      TableHeader,
-      TableRow,
-      Heading.configure({
-        levels: [1, 2, 3],
-      }),
-    ],
-    content: defaultContent,
-    onBlur({ editor }) {
-      const result = editor.getJSON();
+  const [editor, setEditor] = useState<Editor | null>(
+    new Editor({
+      extensions: [
+        StarterKit,
+        BulletList,
+        Highlight,
+        Table,
+        TableCell,
+        TableHeader,
+        TableRow,
+        Heading.configure({
+          levels: [1, 2, 3],
+        }),
+      ],
+      content: defaultContent,
+      onBlur({ editor }) {
+        const result = editor.getJSON();
 
-      dispatch(actions.setTool({ description: result }));
-      console.log({ result });
-    },
-  });
+        dispatch(actions.setTool({ description: result }));
+      },
+    })
+  );
+
+  useEffect(() => {
+    if (!description) return;
+    if (!editor) return;
+
+    const editorTextContent = editor.getText();
+    if (editorTextContent !== "") return;
+
+    let _description = description;
+    try {
+      _description = JSON.parse(description);
+    } catch (error) {}
+
+    setEditor(
+      new Editor({
+        extensions: [
+          StarterKit,
+          BulletList,
+          Highlight,
+          Table,
+          TableCell,
+          TableHeader,
+          TableRow,
+          Heading.configure({
+            levels: [1, 2, 3],
+          }),
+        ],
+        content: _description,
+        onBlur({ editor }) {
+          const result = editor.getJSON();
+
+          dispatch(actions.setTool({ description: result }));
+        },
+      })
+    );
+  }, [description, dispatch, editor]);
 
   if (!editor) return null;
 
@@ -56,7 +97,7 @@ function TextEditor({}: TextEditorProps) {
           <EditorButtons editor={editor}></EditorButtons>
           <Separator className="w-full" />
         </div>
-        <EditorContent className="min-h-32" editor={editor} />
+        <EditorContent content="" className="min-h-32" editor={editor} />
       </section>
     </section>
   );

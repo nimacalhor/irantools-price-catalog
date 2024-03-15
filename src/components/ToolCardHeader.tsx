@@ -13,6 +13,7 @@ export function ToolCardHeader({
   code?: string;
   price?: string;
 }) {
+   
   if (!parentW) return null;
   const h3FS = parentW / 35 + "px";
   const idFS = parentW / 40 + "px";

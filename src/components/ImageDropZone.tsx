@@ -9,6 +9,7 @@ import { Button } from "@/ui/button.ui";
 import { RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "@/store/createTool.store";
+import { addSubStrToStart } from "@/utils/string.util";
 
 type ImageDropZoneProps = {};
 
@@ -21,8 +22,12 @@ export function ImageDropZone({}: ImageDropZoneProps) {
       dispatch(actions.setImageFile(acceptedFiles[0]));
       const reader = new FileReader();
       reader.readAsDataURL(acceptedFiles[0]);
-      reader.onloadend = () =>
+      reader.onloadend = () => {
+        // INFO : image loaded
+        debugger;
+        //
         dispatch(actions.setTool({ image: reader.result as string }));
+      };
     },
     [dispatch]
   );
@@ -38,11 +43,24 @@ export function ImageDropZone({}: ImageDropZoneProps) {
     },
   });
 
-  if (image)
+  const imagePath = !image
+    ? ""
+    : image.startsWith("data:")
+    ? image
+    : addSubStrToStart(process.env.NEXT_PUBLIC_API_URL + "/", image || "");
+  //  temp log
+  console.log("__________ imagePath in ImageDropZone", { imagePath });
+  if (image && imagePath) {
+    // INFO : check image and image path
+    debugger;
+    //
+  }
+
+  if (image && imagePath !== "")
     return (
       <div className="border-border border rounded-md relative overflow-hidden hover:cursor-pointer group h-60">
         <Image
-          src={image}
+          src={imagePath}
           fill
           alt="tool creating image"
           className="object-contain"

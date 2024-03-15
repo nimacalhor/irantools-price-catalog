@@ -14,6 +14,8 @@ type errorProps = {
 };
 
 function error({ error, reset }: errorProps) {
+  //  err log
+  console.error("__________ error in error", { error });
   return (
     <>
       <PageError message={error.message} reset={reset}></PageError>

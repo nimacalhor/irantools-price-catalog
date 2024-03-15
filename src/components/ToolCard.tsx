@@ -33,7 +33,7 @@ export function ToolCard({
   };
   isLocal?: ComponentProps<typeof ToolCardImage>["isLocal"];
 }) {
-  //
+   
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
   const width = (a4Ref as RefObject<HTMLDivElement>)?.current?.clientWidth;
 
@@ -52,6 +52,8 @@ export function ToolCard({
     id,
   } = tool;
 
+   
+
   let description: any | undefined = undefined;
 
   if (_description) {
@@ -64,9 +66,7 @@ export function ToolCard({
     } else description = _description;
   }
 
-  // INFO : check image
-  debugger;
-  //
+   
 
   return (
     <ToolCardTooltip toolId={id} isLocal={isLocal}>

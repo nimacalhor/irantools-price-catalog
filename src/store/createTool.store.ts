@@ -20,12 +20,13 @@ export type CreateToolStore = {
       length?: string;
       material?: string;
     };
+    id?: string;
   };
   imageFile: File | null;
   pending: boolean;
 };
 
-const initialState: CreateToolStore = {
+export const initialState: CreateToolStore = {
   tool: {
     size: 1,
     name: undefined,
@@ -43,6 +44,7 @@ const initialState: CreateToolStore = {
       length: undefined,
       material: undefined,
     },
+    id: undefined,
   },
   imageFile: null,
   pending: false,

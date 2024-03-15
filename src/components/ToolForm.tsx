@@ -20,50 +20,62 @@ import TextEditor from "./TextEditor";
 import { CreateToolRequestBody } from "@/types/tools.type";
 import { OmitFields } from "@/types/common.type";
 
-export type FormType = UseFormReturn<
-  {
-    name: string;
-    code: string;
-    brand: string;
-    category: string;
-    price?: string | undefined;
-    detail?:
-      | {
-          weight?: string | undefined;
-          amountInSet?: string | undefined;
-          amountInBulk?: string | undefined;
-          length?: string | undefined;
-          material?: string | undefined;
-        }
-      | undefined;
-  },
-  any,
-  undefined
->;
+export type FormInputs = {
+  name: string;
+  code: string;
+  brand: string;
+  category: string;
+  price?: string | undefined;
+  detail?:
+    | {
+        weight?: string | undefined;
+        amountInSet?: string | undefined;
+        amountInBulk?: string | undefined;
+        length?: string | undefined;
+        material?: string | undefined;
+      }
+    | undefined;
+};
+
+export type FormType = UseFormReturn<FormInputs, any, undefined>;
 type ToolFormProps = {
   className?: string;
   brands?: { title: string; _id: string }[];
   categories?: { title: string; _id: string }[];
+  values?: FormInputs;
+  isEdit?: boolean;
 };
 
-function ToolForm({ className, brands, categories }: ToolFormProps) {
+function ToolForm({
+  className,
+  brands,
+  categories,
+  values,
+  isEdit,
+}: ToolFormProps) {
+  //
+  const formDefaultValues = {
+    name: "",
+    brand: "",
+    category: "",
+    code: "",
+    price: "",
+    detail: {
+      amountInBulk: "",
+      amountInSet: "",
+      length: "",
+      material: "",
+      weight: "",
+    },
+  };
+
+  values = values ? { ...formDefaultValues, ...values } : formDefaultValues;
+
   const form = useForm<z.infer<typeof toolZodSchema>>({
     resolver: zodResolver(toolZodSchema),
-    defaultValues: {
-      name: "",
-      brand: "",
-      category: "",
-      code: "",
-      price: "",
-      detail: {
-        amountInBulk: "",
-        amountInSet: "",
-        length: "",
-        material: "",
-        weight: "",
-      },
-    },
-    mode: "onSubmit",
+    defaultValues: formDefaultValues,
+    values,
+    mode: "onChange",
   });
 
   const { toast } = useToast();
@@ -87,7 +99,7 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
             <TextEditor />
             <Separator className="mt-10" />
             <OptionalInfo form={form} />
-            <FormButtons form={form}></FormButtons>
+            <FormButtons isEdit={isEdit} form={form}></FormButtons>
           </form>
         </Form>
       </section>
@@ -128,7 +140,7 @@ function ToolForm({ className, brands, categories }: ToolFormProps) {
         title: `محصول با موفقیت افزوده شد ✅`,
       });
       form.reset();
-      dispatch(actions.setTool())
+      dispatch(actions.setTool());
     }
     dispatch(actions.setPending(false));
   }

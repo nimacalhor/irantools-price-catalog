@@ -19,7 +19,7 @@ export function ToolCardDescription({
   description?: ToolDescription;
   parentW?: number;
 }) {
-  console.log({description})
+   
   if (!parentW) return null;
   if (!description) return null;
 

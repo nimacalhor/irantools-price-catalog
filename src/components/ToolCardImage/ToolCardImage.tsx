@@ -1,12 +1,11 @@
 "use client";
-import { cn } from "@/utils/chadcn.util";
-import Image from "next/image";
-import { getRandomImage } from "../A4";
-import { memo } from "react";
-import { AspectRatio } from "@/ui/aspect-ratio.ui";
-import moduleStyles from "./ToolCardImage.module.css";
 import useTheme from "@/hooks/useTheme.hook";
+import { AspectRatio } from "@/ui/aspect-ratio.ui";
+import { cn } from "@/utils/chadcn.util";
 import { addSubStrToStart } from "@/utils/string.util";
+import Image from "next/image";
+import { memo } from "react";
+import moduleStyles from "./ToolCardImage.module.css";
 
 function ToolCardImage({
   image,
@@ -23,21 +22,15 @@ function ToolCardImage({
     theme === "orange-dark",
   ];
 
-  // INFO : check image
-  debugger;
-  //
-
   if (!image) return null;
 
-  const imagePath = addSubStrToStart(
-    process.env.NEXT_PUBLIC_API_URL + "/",
-    image
-  );
+  const imagePath = !image
+  ? ""
+  : image.startsWith("data:")
+  ? image
+  : addSubStrToStart(process.env.NEXT_PUBLIC_API_URL + "/", image || "");
 
-  // INFO : check imagePath
-  debugger;
-  //
-
+  
   return (
     <div className="col-span-3 relative ">
       <div
@@ -50,9 +43,9 @@ function ToolCardImage({
         )}
       >
         <AspectRatio className="w-full">
-          {image && imagePath && (
+          {image && imagePath &&  (
             <Image
-              src={imagePath || ""}
+              src={imagePath}
               alt="tool"
               fill
               className="object-contain z-20"

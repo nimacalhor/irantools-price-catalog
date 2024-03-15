@@ -1,15 +1,15 @@
 "use client";
 import useWindowSize from "@/hooks/useWindowSize.hook";
 import { RootState } from "@/store";
-import { actions as toolListActions } from "@/store/toolList.store";
 import { actions as createToolActions } from "@/store/createTool.store";
+import { actions as toolListActions } from "@/store/toolList.store";
 import { AspectRatio } from "@/ui/aspect-ratio.ui";
-import { isArrayValid } from "@/utils/array.util";
 import { cn } from "@/utils/chadcn.util";
+import { areAllValuesNullish } from "@/utils/object.util";
+import { usePathname } from "next/navigation";
 import { ComponentProps, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToolCard } from "./ToolCard";
-import { areAllValuesNullish } from "@/utils/object.util";
 
 function A4({
   className,
@@ -22,39 +22,34 @@ function A4({
   readFromState?: boolean;
   toolDetail?: ComponentProps<typeof ToolCard>["tool"];
 }) {
+  // 
   const mainRef = useRef<HTMLDivElement | null>(null);
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
   const createToolState = useSelector((state: RootState) => state.createTool);
   const dispatch = useDispatch();
   const { width } = useWindowSize();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (a4Ref?.current) return;
+    if (a4Ref?.current?.clientWidth) return;
     if (!mainRef.current) return;
+
     dispatch(toolListActions.setRef({ ...mainRef }));
   }, [a4Ref, dispatch, width]);
 
+  useEffect(() => {
+      dispatch(createToolActions.removeTool());
+  }, [pathname, dispatch]);
+
   (() => {
-    // INFO : check if code reaches here
-    debugger;
-    //
     if (!readFromState) return;
-    // INFO : check condition
-    debugger;
-    //
+
     if (!toolDetail) return;
-    // INFO : check condition
-    debugger;
-    //
+
     const { size, detail, ...firstLvlData } = createToolState.tool;
     if (!areAllValuesNullish(firstLvlData) || !areAllValuesNullish(detail))
       return;
-    // INFO : check condition
-    debugger;
-    //
-    // INFO : check toolDetail
-    debugger;
-    //
+
     dispatch(createToolActions.setTool(toolDetail));
   })();
 
