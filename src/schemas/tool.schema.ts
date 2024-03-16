@@ -33,9 +33,15 @@ const toolZodSchema = z.object({
   code: z.string({ required_error: CODE_REQUIRED_MSG }),
   price: z
     .string()
-    .refine((value) => /^[0-9]+$/.test(value), {
-      message: NUMERIC_FORMAT_MSG_ZOD,
-    })
+    .refine(
+      (value) => {
+        if (!value) return true;
+        /^[0-9]+$/.test(value);
+      },
+      {
+        message: NUMERIC_FORMAT_MSG_ZOD,
+      }
+    )
     .optional(),
   brand: z.string({ required_error: BRAND_REQUIRED_MSG }), // Assuming you use MongoDB ObjectId as a string
   category: z.string({ required_error: CATEGORY_REQUIRED_MSG }), // Assuming you use MongoDB ObjectId as a string

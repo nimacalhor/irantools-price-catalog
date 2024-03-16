@@ -23,9 +23,6 @@ export function ImageDropZone({}: ImageDropZoneProps) {
       const reader = new FileReader();
       reader.readAsDataURL(acceptedFiles[0]);
       reader.onloadend = () => {
-        // INFO : image loaded
-        debugger;
-        //
         dispatch(actions.setTool({ image: reader.result as string }));
       };
     },
@@ -48,13 +45,7 @@ export function ImageDropZone({}: ImageDropZoneProps) {
     : image.startsWith("data:")
     ? image
     : addSubStrToStart(process.env.NEXT_PUBLIC_API_URL + "/", image || "");
-  //  temp log
-  console.log("__________ imagePath in ImageDropZone", { imagePath });
-  if (image && imagePath) {
-    // INFO : check image and image path
-    debugger;
-    //
-  }
+
 
   if (image && imagePath !== "")
     return (

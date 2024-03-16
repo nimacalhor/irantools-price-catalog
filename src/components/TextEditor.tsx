@@ -29,15 +29,15 @@ function TextEditor({}: TextEditorProps) {
     new Editor({
       extensions: [
         StarterKit,
-        BulletList,
+        // BulletList,
         Highlight,
         Table,
         TableCell,
         TableHeader,
         TableRow,
-        Heading.configure({
-          levels: [1, 2, 3],
-        }),
+        // Heading.configure({
+        //   levels: [1, 2, 3],
+        // }),
       ],
       content: defaultContent,
       onBlur({ editor }) {
@@ -64,15 +64,15 @@ function TextEditor({}: TextEditorProps) {
       new Editor({
         extensions: [
           StarterKit,
-          BulletList,
+          // BulletList,
           Highlight,
           Table,
           TableCell,
           TableHeader,
           TableRow,
-          Heading.configure({
-            levels: [1, 2, 3],
-          }),
+          // Heading.configure({
+          //   levels: [1, 2, 3],
+          // }),
         ],
         content: _description,
         onBlur({ editor }) {

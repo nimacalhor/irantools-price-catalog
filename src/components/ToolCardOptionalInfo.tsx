@@ -22,7 +22,6 @@ export function ToolCardOptionalInfo({
     weight?: string;
   };
 }) {
-   
   if (!parentW) return null;
   if (!detail) return null;
 

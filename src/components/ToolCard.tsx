@@ -52,8 +52,6 @@ export function ToolCard({
     id,
   } = tool;
 
-   
-
   let description: any | undefined = undefined;
 
   if (_description) {
@@ -65,8 +63,6 @@ export function ToolCard({
       } catch (error) {}
     } else description = _description;
   }
-
-   
 
   return (
     <ToolCardTooltip toolId={id} isLocal={isLocal}>

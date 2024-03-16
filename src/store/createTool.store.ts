@@ -61,8 +61,9 @@ const createToolSlice = createSlice({
       if (!action.payload) store.tool = initialState.tool;
       else
         store.tool = {
-          ...{ ...store.tool, detail: { ...store.tool.detail } },
-          ...{ ...action.payload, detail: { ...action.payload.detail } },
+          ...store.tool,
+          ...action.payload,
+          detail: { ...store.tool.detail, ...action.payload.detail },
         };
     },
     removeTool(store: CreateToolStore) {
