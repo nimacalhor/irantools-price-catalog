@@ -53,21 +53,15 @@ function TextEditor({}: TextEditorProps) {
     })
   );
 
-  // INFO : component rerender
-  debugger;
-  //
+   
 
   useEffect(() => {
-    // INFO : check useEffect
-    debugger;
-    //
+     
     if (!description) return;
     if (!editor) return;
 
     const editorJsonContent = editor.getJSON();
-    // INFO : check editorTextContent
-    debugger;
-    //
+     
     if (!isObjectEmpty(editorJsonContent)) return;
 
     let _description = description;
@@ -75,9 +69,7 @@ function TextEditor({}: TextEditorProps) {
       _description = JSON.parse(description);
     } catch (error) {}
 
-    // INFO : check description
-    debugger;
-    //
+     
 
     setEditor(
       new Editor({
@@ -95,9 +87,7 @@ function TextEditor({}: TextEditorProps) {
         ],
         content: _description,
         onBlur({ editor }) {
-          // INFO : editor onBlur
-          debugger;
-          //
+           
           const result = editor.getJSON();
 
           dispatch(actions.setTool({ description: result }));

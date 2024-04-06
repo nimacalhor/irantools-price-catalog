@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Tooltip,
@@ -21,11 +22,13 @@ function ToolCardTooltip({
   toolId,
   className,
 }: ToolCardTooltipProps) {
-  if (isLocal) return children;
+  //  temp log
+  console.log("__________ className in ToolCardTooltip", { className });
+  if (isLocal) return <div className={cn("", className)}>{children}</div>;
   return (
     <TooltipProvider>
       <Tooltip delayDuration={300}>
-        <Link className={cn("", className)} passHref href={`/edit/${toolId}`}>
+        <Link className={cn("", className)} href={`/edit/${toolId}`}>
           <TooltipTrigger>{children}</TooltipTrigger>
         </Link>
         <TooltipContent>ویرایش محصول</TooltipContent>

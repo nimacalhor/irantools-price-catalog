@@ -24,7 +24,7 @@ export function ToolCardDescription({
   if (!description) return null;
 
   const headingStyles: { [key: string]: CSSProperties } = {
-    h1: { fontSize: parentW / 45 + "px" },
+    h1: { fontSize: parentW / 47 + "px" },
     h2: { fontSize: parentW / 50 + "px" },
     h3: { fontSize: parentW / 55 + "px" },
   };

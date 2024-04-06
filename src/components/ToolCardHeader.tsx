@@ -13,8 +13,9 @@ export function ToolCardHeader({
   code?: string;
   price?: string;
 }) {
-   
   if (!parentW) return null;
+  if (!name) return null;
+  
   const h3FS = parentW / 35 + "px";
   const idFS = parentW / 40 + "px";
   const priceFS = parentW / 30 + "px";
@@ -39,6 +40,16 @@ export function ToolCardHeader({
             )}
           >
             {price} ت
+          </span>
+        )}
+        {!price && (
+          <span
+            style={getFSStyle(priceFS)}
+            className={cn(
+              "lg:text-base xl:text-lg print:text-xl tracking-tighter text-primary"
+            )}
+          >
+            {"ناموجود"}
           </span>
         )}
       </div>

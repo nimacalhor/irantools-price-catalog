@@ -64,6 +64,9 @@ export function ToolCard({
     } else description = _description;
   }
 
+  //  temp log
+  console.log("__________ size in ToolCard", { size });
+
   return (
     <ToolCardTooltip
       className={sizeClasses[size]}
