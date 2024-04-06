@@ -15,11 +15,11 @@ export function ToolCardOptionalInfo({
 }: {
   parentW?: number | null;
   detail?: {
-    amountInBulk?: string;
-    amountInSet?: string;
-    length?: string;
-    material?: string;
-    weight?: string;
+    amountInBulk?: string | number;
+    amountInSet?: string | number;
+    length?: string | number;
+    material?: string | number;
+    weight?: string | number;
   };
 }) {
   if (!parentW) return null;
