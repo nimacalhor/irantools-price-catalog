@@ -34,7 +34,7 @@ export function ToolCardDescription({
     h3: "tracking-tighter",
   };
   return (
-    <div className="col-span-9 h-full pr-2">{renderNode(description, 0)}</div>
+    <div className="col-span-9 h-full pr-2 text-right">{renderNode(description, 0)}</div>
   );
 
   function renderNode(node: ToolDescription, index: number): React.ReactNode {
@@ -92,7 +92,7 @@ export function ToolCardDescription({
               {node.content.map(function (listItem, listItemIndex) {
                 return (
                   <li className="p-0 h-min m-0 translate-x-3 relative" key={listItemIndex}>
-                    <span className="absolute top-1 -right-3">-</span>
+                    <span className="absolute -top-1 -right-3">-</span>
                     {listItem.content?.map(function (
                       contentNode,
                       contentIndex

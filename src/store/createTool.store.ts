@@ -14,11 +14,11 @@ export type CreateToolStore = {
     description?: any;
     available?: boolean;
     detail?: {
-      weight?: string;
-      amountInSet?: string;
-      amountInBulk?: string;
-      length?: string;
-      material?: string;
+      weight?: string | number;
+      amountInSet?: string | number;
+      amountInBulk?: string | number;
+      length?: string | number;
+      material?: string | number;
     };
     id?: string;
   };

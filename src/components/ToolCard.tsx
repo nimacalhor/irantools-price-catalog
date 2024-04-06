@@ -33,7 +33,8 @@ export function ToolCard({
   };
   isLocal?: ComponentProps<typeof ToolCardImage>["isLocal"];
 }) {
-   
+  //  temp log
+  console.log("__________ size in ToolCard", { size: tool.size });
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
   const width = (a4Ref as RefObject<HTMLDivElement>)?.current?.clientWidth;
 
@@ -55,7 +56,6 @@ export function ToolCard({
   let description: any | undefined = undefined;
 
   if (_description) {
-
     if (typeof _description === "string") {
       try {
         const parsedDescription = JSON.parse(_description);
@@ -65,14 +65,17 @@ export function ToolCard({
   }
 
   return (
-    <ToolCardTooltip toolId={id} isLocal={isLocal}>
+    <ToolCardTooltip
+      className={sizeClasses[size]}
+      toolId={id}
+      isLocal={isLocal}
+    >
       <div
         className={cn(
           "border border-border grid grid-cols-12 w-full h-full rounded-md overflow-hidden text-foreground",
           isLocal
             ? ""
-            : `hover:cursor-pointer hover:border-primary transition-all duration-300`,
-          sizeClasses[size]
+            : `hover:cursor-pointer hover:border-primary transition-all duration-300`
         )}
       >
         <div className="col-span-9 flex flex-col justify-start gap-2">
