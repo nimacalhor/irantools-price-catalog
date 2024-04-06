@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import EditorButtons from "./EditorButtons";
 import { RootState } from "@/store";
 import { useEffect, useState } from "react";
+import { Transaction } from "@tiptap/pm/state";
+import { isObjectEmpty } from "@/utils/object.util";
 
 const defaultContent = ``;
 
@@ -41,6 +43,9 @@ function TextEditor({}: TextEditorProps) {
       ],
       content: defaultContent,
       onBlur({ editor }) {
+        // INFO :
+        debugger;
+        //
         const result = editor.getJSON();
 
         dispatch(actions.setTool({ description: result }));
@@ -48,17 +53,31 @@ function TextEditor({}: TextEditorProps) {
     })
   );
 
+  // INFO : component rerender
+  debugger;
+  //
+
   useEffect(() => {
+    // INFO : check useEffect
+    debugger;
+    //
     if (!description) return;
     if (!editor) return;
 
-    const editorTextContent = editor.getText();
-    if (editorTextContent !== "") return;
+    const editorJsonContent = editor.getJSON();
+    // INFO : check editorTextContent
+    debugger;
+    //
+    if (!isObjectEmpty(editorJsonContent)) return;
 
     let _description = description;
     try {
       _description = JSON.parse(description);
     } catch (error) {}
+
+    // INFO : check description
+    debugger;
+    //
 
     setEditor(
       new Editor({
@@ -76,6 +95,9 @@ function TextEditor({}: TextEditorProps) {
         ],
         content: _description,
         onBlur({ editor }) {
+          // INFO : editor onBlur
+          debugger;
+          //
           const result = editor.getJSON();
 
           dispatch(actions.setTool({ description: result }));

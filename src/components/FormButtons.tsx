@@ -40,7 +40,8 @@ export function FormButtons({
   const addButtonDisable = size === 5;
   const minusButtonDisable = size === 1;
 
-  const isValid = form.formState.isValid && !form.formState.isValidating;
+  // const isValid = form.formState.isValid && !form.formState.isValidating;
+  const isValid = true;
   //  temp log
   console.log("__________ isValid, formState in FormButtons", {
     isValid,

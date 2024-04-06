@@ -43,7 +43,7 @@ export function ToolCardDescription({
     switch (node.type) {
       case "doc":
         return (
-          <div key={index}>
+          <div key={index} className="text-right">
             {node.content.map(function (contentNode, contentIndex) {
               return renderNode(contentNode, contentIndex);
             })}
@@ -59,7 +59,7 @@ export function ToolCardDescription({
             style: headingStyles[headingLevel],
             className: `${headingClasses[headingLevel]}`,
           },
-          node.content.map(function (contentNode, contentIndex) {
+          node?.content?.map(function (contentNode, contentIndex) {
             return renderNode(contentNode, contentIndex);
           })
         );

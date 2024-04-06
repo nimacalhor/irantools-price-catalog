@@ -10,11 +10,11 @@ import { ToolCardOptionalInfo } from "./ToolCardOptionalInfo";
 import ToolCardTooltip from "./ToolCardTooltip";
 
 const sizeClasses: { [key: number]: string } = {
-  1: "row-span-1",
-  2: "row-span-2",
-  3: "row-span-3",
-  4: "row-span-4",
-  5: "row-span-5",
+  "1": "row-span-1",
+  "2": "row-span-2",
+  "3": "row-span-3",
+  "4": "row-span-4",
+  "5": "row-span-5",
 };
 
 export function ToolCard({

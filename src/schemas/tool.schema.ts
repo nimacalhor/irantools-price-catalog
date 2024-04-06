@@ -36,7 +36,7 @@ const toolZodSchema = z.object({
     .refine(
       (value) => {
         if (!value) return true;
-        /^[0-9]+$/.test(value);
+        return /^[0-9]+$/.test(value);
       },
       {
         message: NUMERIC_FORMAT_MSG_ZOD,

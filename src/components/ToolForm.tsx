@@ -19,6 +19,7 @@ import { OptionalInfo } from "./OptionalInfo";
 import TextEditor from "./TextEditor";
 import { CreateToolRequestBody } from "@/types/tools.type";
 import { OmitFields } from "@/types/common.type";
+import { useRouter } from "next/navigation";
 
 export type FormInputs = {
   name: string;
@@ -75,7 +76,7 @@ function ToolForm({
     resolver: zodResolver(toolZodSchema),
     defaultValues: formDefaultValues,
     values,
-    mode: "onChange",
+    mode: "onSubmit",
   });
 
   const { toast } = useToast();
@@ -85,6 +86,8 @@ function ToolForm({
   );
 
   const dispatch = useDispatch();
+
+  const router = useRouter();
 
   return (
     <>
@@ -138,6 +141,11 @@ function ToolForm({
     } else {
       toast({
         title: `محصول با موفقیت افزوده شد ✅`,
+        // (open) {
+        //   if (open) return;
+
+        //   router.push("/");
+        // },
       });
       form.reset();
       dispatch(actions.setTool());
