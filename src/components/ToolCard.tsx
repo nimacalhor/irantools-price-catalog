@@ -83,6 +83,7 @@ export function ToolCard({
       >
         <div className="col-span-9 flex flex-col justify-start gap-2">
           <ToolCardHeader
+            isLocale={isLocal}
             name={name}
             code={code}
             price={price}

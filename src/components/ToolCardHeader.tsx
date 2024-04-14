@@ -7,15 +7,16 @@ export function ToolCardHeader({
   code,
   name,
   price,
+  isLocale,
 }: {
   parentW?: number;
   name?: string;
   code?: string;
   price?: string;
+  isLocale?: boolean;
 }) {
   if (!parentW) return null;
-  if (!name) return null;
-  
+
   const h3FS = parentW / 35 + "px";
   const idFS = parentW / 40 + "px";
   const priceFS = parentW / 30 + "px";
@@ -24,6 +25,7 @@ export function ToolCardHeader({
     <div className={cn("row-span-1 flex items-center justify-between px-2")}>
       <h3 style={getFSStyle(h3FS)} className={cn("print:text-2xl")}>
         {name}
+        {isLocale && !name && "نام ابزار"}
       </h3>
       <div className="flex items-center gap-2">
         <span
@@ -31,6 +33,7 @@ export function ToolCardHeader({
           className={cn("print:text-lg tracking-tight", roboto.className)}
         >
           {code}
+          {isLocale && !code && "______"}
         </span>
         {price && (
           <span

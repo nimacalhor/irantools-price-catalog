@@ -6,6 +6,8 @@ import { RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "@/store/print.store";
 import { isArrayValid } from "@/utils/array.util";
+import { Button } from "@/ui/button.ui";
+import Link from "next/link";
 
 type PrintComponentProps = {
   groupedTools?: ComponentProps<typeof A4>["tools"][];
@@ -24,8 +26,11 @@ function PrintComponent({ groupedTools }: PrintComponentProps) {
 
   if (!groupedTools || !isArrayValid(groupedTools, true))
     return (
-      <div className="mx-auto max-w-screen-xl flex justify-center items-center h-[60vh]">
+      <div className="mx-auto max-w-screen-xl flex flex-col justify-center items-center h-[60vh] gap-3">
         <h2 className="text-3xl">هیچ ابزاری یافت نشد 😟</h2>
+        <Link passHref href={"/create"}>
+          <Button variant={"link"}>ثبت ابزار جدید</Button>
+        </Link>
       </div>
     );
 
