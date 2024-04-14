@@ -93,9 +93,11 @@ export function ToolCard({
             <ToolCardDescription
               parentW={a4w}
               description={description}
+              isLocale={isLocal}
             ></ToolCardDescription>
             <ToolCardOptionalInfo
               detail={detail}
+              isLocale={isLocal}
               parentW={a4w}
             ></ToolCardOptionalInfo>
           </div>

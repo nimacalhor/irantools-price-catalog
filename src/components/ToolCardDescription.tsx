@@ -1,27 +1,28 @@
-"use client"
+"use client";
 import { ToolDescription } from "@/types/toolDescription.type";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
-  TableHeader,
   TableRow,
 } from "@/ui/table.ui";
 
 import React, { CSSProperties } from "react";
+import { ToolCardDescriptionPlaceholder } from "./ToolCardDescriptionPlaceholder";
+
+export const defaultDescription = `{"type":"doc","content":[{"type":"heading","attrs":{"level":1},"content":[{"type":"text","text":"_____________"}]},{"type":"paragraph","content":[{"type":"text","text":"________________________________________________________________________________________________________"}]},{"type":"paragraph","content":[{"type":"text","text":"_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"______________"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"__________________________"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"_________________________"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"______________________"}]}]}]}]}`;
 
 export function ToolCardDescription({
   description,
   parentW,
+  isLocale,
 }: {
   description?: ToolDescription;
   parentW?: number;
+  isLocale?: boolean;
 }) {
-   
   if (!parentW) return null;
-  if (!description) return null;
 
   const headingStyles: { [key: string]: CSSProperties } = {
     h1: { fontSize: parentW / 47 + "px" },
@@ -34,7 +35,9 @@ export function ToolCardDescription({
     h3: "tracking-tighter",
   };
   return (
-    <div className="col-span-9 h-full pr-2 text-right">{renderNode(description, 0)}</div>
+    <div className="col-span-9 h-full pr-2 text-right">
+      {renderNode(description || JSON.parse(defaultDescription), 0)}
+    </div>
   );
 
   function renderNode(node: ToolDescription, index: number): React.ReactNode {
@@ -91,7 +94,10 @@ export function ToolCardDescription({
             <ul className="list-none gap-0 flex flex-col h-min" key={index}>
               {node.content.map(function (listItem, listItemIndex) {
                 return (
-                  <li className="p-0 h-min m-0 translate-x-3 relative" key={listItemIndex}>
+                  <li
+                    className="p-0 h-min m-0 translate-x-3 relative"
+                    key={listItemIndex}
+                  >
                     <span className="absolute -top-1 -right-3">-</span>
                     {listItem.content?.map(function (
                       contentNode,
@@ -108,7 +114,10 @@ export function ToolCardDescription({
 
       case "table":
         return (
-          <Table key={index} className="table-auto mt-1 rounded-md overflow-hidden">
+          <Table
+            key={index}
+            className="table-auto mt-1 rounded-md overflow-hidden"
+          >
             <TableBody className="border border-border">
               {node.content.map(function (row, rowIndex) {
                 return (
@@ -140,10 +149,10 @@ export function ToolCardDescription({
       case "tableCell":
         return (
           <TableCell
-          style={{
-            padding: "4px"
-            // padding:0
-          }}
+            style={{
+              padding: "4px",
+              // padding:0
+            }}
             className="text-right border border-border"
             key={index}
             // colSpan={node.attrs.colspan}

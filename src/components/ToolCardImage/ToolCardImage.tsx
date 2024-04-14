@@ -6,6 +6,8 @@ import { addSubStrToStart } from "@/utils/string.util";
 import Image from "next/image";
 import { memo } from "react";
 import moduleStyles from "./ToolCardImage.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage } from "@fortawesome/free-regular-svg-icons";
 
 function ToolCardImage({
   image,
@@ -22,15 +24,23 @@ function ToolCardImage({
     theme === "orange-dark",
   ];
 
-  if (!image) return null;
+  // const imagePath = !image
+  // ? ""
+  // : image.startsWith("data:")
+  // ? image
+  // : addSubStrToStart(process.env.NEXT_PUBLIC_API_URL + "/", image || "");
+  let imagePath;
+  if (!image) {
+    imagePath = "";
+  } else if (image.startsWith("data:")) {
+    imagePath = image;
+  } else {
+    imagePath = addSubStrToStart(
+      process.env.NEXT_PUBLIC_API_URL + "/",
+      image || ""
+    );
+  }
 
-  const imagePath = !image
-  ? ""
-  : image.startsWith("data:")
-  ? image
-  : addSubStrToStart(process.env.NEXT_PUBLIC_API_URL + "/", image || "");
-
-  
   return (
     <div className="col-span-3 relative ">
       <div
@@ -43,7 +53,7 @@ function ToolCardImage({
         )}
       >
         <AspectRatio className="w-full">
-          {image && imagePath &&  (
+          {image && imagePath && (
             <Image
               src={imagePath}
               alt="tool"
@@ -51,7 +61,7 @@ function ToolCardImage({
               className="object-contain z-20"
               quality={100}
             />
-          )}
+          )}        
         </AspectRatio>
       </div>
       <div

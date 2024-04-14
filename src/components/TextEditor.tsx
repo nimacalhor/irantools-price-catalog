@@ -43,10 +43,9 @@ function TextEditor({}: TextEditorProps) {
       ],
       content: defaultContent,
       onBlur({ editor }) {
-        // INFO :
-        debugger;
-        //
         const result = editor.getJSON();
+
+        navigator.clipboard.writeText(JSON.stringify(result))
 
         dispatch(actions.setTool({ description: result }));
       },

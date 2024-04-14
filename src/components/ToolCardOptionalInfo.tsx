@@ -5,15 +5,17 @@ import {
   faCubes,
   faPuzzlePiece,
   faRulerHorizontal,
-  faWeightScale
+  faWeightScale,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export function ToolCardOptionalInfo({
   parentW,
   detail,
+  isLocale,
 }: {
   parentW?: number | null;
+  isLocale?: boolean;
   detail?: {
     amountInBulk?: string | number;
     amountInSet?: string | number;
@@ -23,13 +25,28 @@ export function ToolCardOptionalInfo({
   };
 }) {
   if (!parentW) return null;
-  if (!detail) return null;
 
   const fontW = parentW / 30 + "px";
   const fontH = parentW / 30 + "px";
   const amountFS = parentW / 60 + "px";
 
-  const { amountInBulk, amountInSet, length, material, weight } = detail;
+  // const { amountInBulk, amountInSet, length, material, weight } = detail ?? {
+  //   amountInBulk: "__",
+  //   amountInSet: "__",
+  //   length: "__",
+  //   material: "__",
+  //   weight: "__",
+  // };
+  const { amountInBulk, amountInSet, length, material, weight } = {
+    ...(detail || {}),
+    ...{
+      amountInBulk: "__",
+      amountInSet: "__",
+      length: "__",
+      material: "__",
+      weight: "__",
+    },
+  };
 
   return (
     <div className="col-span-3">
