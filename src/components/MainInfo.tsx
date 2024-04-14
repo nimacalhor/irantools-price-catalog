@@ -17,9 +17,11 @@ export function MainInfo({
   form,
   brands,
   categories,
+  onImageDrop,
 }: {
   form: FormType;
-} & ComponentProps<typeof SelectiveInfo>) {
+} & ComponentProps<typeof SelectiveInfo> &
+  ComponentProps<typeof ImageDropZone>) {
   return (
     <div>
       <h2 className="text-2xl mb-5">اطلاعات اصلی</h2>
@@ -75,7 +77,7 @@ export function MainInfo({
             )}
           />
         </div>
-        <ImageDropZone />
+        <ImageDropZone onImageDrop={onImageDrop} />
       </div>
       <SelectiveInfo
         brands={brands}

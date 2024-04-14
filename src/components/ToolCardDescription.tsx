@@ -11,16 +11,12 @@ import {
 import React, { CSSProperties } from "react";
 import { ToolCardDescriptionPlaceholder } from "./ToolCardDescriptionPlaceholder";
 
-export const defaultDescription = `{"type":"doc","content":[{"type":"heading","attrs":{"level":1},"content":[{"type":"text","text":"_____________"}]},{"type":"paragraph","content":[{"type":"text","text":"________________________________________________________________________________________________________"}]},{"type":"paragraph","content":[{"type":"text","text":"_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________"}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"______________"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"__________________________"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"_________________________"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"______________________"}]}]}]}]}`;
-
 export function ToolCardDescription({
   description,
   parentW,
-  isLocale,
 }: {
   description?: ToolDescription;
   parentW?: number;
-  isLocale?: boolean;
 }) {
   if (!parentW) return null;
 
@@ -36,7 +32,7 @@ export function ToolCardDescription({
   };
   return (
     <div className="col-span-9 h-full pr-2 text-right">
-      {renderNode(description || JSON.parse(defaultDescription), 0)}
+      {description && renderNode(description, 0)}
     </div>
   );
 

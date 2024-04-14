@@ -8,12 +8,14 @@ import Image from "next/image";
 import { Button } from "@/ui/button.ui";
 import { RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
-import { actions } from "@/store/createTool.store";
+import { CreateToolStore, actions } from "@/store/createTool.store";
 import { addSubStrToStart } from "@/utils/string.util";
 
-type ImageDropZoneProps = {};
+type ImageDropZoneProps = {
+  onImageDrop?: (params: { image?: CreateToolStore["tool"]["image"] }) => void;
+};
 
-export function ImageDropZone({}: ImageDropZoneProps) {
+export function ImageDropZone({ onImageDrop }: ImageDropZoneProps) {
   const { image } = useSelector((state: RootState) => state.createTool.tool);
   const dispatch = useDispatch();
 
@@ -23,10 +25,10 @@ export function ImageDropZone({}: ImageDropZoneProps) {
       const reader = new FileReader();
       reader.readAsDataURL(acceptedFiles[0]);
       reader.onloadend = () => {
-        dispatch(actions.setTool({ image: reader.result as string }));
+        if (onImageDrop) onImageDrop({ image: reader.result as string });
       };
     },
-    [dispatch]
+    [dispatch, onImageDrop]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -45,7 +47,6 @@ export function ImageDropZone({}: ImageDropZoneProps) {
     : image.startsWith("data:")
     ? image
     : addSubStrToStart(process.env.NEXT_PUBLIC_API_URL + "/", image || "");
-
 
   if (image && imagePath !== "")
     return (

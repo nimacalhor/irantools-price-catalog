@@ -3,7 +3,7 @@ import { createToolAction } from "@/actions/tools.action";
 import { useToast } from "@/hooks/useToast.hook";
 import { toolZodSchema } from "@/schemas/tool.schema";
 import { RootState } from "@/store";
-import { actions } from "@/store/createTool.store";
+import { CreateToolStore, actions } from "@/store/createTool.store";
 import { Form } from "@/ui/form.ui";
 import { Separator } from "@/ui/separator.ui";
 import { cn } from "@/utils/chadcn.util";
@@ -87,8 +87,6 @@ function ToolForm({
 
   const dispatch = useDispatch();
 
-  const router = useRouter();
-
   return (
     <>
       <section className={cn("", className)}>
@@ -97,12 +95,20 @@ function ToolForm({
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 mb-10"
           >
-            <MainInfo form={form} brands={brands} categories={categories} />
+            <MainInfo
+              onImageDrop={previewHandler}
+              form={form}
+              brands={brands}
+              categories={categories}
+            />
             <Separator />
-            <TextEditor />
+            <TextEditor onBlur={previewHandler} />
             <Separator className="mt-10" />
             <OptionalInfo form={form} />
-            <FormButtons isEdit={isEdit} form={form}></FormButtons>
+            <FormButtons
+              onPreviewClick={previewHandler}
+              isEdit={isEdit}
+            ></FormButtons>
           </form>
         </Form>
       </section>
@@ -151,6 +157,34 @@ function ToolForm({
       dispatch(actions.setTool());
     }
     dispatch(actions.setPending(false));
+  }
+
+  function previewHandler({
+    description,
+    image,
+  }: {
+    description?: CreateToolStore["tool"]["description"];
+    image?: CreateToolStore["tool"]["image"];
+  }) {
+    const { name, brand, category, code, detail, price } = { ...form.watch() };
+    //  temp log
+    console.log("__________ detail in ToolForm", { detail });
+    const newDescription = description ?? tool.description;
+    const newImage = image ?? tool.image;
+    const toolState: CreateToolStore["tool"] = {
+      name,
+      code,
+      brand,
+      price,
+      detail,
+      category,
+      available: !!price,
+      size: tool.size,
+      image: newImage,
+      description: newDescription,
+    };
+
+    dispatch(actions.setTool(toolState));
   }
 }
 

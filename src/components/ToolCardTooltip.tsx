@@ -22,8 +22,6 @@ function ToolCardTooltip({
   toolId,
   className,
 }: ToolCardTooltipProps) {
-  //  temp log
-  console.log("__________ className in ToolCardTooltip", { className });
   if (isLocal) return <div className={cn("", className)}>{children}</div>;
   return (
     <TooltipProvider>

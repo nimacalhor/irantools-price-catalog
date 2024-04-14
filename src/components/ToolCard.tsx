@@ -33,8 +33,6 @@ export function ToolCard({
   };
   isLocal?: ComponentProps<typeof ToolCardImage>["isLocal"];
 }) {
-  //  temp log
-  console.log("__________ size in ToolCard", { size: tool.size });
   const { a4Ref } = useSelector((state: RootState) => state.toolList);
   const width = (a4Ref as RefObject<HTMLDivElement>)?.current?.clientWidth;
 
@@ -64,8 +62,6 @@ export function ToolCard({
     } else description = _description;
   }
 
-  //  temp log
-  console.log("__________ size in ToolCard", { size });
 
   return (
     <ToolCardTooltip
@@ -93,7 +89,6 @@ export function ToolCard({
             <ToolCardDescription
               parentW={a4w}
               description={description}
-              isLocale={isLocal}
             ></ToolCardDescription>
             <ToolCardOptionalInfo
               detail={detail}

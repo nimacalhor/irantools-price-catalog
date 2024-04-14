@@ -1,66 +1,56 @@
 "use client";
-import { actions } from "@/store/createTool.store";
-import { Separator } from "@/ui/separator.ui";
-import BulletList from "@tiptap/extension-bullet-list";
-import Heading from "@tiptap/extension-heading";
-import Highlight from "@tiptap/extension-highlight";
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
-import { Editor, EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { useDispatch, useSelector } from "react-redux";
-import EditorButtons from "./EditorButtons";
 import { RootState } from "@/store";
+import { useSelector } from "react-redux";
+import Table from "@tiptap/extension-table";
 import { useEffect, useState } from "react";
-import { Transaction } from "@tiptap/pm/state";
+import EditorButtons from "./EditorButtons";
+import StarterKit from "@tiptap/starter-kit";
+import { Separator } from "@/ui/separator.ui";
+import TableRow from "@tiptap/extension-table-row";
 import { isObjectEmpty } from "@/utils/object.util";
+import Highlight from "@tiptap/extension-highlight";
+import TableCell from "@tiptap/extension-table-cell";
+import { Editor, EditorContent } from "@tiptap/react";
+import TableHeader from "@tiptap/extension-table-header";
+import { CreateToolStore } from "@/store/createTool.store";
 
 const defaultContent = ``;
 
-type TextEditorProps = {};
+type TextEditorProps = {
+  onBlur?: (params: {
+    description: CreateToolStore["tool"]["description"];
+  }) => void;
+};
 
-function TextEditor({}: TextEditorProps) {
+function TextEditor({ onBlur }: TextEditorProps) {
   const { description } = useSelector(
     (state: RootState) => state.createTool.tool
   );
-  const dispatch = useDispatch();
 
   const [editor, setEditor] = useState<Editor | null>(
     new Editor({
       extensions: [
         StarterKit,
-        // BulletList,
         Highlight,
         Table,
         TableCell,
         TableHeader,
         TableRow,
-        // Heading.configure({
-        //   levels: [1, 2, 3],
-        // }),
       ],
       content: defaultContent,
       onBlur({ editor }) {
         const result = editor.getJSON();
-
-        navigator.clipboard.writeText(JSON.stringify(result))
-
-        dispatch(actions.setTool({ description: result }));
+        if (onBlur) onBlur({ description: result });
       },
     })
   );
 
-   
-
   useEffect(() => {
-     
     if (!description) return;
     if (!editor) return;
 
     const editorJsonContent = editor.getJSON();
-     
+
     if (!isObjectEmpty(editorJsonContent)) return;
 
     let _description = description;
@@ -68,32 +58,25 @@ function TextEditor({}: TextEditorProps) {
       _description = JSON.parse(description);
     } catch (error) {}
 
-     
-
     setEditor(
       new Editor({
         extensions: [
           StarterKit,
-          // BulletList,
           Highlight,
           Table,
           TableCell,
           TableHeader,
           TableRow,
-          // Heading.configure({
-          //   levels: [1, 2, 3],
-          // }),
         ],
         content: _description,
         onBlur({ editor }) {
-           
           const result = editor.getJSON();
 
-          dispatch(actions.setTool({ description: result }));
+          if (onBlur) onBlur({ description: result });
         },
       })
     );
-  }, [description, dispatch, editor]);
+  }, [description, editor]);
 
   if (!editor) return null;
 

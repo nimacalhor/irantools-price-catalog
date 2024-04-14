@@ -21,11 +21,11 @@ import { useToast } from "@/hooks/useToast.hook";
 import { useRouter } from "next/navigation";
 
 export function FormButtons({
-  form,
   isEdit = false,
+  onPreviewClick
 }: {
-  form: FormType;
   isEdit?: boolean;
+  onPreviewClick?: (params: any) => void
 }) {
   const dispatch = useDispatch();
   const { size, image, id } = useSelector(
@@ -40,14 +40,7 @@ export function FormButtons({
   const addButtonDisable = size === 5;
   const minusButtonDisable = size === 1;
 
-  // const isValid = form.formState.isValid && !form.formState.isValidating;
   const isValid = true;
-  //  temp log
-  console.log("__________ isValid, formState in FormButtons", {
-    isValid,
-    formState: form.formState,
-    formValues: form.getValues(),
-  });
 
   return (
     <div className="flex flex-col md:flex-row gap-4 justify-end md:gap-2">
@@ -73,7 +66,7 @@ export function FormButtons({
         icon={faEye}
         type="button"
         variant={"secondary"}
-        onClick={previewClickHandler}
+        onClick={onPreviewClick}
       >
         اعمال تغییرات
       </IconButton>
@@ -109,24 +102,6 @@ export function FormButtons({
     </div>
   );
 
-  function previewClickHandler() {
-    // form.trigger();
-    const { name, brand, category, code, detail, price } = { ...form.watch() };
-    const toolState: CreateToolStore["tool"] = {
-      name,
-      code,
-      brand,
-      price,
-      detail,
-      category,
-      available: !!price,
-      image: image || undefined,
-      size,
-    };
-    console.log({ detail });
-
-    dispatch(actions.setTool(toolState));
-  }
 
   function addHandler() {
     dispatch(actions.setSize((size || 1) + 1));

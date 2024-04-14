@@ -66,9 +66,6 @@ export default async function Home({
     .map((tool) => ({ ...tool, image: tool.image.path, id: tool._id }));
   const groupedTools = groupItemsBySize(toolListWithImage);
 
-//  temp log
-console.log("__________ groupedTools in page", { groupedTools });
-
   return (
     <>
       <section className="">
