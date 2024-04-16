@@ -1,4 +1,5 @@
 "use client";
+import { filterEmptyValues } from "@/utils/object.util";
 import { getFSStyle } from "@/utils/style.util";
 import {
   faCube,
@@ -28,7 +29,7 @@ export function ToolCardOptionalInfo({
 
   const fontW = parentW / 30 + "px";
   const fontH = parentW / 30 + "px";
-  const amountFS = parentW / 60 + "px";
+  const amountFS = parentW / 65 + "px";
 
   // const { amountInBulk, amountInSet, length, material, weight } = detail ?? {
   //   amountInBulk: "__",
@@ -38,7 +39,6 @@ export function ToolCardOptionalInfo({
   //   weight: "__",
   // };
   const { amountInBulk, amountInSet, length, material, weight } = {
-    ...(detail || {}),
     ...{
       amountInBulk: "__",
       amountInSet: "__",
@@ -46,13 +46,14 @@ export function ToolCardOptionalInfo({
       material: "__",
       weight: "__",
     },
+    ...(detail ? filterEmptyValues(detail) : {}),
   };
 
   return (
     <div className="col-span-3">
       <div className="row-span-8 flex justify-end items-start flex-wrap gap-2 pt-2 px-2 pl-3">
         {length && (
-          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+          <span className=" overflow-hidden scroll flex-col gap-1 w-1/4 flex justify-between items-center">
             <FontAwesomeIcon
               icon={faRulerHorizontal}
               style={{ width: fontW, height: fontH }}
@@ -64,7 +65,7 @@ export function ToolCardOptionalInfo({
           </span>
         )}
         {material && (
-          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+          <span className=" overflow-hidden scroll flex-col gap-1 w-1/4 flex justify-between items-center">
             <FontAwesomeIcon
               icon={faPuzzlePiece}
               style={{ width: fontW, height: fontH }}
@@ -76,7 +77,7 @@ export function ToolCardOptionalInfo({
           </span>
         )}
         {weight && (
-          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+          <span className=" overflow-hidden scroll flex-col gap-1 w-1/4 flex justify-between items-center">
             <FontAwesomeIcon
               icon={faWeightScale}
               style={{ width: fontW, height: fontH }}
@@ -88,7 +89,7 @@ export function ToolCardOptionalInfo({
           </span>
         )}
         {amountInBulk && (
-          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+          <span className=" overflow-hidden scroll flex-col gap-1 w-1/4 flex justify-between items-center">
             <FontAwesomeIcon
               icon={faCubes}
               style={{ width: fontW, height: fontH }}
@@ -100,7 +101,7 @@ export function ToolCardOptionalInfo({
           </span>
         )}
         {amountInSet && (
-          <span className=" flex-col gap-1 w-1/4 flex justify-between items-center">
+          <span className=" overflow-hidden scroll flex-col gap-1 w-1/4 flex justify-between items-center">
             <FontAwesomeIcon
               icon={faCube}
               style={{ width: fontW, height: fontH }}

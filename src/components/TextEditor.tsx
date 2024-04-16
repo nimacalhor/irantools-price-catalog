@@ -19,11 +19,12 @@ const defaultContent = ``;
 type TextEditorProps = {
   onBlur?: (params: {
     description: CreateToolStore["tool"]["description"];
+    image: CreateToolStore["tool"]["image"];
   }) => void;
 };
 
 function TextEditor({ onBlur }: TextEditorProps) {
-  const { description } = useSelector(
+  const { description, image } = useSelector(
     (state: RootState) => state.createTool.tool
   );
 
@@ -40,7 +41,7 @@ function TextEditor({ onBlur }: TextEditorProps) {
       content: defaultContent,
       onBlur({ editor }) {
         const result = editor.getJSON();
-        if (onBlur) onBlur({ description: result });
+        if (onBlur) onBlur({ description: result, image });
       },
     })
   );
@@ -72,11 +73,11 @@ function TextEditor({ onBlur }: TextEditorProps) {
         onBlur({ editor }) {
           const result = editor.getJSON();
 
-          if (onBlur) onBlur({ description: result });
+          if (onBlur) onBlur({ description: result, image });
         },
       })
     );
-  }, [description, editor]);
+  }, [description, editor, image, onBlur]);
 
   if (!editor) return null;
 

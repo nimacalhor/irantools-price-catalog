@@ -27,7 +27,7 @@ function ToolCardTooltip({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <Link className={cn("", className)} href={`/edit/${toolId}`}>
-          <TooltipTrigger>{children}</TooltipTrigger>
+          <TooltipTrigger className="h-full">{children}</TooltipTrigger>
         </Link>
         <TooltipContent>ویرایش محصول</TooltipContent>
       </Tooltip>

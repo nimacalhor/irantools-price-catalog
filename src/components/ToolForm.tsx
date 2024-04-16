@@ -167,8 +167,7 @@ function ToolForm({
     image?: CreateToolStore["tool"]["image"];
   }) {
     const { name, brand, category, code, detail, price } = { ...form.watch() };
-    //  temp log
-    console.log("__________ detail in ToolForm", { detail });
+
     const newDescription = description ?? tool.description;
     const newImage = image ?? tool.image;
     const toolState: CreateToolStore["tool"] = {
@@ -180,9 +179,9 @@ function ToolForm({
       category,
       available: !!price,
       size: tool.size,
-      image: newImage,
-      description: newDescription,
     };
+    if (newImage) toolState.image = newImage;
+    if (newDescription) toolState.description = newDescription;
 
     dispatch(actions.setTool(toolState));
   }

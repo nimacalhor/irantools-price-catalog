@@ -9,6 +9,7 @@ export const store = configureStore({
     createTool: createToolReducer,
     toolList: toolListReducer,
   },
+  devTools: true,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
 });
