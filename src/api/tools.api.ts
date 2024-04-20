@@ -61,7 +61,8 @@ export const getToolList = cache(async function (
         message: getErrorMessage(data),
       };
   } catch (error) {
-    console.error({ error });
+    //  temp log
+    console.log("__________ error in tools.api", { error });
     return { ok: false, message: getErrorMessage() };
   }
 });

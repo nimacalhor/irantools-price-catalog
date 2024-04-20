@@ -55,7 +55,8 @@ export const getBrandList = cache(async function (
         message: getErrorMessage(data),
       };
   } catch (error) {
-    console.error({ error });
+    //  temp log
+    console.log("__________ error in brand.api", { error, response: (error as any).response });
     return { ok: false, message: getErrorMessage() };
   }
 });

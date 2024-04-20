@@ -55,7 +55,8 @@ export const getCategoryList = cache(async function (
         message: getErrorMessage(data),
       };
   } catch (error) {
-    console.error({ error });
+    //  temp log
+    console.log("__________ error in category.api", { error });
     return { ok: false, message: getErrorMessage() };
   }
 });
